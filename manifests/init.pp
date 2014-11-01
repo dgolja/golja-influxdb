@@ -9,6 +9,4 @@
 # Dejan Golja <dejan@golja.org>
 #
 class influxdb {
-
-
 }

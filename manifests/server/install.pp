@@ -1,0 +1,3 @@
+class influxdb::server::install {
+
+}
