@@ -26,6 +26,19 @@
 
 ## Usage
 
+### Add input_plugins.graphite
+
+   class {'influxdb':
+     input_plugins => {
+       'input_plugins.graphite' => {
+          'enabled'             => false,
+          'address'             => '0.0.0.0',
+          'port'                => 2003,
+          'database'            => 'graphitedb',
+          'udp_enabled'         => true,
+        }
+     }
+   }
 
 ## Reference
 

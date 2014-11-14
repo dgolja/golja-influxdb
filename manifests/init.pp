@@ -1,10 +1,8 @@
 # == Class: influxdb
 #
-# === Examples
+# Please do not use this class
 #
-#  class { 'influxdb': }
-#
-# === Authors
+# === Author
 #
 # Dejan Golja <dejan@golja.org>
 #
