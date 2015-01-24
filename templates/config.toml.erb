@@ -1,0 +1,151 @@
+# InfluxDB managed by Puppet.
+
+# If hostname (on the OS) doesn't return a name that can be resolved by the other
+# systems in the cluster, you'll have to set the hostname to an IP or something
+# that can be resolved here.
+# hostname = ""
+
+bind-address = "<%= @bind_address -%>"
+
+reporting-disabled = <%= @reporting_disabled -%>
+
+[logging]
+level  = "<%= @log_level -%>"
+file   = "/opt/influxdb/shared/log.txt" # stdout to log to standard out, or syslog facility
+
+# Configure the admin server
+[admin]
+port   = <%= @admin_port -%>
+
+# Configure the http api
+[api]
+<% if ! disable_port -%>
+port = <%= @api_port %>
+<% end -%>
+
+<% if ! enable_ssl -%>
+# ssl-port = <%= @ssl_port %>
+# ssl-cert = <%= @ssl_path %>
+<% end -%>
+
+read-timeout = "<%= @read_timeout %>"
+
+[input_plugins]
+
+<% @input_plugins.sort.map do |k,v| -%>
+<%   if v.is_a?(Hash) -%>
+[<%=   k %>]
+<%     v.sort.map do |ki, vi| -%>
+<%       if vi == true or v == false -%>
+<%=        ki %> = <%= vi %>
+<%       elsif vi.is_a?(Array) -%>
+<%         vi.each do |vii| -%>
+<%=          ki %> = <%= vii %>
+<%         end -%>
+<%       elsif vi.is_a?(String) -%>
+<%=        ki %> = "<%= vi %>"
+<%       elsif ![nil, '', :undef].include?(vi) -%>
+<%=        ki %> = <%= vi %>
+<%       end -%>
+<%     end -%>
+<%   end %>
+<% end -%>
+
+# Raft configuration
+[raft]
+# The raft port should be open between all servers in a cluster.
+# However, this port shouldn't be accessible from the internet.
+
+port = <%= @raft_port %>
+
+# Where the raft logs are stored. The user running InfluxDB will need read/write access.
+dir  = "<%= @raft_log_dir %>"
+
+[storage]
+
+dir = "<%= @storage_dir %>"
+# How many requests to potentially buffer in memory. If the buffer gets filled then writes
+# will still be logged and once the local storage has caught up (or compacted) the writes
+# will be replayed from the WAL
+write-buffer-size = <%= @storage_write_buffer_size %>
+
+# the engine to use for new shards, old shards will continue to use the same engine
+default-engine = "<%= @default_engine %>"
+
+# The default setting on this is 0, which means unlimited. Set this to something if you want to
+# limit the max number of open files. max-open-files is per shard so this * that will be max.
+max-open-shards = <%= @max_open_shards %>
+
+# The default setting is 100. This option tells how many points will be fetched from LevelDb before
+# they get flushed into backend.
+point-batch-size = <%= @point_batch_size %>
+
+# The number of points to batch in memory before writing them to leveldb. Lowering this number will
+# reduce the memory usage, but will result in slower writes.
+write-batch-size = <%= @write_batch_size %>
+
+# The server will check this often for shards that have expired that should be cleared.
+retention-sweep-period = "<%= @retention_sweep_period %>"
+
+<% @storage_engines_options.sort.map do |k,v| -%>
+<%   if v.is_a?(Hash) -%>
+[<%=   k %>]
+<%     v.sort.map do |ki, vi| -%>
+<%       if vi == true or v == false -%>
+<%=        ki %> = <%= vi %>
+<%       elsif vi.is_a?(Array) -%>
+<%         vi.each do |vii| -%>
+<%=          ki %> = <%= vii %>
+<%         end -%>
+<%       elsif vi.is_a?(String) -%>
+<%=        ki %> = "<%= vi %>"
+<%       elsif ![nil, '', :undef].include?(vi) -%>
+<%=        ki %> = <%= vi %>
+<%       end -%>
+<%     end -%>
+<%   end %>
+<% end -%>
+
+
+[cluster]
+
+<% if @seed_servers -%>
+seed-servers = <%= @seed_servers %>
+<% end -%>
+
+protobuf_port = <%= @protobuf_port %>
+protobuf_timeout = "<%= @protobuf_timeout %>" # the write timeout on the protobuf conn any duration parseable by time.ParseDuration
+protobuf_heartbeat = "<%= @protobuf_heartbeat %>" # the heartbeat interval between the servers. must be parseable by time.ParseDuration
+protobuf_min_backoff = "<%= @protobuf_min_backoff %>" # the minimum backoff after a failed heartbeat attempt
+protobuf_max_backoff = "<%= @protobuf_max_backoff %>" # the maxmimum backoff after a failed heartbeat attempt
+
+# How many write requests to potentially buffer in memory per server. If the buffer gets filled then writes
+# will still be logged and once the server has caught up (or come back online) the writes
+# will be replayed from the WAL
+write-buffer-size = <%= @cluster_write_buffer_size %>
+
+# the maximum number of responses to buffer from remote nodes, if the
+# expected number of responses exceed this number then querying will
+# happen sequentially and the buffer size will be limited to this
+# number
+max-response-buffer-size = <%= @cluster_max_response_buffer_size %>
+
+# When queries get distributed out to shards, they go in parallel. This means that results can get buffered
+# in memory since results will come in any order, but have to be processed in the correct time order.
+# Setting this higher will give better performance, but you'll need more memory. Setting this to 1 will ensure
+# that you don't need to buffer in memory, but you won't get the best performance.
+concurrent-shard-query-limit = <%= @concurrent_shard_query_limit %>
+
+[wal]
+
+dir   = "<%= @wal_dir %>"
+flush-after = <%= @wal_flush_after %> # the number of writes after which wal will be flushed, 0 for flushing on every write
+bookmark-after = <%= @wal_bookmark_after %> # the number of writes after which a bookmark will be created
+
+# the number of writes after which an index entry is created pointing
+# to the offset of the first request, default to 1k
+index-after = <%= @wal_index_after %>
+
+# the number of requests per one log file, if new requests came in a
+# new log file will be created
+requests-per-logfile = <%= @wal_requests_per_logfile %>
