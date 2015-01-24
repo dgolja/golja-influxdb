@@ -1,3 +1,4 @@
 .rvmrc
 Gemfile.lock
 spec/fixtures
+pkg/
