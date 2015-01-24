@@ -1,4 +1,4 @@
-# influxdb
+# InfluxDB
 
 #### Table of Contents
 
@@ -14,16 +14,17 @@
 
 ##Overview
 
-This module manages influxdb installation.
+This module manages InfluxDB installation.
+
+[![Build Status](https://travis-ci.org/n1tr0g/golja-influxdb.png)](https://travis-ci.org/n1tr0g/golja-influxdb)
 
 ##Module Description
 
-
 ##Setup
 
-To install influxdb with the default options
+To install InfluxDB with the default options
 
-### What influxdb affects
+### What InfluxDB affects
 
 *InfluxDB packages
 *InfluxDB configuration files
@@ -31,7 +32,7 @@ To install influxdb with the default options
 
 ###Beginning with InfluxDB
 
-If you just want a server installed with the default options you can run include '::influxdb::server'.
+If you just want a server installed with the default options you can run include `'::influxdb::server'`.
 
 ##Usage
 
@@ -39,13 +40,13 @@ All interaction for the server is done via `influxdb::server`.
 
 ###Overrides
 
-Due to the nature of influxdb we use the concept of overrides to add custom input 
+Due to the nature of InfluxDB we use the concept of overrides to add custom input 
 plugins or/and additional storage engines. Some of the standards storage engines
 can be managed via params too. For some examples check below.
 
 ###Enable graphite plugin
 
-```
+```puppet
 class {'influxdb::server':
   input_plugins => {
     'input_plugins.graphite' => {
@@ -61,7 +62,7 @@ class {'influxdb::server':
 
 ###Add custom storage engine
 
-```
+```puppet
 class {'influxdb::server':
   override_storage_engines => {
     'storage.engines.dummy' => {
@@ -74,7 +75,7 @@ class {'influxdb::server':
 
 ###Override the default value for rocksdb
 
-```
+```puppet
 class {'influxdb::server':
   override_storage_engines => {
     'storage.engines.rocksdb'  => {
