@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "author": "Dejan Golja",
   "summary": "Manage influxdb",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/n1tr0g/golja-influxdb",
   "project_page": "https://github.com/n1tr0g/golja-influxdb",
   "issues_url": "https://github.com/n1tr0g/golja-influxdb/issues",
+  "tags": ["influxdb", "metrics"],
   "dependencies": [
     {"name":"puppetlabs/stdlib","version_requirement":">= 1.0.0"}
   ]
