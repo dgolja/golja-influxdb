@@ -19,11 +19,11 @@ port   = <%= @admin_port -%>
 
 # Configure the http api
 [api]
-<% if ! disable_port -%>
+<% if ! @disable_port -%>
 port = <%= @api_port %>
 <% end -%>
 
-<% if ! enable_ssl -%>
+<% if ! @enable_ssl -%>
 # ssl-port = <%= @ssl_port %>
 # ssl-cert = <%= @ssl_path %>
 <% end -%>

@@ -15,8 +15,6 @@ class influxdb::server::config {
   $default_engine                   = $influxdb::server::default_engine
   $max_open_shards                  = $influxdb::server::max_open_shards
   $point_batch_size                 = $influxdb::server::point_batch_size
-  $max_open_shards                  = $influxdb::server::max_open_shards
-  $point_batch_size                 = $influxdb::server::point_batch_size
   $write_batch_size                 = $influxdb::server::write_batch_size
   $retention_sweep_period           = $influxdb::server::retention_sweep_period
   $storage_engines_options          = $influxdb::server::storage_engines_options
