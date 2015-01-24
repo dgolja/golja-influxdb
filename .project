@@ -3,6 +3,7 @@
 	<name>golja-influxdb</name>
 	<comment></comment>
 	<projects>
+		<project>stdlib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
