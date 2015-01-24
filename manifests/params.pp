@@ -4,7 +4,7 @@ class influxdb::params {
   $ensure                           = 'present'
   $service_enabled                  = true
   $bind_address                     = '0.0.0.0'
-  $reporting_disabled               = true
+  $reporting_disabled               = false
   $log_level                        = 'info'
   $admin_port                       = 8083
   $disable_api                      = false
