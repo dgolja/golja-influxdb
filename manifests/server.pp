@@ -40,18 +40,18 @@ class influxdb::server (
   $cluster_max_response_buffer_size = $influxdb::params::cluster_max_response_buffer_size,
   $concurrent_shard_query_limit     = $influxdb::params::concurrent_shard_query_limit,
   $wal_dir                          = $influxdb::params::wal_dir,
-  $wal_flush_after                  = $influxdb::params::wal_flush_after, 
+  $wal_flush_after                  = $influxdb::params::wal_flush_after,
   $wal_bookmark_after               = $influxdb::params::wal_bookmark_after,
   $wal_index_after                  = $influxdb::params::wal_index_after,
   $wal_requests_per_logfile         = $influxdb::params::wal_requests_per_logfile,
 ) inherits influxdb::params {
 
-  $storage_engines_options = influxdb_deepmerge(influxdb::params::default_storage_engines, $override_storage_engines)
+  $storage_engines_options = influxdb_deepmerge($influxdb::params::default_storage_engines, $override_storage_engines)
 
   anchor { 'influxdb::server::start': }->
   class { 'influxdb::server::install': }->
-  class { "influxdb::server::config": }->
-  class { "influxdb::server::service": }->
-  anchor { "influxdb::server::end": }
+  class { 'influxdb::server::config': }->
+  class { 'influxdb::server::service': }->
+  anchor { 'influxdb::server::end': }
 
 }

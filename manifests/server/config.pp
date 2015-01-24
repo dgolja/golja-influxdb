@@ -36,7 +36,7 @@ class influxdb::server::config {
   $wal_requests_per_logfile         = $influxdb::server::wal_requests_per_logfile
 
   if !($log_level in ['info', 'debug','warn','error']) {
-    fail('log level must be info,debug,warn or error')
+    fail("log level must be info,debug, warn or error. Current value: ${log_level}")
   }
 
   if $enable_ssl and $ssl_path == undef {

@@ -17,7 +17,7 @@ class influxdb::params {
   $storage_write_buffer_size        = 10000
   $default_engine                   = 'rocksdb'
   $max_open_shards                  = 0
-  $point_batch_size                 = 100 
+  $point_batch_size                 = 100
   $write_batch_size                 = 5000000
   $retention_sweep_period           = '10m'
   $leveldb_max_open_files           = 1000
@@ -33,12 +33,12 @@ class influxdb::params {
   $cluster_write_buffer_size        = 1000
   $cluster_max_response_buffer_size = 100
   $concurrent_shard_query_limit     = 10
-  $wal_flush_after                  = 1000 
+  $wal_flush_after                  = 1000
   $wal_bookmark_after               = 1000
   $wal_index_after                  = 1000
   $wal_requests_per_logfile         = 10000
   
-  $package_source = '"http://s3.amazonaws.com/influxdb/influxdb_'
+  $package_source = 'http://s3.amazonaws.com/influxdb/influxdb_'
 
   case $::osfamily {
     'Debian': {
@@ -51,8 +51,8 @@ class influxdb::params {
       $wal_dir          = '/opt/influxdb/shared/data/wal'
       
       $package_suffix = $::architecture ? {
-          /64/    => "_amd64.deb",
-          default => "_i386.deb",
+          /64/    => '_amd64.deb',
+          default => '_i386.deb',
       }
 
       if $::operatingsystem == 'Ubuntu' {
@@ -65,8 +65,8 @@ class influxdb::params {
       $package_provider = 'rpm'
 
       $package_suffix = $::architecture ? {
-          /64/    => "-1.x86_64.rpm",
-          default => "-1.i686.rpm",
+          /64/    => '-1.x86_64.rpm',
+          default => '-1.i686.rpm',
         }
     }
   }
