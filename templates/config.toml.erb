@@ -3,11 +3,14 @@
 # If hostname (on the OS) doesn't return a name that can be resolved by the other
 # systems in the cluster, you'll have to set the hostname to an IP or something
 # that can be resolved here.
+<% if @hostname -%>
+hostname = "<%= @hostname -%>"
+<% else -%>
 # hostname = ""
+<% end -%>
 
 bind-address = "<%= @bind_address -%>"
-
-reporting-disabled = <%= @reporting_disabled -%>
+reporting-disabled = <%= @reporting_disabled %>
 
 [logging]
 level  = "<%= @log_level -%>"
@@ -16,7 +19,7 @@ file   = "/opt/influxdb/shared/log.txt" # stdout to log to standard out, or sysl
 <% if @admin_port -%>
 # Configure the admin server
 [admin]
-port   = <%= @admin_port -%>
+port = <%= @admin_port %>
 <% end -%>
 
 # Configure the http api
@@ -25,11 +28,14 @@ port   = <%= @admin_port -%>
 port = <%= @api_port %>
 <% end -%>
 
-<% if ! @enable_ssl -%>
-# ssl-port = <%= @ssl_port %>
-# ssl-cert = <%= @ssl_path %>
+<% if @enable_ssl -%>
+ssl-port = <%= @ssl_port %>
+ssl-cert = <%= @ssl_path %>
 <% end -%>
 
+# connections will timeout after this amount of time. Ensures that clients that misbehave
+# and keep alive connections they don't use won't end up connection a million times.
+# However, if a request is taking longer than this to complete, could be a problem.
 read-timeout = "<%= @read_timeout %>"
 
 [input_plugins]
@@ -112,7 +118,6 @@ retention-sweep-period = "<%= @retention_sweep_period %>"
 <%     end -%>
 <%   end %>
 <% end -%>
-
 
 [cluster]
 

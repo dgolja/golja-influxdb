@@ -5,6 +5,7 @@ class influxdb::server (
   $service_provider                 = $influxdb::params::service_provider,
   $service_enabled                  = $influxdb::params::service_enabled,
   $package_provider                 = $influxdb::params::package_provider,
+  $hostname                         = undef,
   $bind_address                     = $influxdb::params::bind_address,
   $reporting_disabled               = $influxdb::params::reporting_disabled,
   $log_level                        = $influxdb::params::log_level,
