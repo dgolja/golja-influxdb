@@ -4,13 +4,13 @@
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with influxdb](#setup)
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
-7. [TODO](#todo)
-8. [License](#License)
+3. [Installation](#installation)
+4. [Setup - The basics of getting started with influxdb](#setup)
+5. [Usage - Configuration options and additional functionality](#usage)
+6. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+7. [Limitations - OS compatibility, etc.](#limitations)
+8. [Development - Guide for contributing to the module](#development)
+9. [License](#License)
 
 ##Overview
 
@@ -20,9 +20,14 @@ This module manages InfluxDB installation.
 
 ##Module Description
 
-##Setup
+The InfluxDB module manages both the installation and configuration of InfluxDB. I am planning to extend it to
+allow management of InfluxDB resources, such as databases, users, and privileges.
 
-To install InfluxDB with the default options
+##Installation
+
+`puppet module install golja/influxdb`
+
+##Setup
 
 ### What InfluxDB affects
 
@@ -290,7 +295,7 @@ This module has been tested on:
 
 Please see CONTRIBUTING.md
 
-##Todo
+###Todo
 
 * Add native types for managing users and databases
 * Add more rspec tests
