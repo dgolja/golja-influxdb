@@ -133,6 +133,10 @@ Boolean to decide if the service should be enabled.
 
 What provider should be used to install the package.
 
+#####`hostname`
+
+Server hostname used for clustering. Default: undef
+
 #####`bind_address`
 
 This setting can be used to configure InfluxDB to bind to and listen for connections 
