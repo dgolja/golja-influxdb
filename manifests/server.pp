@@ -4,15 +4,13 @@ class influxdb::server (
   $config_file                      = $influxdb::params::config_file,
   $service_provider                 = $influxdb::params::service_provider,
   $service_enabled                  = $influxdb::params::service_enabled,
-  $package_ensure                   = $influxdb::params::package_ensure,
   $package_provider                 = $influxdb::params::package_provider,
   $bind_address                     = $influxdb::params::bind_address,
   $reporting_disabled               = $influxdb::params::reporting_disabled,
   $log_level                        = $influxdb::params::log_level,
   $admin_port                       = $influxdb::params::admin_port,
-  $disable_api                      = $influxdb::params::disable_api,
   $api_port                         = $influxdb::params::api_port,
-  $enable_ssl                       = $influxdb::params::enable_ssl, #change of name ?
+  $enable_ssl                       = $influxdb::params::enable_ssl,
   $ssl_port                         = $influxdb::params::ssl_port,
   $ssl_path                         = undef,
   $read_timeout                     = $influxdb::params::read_timeout,
@@ -22,6 +20,7 @@ class influxdb::server (
   $influxdb_group                   = $influxdb::params::influxdb_group,
   $raft_port                        = $influxdb::params::raft_port,
   $raft_log_dir                     = $influxdb::params::raft_log_dir,
+  $raft_debug                       = $influxdb::params::raft_debug,
   $storage_dir                      = $influxdb::params::storage_dir,
   $storage_write_buffer_size        = $influxdb::params::storage_write_buffer_size,
   $default_engine                   = $influxdb::params::default_engine,
@@ -47,6 +46,10 @@ class influxdb::server (
 ) inherits influxdb::params {
 
   $storage_engines_options = influxdb_deepmerge($influxdb::params::default_storage_engines, $override_storage_engines)
+
+  if ! ($ensure in ['present','absent']) {
+    fail("Wrong value for ensure ${ensure}. Valid values present or absent")
+  }
 
   anchor { 'influxdb::server::start': }->
   class { 'influxdb::server::install': }->

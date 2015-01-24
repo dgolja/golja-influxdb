@@ -13,13 +13,15 @@ reporting-disabled = <%= @reporting_disabled -%>
 level  = "<%= @log_level -%>"
 file   = "/opt/influxdb/shared/log.txt" # stdout to log to standard out, or syslog facility
 
+<% if @admin_port -%>
 # Configure the admin server
 [admin]
 port   = <%= @admin_port -%>
+<% end -%>
 
 # Configure the http api
 [api]
-<% if ! @disable_port -%>
+<% if @api_port -%>
 port = <%= @api_port %>
 <% end -%>
 
@@ -34,18 +36,20 @@ read-timeout = "<%= @read_timeout %>"
 
 <% @input_plugins.sort.map do |k,v| -%>
 <%   if v.is_a?(Hash) -%>
-[<%=   k %>]
+  [<%=   k %>]
 <%     v.sort.map do |ki, vi| -%>
-<%       if vi == true or v == false -%>
-<%=        ki %> = <%= vi %>
+<%       if vi == true or vi == false -%>
+  <%=        ki %> = <%= vi %>
 <%       elsif vi.is_a?(Array) -%>
 <%         vi.each do |vii| -%>
-<%=          ki %> = <%= vii %>
+  <%=          ki %> = <%= vii %>
 <%         end -%>
+<%       elsif vi =~ /^\d+$/ -%>
+  <%=        ki %> = <%= vi %>
 <%       elsif vi.is_a?(String) -%>
-<%=        ki %> = "<%= vi %>"
+  <%=        ki %> = "<%= vi %>"
 <%       elsif ![nil, '', :undef].include?(vi) -%>
-<%=        ki %> = <%= vi %>
+  <%=        ki %> = <%= vi %>
 <%       end -%>
 <%     end -%>
 <%   end %>
@@ -60,6 +64,7 @@ port = <%= @raft_port %>
 
 # Where the raft logs are stored. The user running InfluxDB will need read/write access.
 dir  = "<%= @raft_log_dir %>"
+debug = <%= @raft_debug %>
 
 [storage]
 
@@ -91,12 +96,14 @@ retention-sweep-period = "<%= @retention_sweep_period %>"
 <%   if v.is_a?(Hash) -%>
 [<%=   k %>]
 <%     v.sort.map do |ki, vi| -%>
-<%       if vi == true or v == false -%>
+<%       if vi == true or vi == false -%>
 <%=        ki %> = <%= vi %>
 <%       elsif vi.is_a?(Array) -%>
 <%         vi.each do |vii| -%>
 <%=          ki %> = <%= vii %>
-<%         end -%>
+<%         end -%>"
+<%       elsif vi =~ /^\d+$/ -%>
+<%=        ki %> = <%= vi %>
 <%       elsif vi.is_a?(String) -%>
 <%=        ki %> = "<%= vi %>"
 <%       elsif ![nil, '', :undef].include?(vi) -%>

@@ -12,7 +12,7 @@ class influxdb::server::install {
   } ->
 
   package {'influxdb':
-    ensure   => $influxdb::server::package_ensure,
+    ensure   => $influxdb::server::ensure,
     provider => $influxdb::server::package_provider,
     source   => "/tmp/influxdb_${version}${influxdb::params::package_suffix}",
   }

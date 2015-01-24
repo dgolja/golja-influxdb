@@ -1,21 +1,20 @@
 class influxdb::params {
   $version                          = 'latest'
-  $package_ensure                   = 'present'
   $ensure                           = 'present'
   $service_enabled                  = true
   $bind_address                     = '0.0.0.0'
   $reporting_disabled               = false
   $log_level                        = 'info'
   $admin_port                       = 8083
-  $disable_api                      = false
   $api_port                         = 8086
   $enable_ssl                       = false
   $ssl_port                         = 8084
   $read_timeout                     = '5s'
   $conf_template                    = 'influxdb/config.toml.erb'
   $raft_port                        = 8090
+  $raft_debug                       = false
   $storage_write_buffer_size        = 10000
-  $default_engine                   = 'rocksdb'
+  $default_engine                   = 'leveldb'
   $max_open_shards                  = 0
   $point_batch_size                 = 100
   $write_batch_size                 = 5000000
@@ -73,17 +72,21 @@ class influxdb::params {
   
   # default value for the storage.engines
   $default_storage_engines = {
-    'storage.engines.leveldb' => {
-      'max-open-files'        => $leveldb_max_open_files,
-      'lru-cache-size'        => $leveldb_lru_cache_size,
+    'storage.engines.leveldb'      => {
+      'max-open-files'             => $leveldb_max_open_files,
+      'lru-cache-size'             => $leveldb_lru_cache_size,
     },
-    'storage.engines.rocksdb' => {
-      'max-open-files'        => $rocksdb_max_open_files,
-      'lru-cache-size'        => $rocksdb_lru_cache_size,
+    'storage.engines.rocksdb'      => {
+      'max-open-files'             => $rocksdb_max_open_files,
+      'lru-cache-size'             => $rocksdb_lru_cache_size,
     },
-    'storage.engines.lmdb'    => {
-      'map-size'              => $lmdb_map_size,
+    'storage.engines.lmdb'         => {
+      'map-size'                   => $lmdb_map_size,
     },
+    'storage.engines.hyperleveldb' => {
+      'max-open-files'             => 1000,
+      'lru-cache-size'             => '200m',
+    }
   }
 
 }
