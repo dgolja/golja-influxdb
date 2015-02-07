@@ -36,12 +36,11 @@ class influxdb::params {
   $wal_bookmark_after               = 1000
   $wal_index_after                  = 1000
   $wal_requests_per_logfile         = 10000
-  
-  $package_source = 'http://s3.amazonaws.com/influxdb/influxdb_'
 
   case $::osfamily {
     'Debian': {
       $package_provider = 'dpkg'
+      $package_source = 'http://s3.amazonaws.com/influxdb/influxdb_'
       $config_file      = '/opt/influxdb/current/config.toml'
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
@@ -62,6 +61,7 @@ class influxdb::params {
     }
     'RedHat', 'Amazon': {
       $package_provider = 'rpm'
+      $package_source = 'http://s3.amazonaws.com/influxdb/influxdb-'
 
       $package_suffix = $::architecture ? {
           /64/    => '-1.x86_64.rpm',
