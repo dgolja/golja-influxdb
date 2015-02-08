@@ -23,7 +23,7 @@ This module manages InfluxDB installation.
 The InfluxDB module manages both the installation and configuration of InfluxDB. I am planning to extend it to
 allow management of InfluxDB resources, such as databases, users, and privileges.
 
-*NOTE*: Until version 1.0.0 is released the API may change, however I will try my best to avoid it.
+*NOTE*: Until 1.0.0 release the API may change, however I will try my best to avoid it.
 
 ##Installation
 
