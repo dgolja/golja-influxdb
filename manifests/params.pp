@@ -41,7 +41,7 @@ class influxdb::params {
     'Debian': {
       $package_provider = 'dpkg'
       $package_source = 'http://s3.amazonaws.com/influxdb/influxdb_'
-      $config_file      = '/opt/influxdb/current/config.toml'
+      $config_file      = '/opt/influxdb/shared/config.toml'
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
       $raft_log_dir     = '/opt/influxdb/shared/data/raft'
@@ -62,6 +62,12 @@ class influxdb::params {
     'RedHat', 'Amazon': {
       $package_provider = 'rpm'
       $package_source = 'http://s3.amazonaws.com/influxdb/influxdb-'
+      $config_file      = '/opt/influxdb/shared/config.toml'
+      $influxdb_user    = 'influxdb'
+      $influxdb_group   = 'influxdb'
+      $raft_log_dir     = '/opt/influxdb/shared/data/raft'
+      $storage_dir      = '/opt/influxdb/shared/data/db'
+      $wal_dir          = '/opt/influxdb/shared/data/wal'
 
       $package_suffix = $::architecture ? {
           /64/    => '-1.x86_64.rpm',

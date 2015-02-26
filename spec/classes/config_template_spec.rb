@@ -7,7 +7,7 @@ describe 'influxdb::server', :type => :class do
     'ssl_path' => 'undef',
     'ssl_port' => 8084,
     'enable_ssl' => 'undef',
-    'config_file' => '/opt/influxdb/current/config.toml',
+    'config_file' => '/opt/influxdb/shared/config.toml',
     'ensure' => 'present',
     'conf_template' =>'influxdb/config.toml.erb',
     'influxdb_user' => 'influxdb',
@@ -46,9 +46,9 @@ describe 'influxdb::server', :type => :class do
         :operatingsystemrelease => '12.04',
       }
     end
-    it { is_expected.to contain_file('/opt/influxdb/current/config.toml') }
-    it { is_expected.to contain_file('/opt/influxdb/current/config.toml').with_content(/bind-address = "0.0.0.0"/) }
-    it { is_expected.to contain_file('/opt/influxdb/current/config.toml').with_content(/map-size = "100g"/) }
+    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml') }
+    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/bind-address = "0.0.0.0"/) }
+    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/map-size = "100g"/) }
   end
 
   context 'override options for lmdb' do
@@ -60,9 +60,9 @@ describe 'influxdb::server', :type => :class do
         :operatingsystemrelease => '12.04',
       }
     end
-    it { is_expected.to contain_file('/opt/influxdb/current/config.toml') }
-    it { is_expected.to contain_file('/opt/influxdb/current/config.toml').with_content(/bind-address = "0.0.0.0"/) }
-    it { is_expected.to contain_file('/opt/influxdb/current/config.toml').with_content(/map-size = "200g"/) }
+    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml') }
+    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/bind-address = "0.0.0.0"/) }
+    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/map-size = "200g"/) }
   end
 
 end
