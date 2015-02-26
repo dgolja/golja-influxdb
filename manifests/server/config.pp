@@ -47,6 +47,7 @@ class influxdb::server::config {
     owner   => $influxdb_user,
     group   => $influxdb_group,
     mode    => '0644',
+    notify  => Service['influxdb'],
   }
 
 }
