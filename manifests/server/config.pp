@@ -1,45 +1,70 @@
+# add more stdlib input validation
 class influxdb::server::config {
-  $log_level                        = $influxdb::server::log_level
-  $ssl_path                         = $influxdb::server::ssl_path
-  $ssl_port                         = $influxdb::server::ssl_port
-  $enable_ssl                       = $influxdb::server::enable_ssl
-  $config_file                      = $influxdb::server::config_file
-  $ensure                           = $influxdb::server::ensure
-  $conf_template                    = $influxdb::server::conf_template
-  $influxdb_user                    = $influxdb::server::influxdb_user
-  $influxdb_group                   = $influxdb::server::influxdb_group
-  $raft_port                        = $influxdb::server::raft_port
-  $raft_log_dir                     = $influxdb::server::raft_log_dir
-  $storage_dir                      = $influxdb::server::storage_dir
-  $storage_write_buffer_size        = $influxdb::server::storage_write_buffer_size
-  $default_engine                   = $influxdb::server::default_engine
-  $max_open_shards                  = $influxdb::server::max_open_shards
-  $point_batch_size                 = $influxdb::server::point_batch_size
-  $write_batch_size                 = $influxdb::server::write_batch_size
-  $retention_sweep_period           = $influxdb::server::retention_sweep_period
-  $storage_engines_options          = $influxdb::server::storage_engines_options
-  $seed_servers                     = $influxdb::server::seed_servers
-  $protobuf_port                    = $influxdb::server::protobuf_port
-  $protobuf_timeout                 = $influxdb::server::protobuf_timeout
-  $protobuf_heartbeat               = $influxdb::server::protobuf_heartbeat
-  $protobuf_min_backoff             = $influxdb::server::protobuf_min_backoff
-  $protobuf_max_backoff             = $influxdb::server::protobuf_max_backoff
-  $cluster_write_buffer_size        = $influxdb::server::cluster_write_buffer_size
-  $cluster_max_response_buffer_size = $influxdb::server::cluster_max_response_buffer_size
-  $concurrent_shard_query_limit     = $influxdb::server::concurrent_shard_query_limit
-  $wal_dir                          = $influxdb::server::wal_dir
-  $wal_flush_after                  = $influxdb::server::wal_flush_after
-  $wal_bookmark_after               = $influxdb::server::wal_bookmark_after
-  $wal_index_after                  = $influxdb::server::wal_index_after
-  $wal_requests_per_logfile         = $influxdb::server::wal_requests_per_logfile
-
-  if !($log_level in ['info', 'debug','warn','error']) {
-    fail("log level must be info,debug, warn or error. Current value: ${log_level}")
-  }
-
-  if $enable_ssl and $ssl_path == undef {
-    fail('If SSL is enabled you need to define parameter ssl_path')
-  }
+  $config_file                                  = $influxdb::server::config_file
+  $ensure                                       = $influxdb::server::ensure
+  $conf_template                                = $influxdb::server::conf_template
+  $influxdb_user                                = $influxdb::server::influxdb_user
+  $influxdb_group                               = $influxdb::server::influxdb_group
+  $bind_address                                 = $influxdb::server::bind_address
+  $retention_autocreate                         = $influxdb::server::retention_autocreate
+  $election_timeout                             = $influxdb::server::election_timeout
+  $heartbeat_timeout                            = $influxdb::server::heartbeat_timeout
+  $leader_lease_timeout                         = $influxdb::server::leader_lease_timeout
+  $commit_timeout                               = $influxdb::server::commit_timeout
+  $data_dir                                     = $influxdb::server::data_dir
+  $max_wal_size                                 = $influxdb::server::max_wal_size
+  $wal_flush_interval                           = $influxdb::server::wal_flush_interval
+  $wal_partition_flush_delay                    = $influxdb::server::wal_partition_flush_delay
+  $shard_writer_timeout                         = $influxdb::server::shard_writer_timeout
+  $cluster_write_timeout                        = $influxdb::server::cluster_write_timeout
+  $retention_enabled                            = $influxdb::server::retention_enabled
+  $retention_check_interval                     = $influxdb::server::retention_check_interval
+  $admin_enabled                                = $influxdb::server::admin_enabled
+  $admin_bind_address                           = $influxdb::server::admin_bind_address
+  $admin_https_enabled                          = $influxdb::server::admin_https_enabled
+  $admin_https_certificate                      = $influxdb::server::admin_https_certificate
+  $http_enabled                                 = $influxdb::server::http_enabled
+  $http_bind_address                            = $influxdb::server::http_bind_address
+  $http_auth_enabled                            = $influxdb::server::http_auth_enabled
+  $http_log_enabled                             = $influxdb::server::http_log_enabled
+  $http_write_tracing                           = $influxdb::server::http_write_tracing
+  $http_pprof_enabled                           = $influxdb::server::http_pprof_enabled
+  $http_https_enabled                           = $influxdb::server::http_https_enabled
+  $http_https_certificate                       = $influxdb::server::http_https_certificate
+  $graphite_enabled                             = $influxdb::server::graphite_enabled
+  $graphite_bind_address                        = $influxdb::server::graphite_bind_address
+  $graphite_protocol                            = $influxdb::server::graphite_protocol
+  $graphite_consistency_level                   = $influxdb::server::graphite_consistency_level
+  $graphite_separator                           = $influxdb::server::graphite_separator
+  $graphite_tags                                = $influxdb::server::graphite_tags
+  $graphite_templates                           = $influxdb::server::graphite_templates
+  $graphite_ignore_unnamed                      = $influxdb::server::graphite_ignore_unnamed
+  $collectd_enabled                             = $influxdb::server::collectd_enabled
+  $collectd_bind_address                        = $influxdb::server::collectd_bind_address
+  $collectd_database                            = $influxdb::server::collectd_database
+  $collectd_typesdb                             = $influxdb::server::collectd_typesdb
+  $opentsdb_enabled                             = $influxdb::server::opentsdb_enabled
+  $opentsdb_bind_address                        = $influxdb::server::opentsdb_bind_address
+  $opentsdb_database                            = $influxdb::server::opentsdb_database
+  $opentsdb_retention_policy                    = $influxdb::server::opentsdb_retention_policy
+  $udp_enabled                                  = $influxdb::server::udp_enabled
+  $udp_bind_address                             = $influxdb::server::udp_bind_address
+  $udp_batch_size                               = $influxdb::server::udp_batch_size
+  $udp_batch_timeout                            = $influxdb::server::udp_batch_timeout
+  $monitoring_enabled                           = $influxdb::server::monitoring_enabled
+  $monitoring_write_interval                    = $influxdb::server::monitoring_write_interval
+  $continuous_queries_enabled                   = $influxdb::server::continuous_queries_enabled
+  $continuous_queries_recompute_previous_n      = $influxdb::server::continuous_queries_recompute_previous_n
+  $continuous_queries_recompute_no_older_than   = $influxdb::server::continuous_queries_recompute_no_older_than
+  $continuous_queries_compute_runs_per_interval = $influxdb::server::continuous_queries_compute_runs_per_interval
+  $continuous_queries_compute_no_more_than      = $influxdb::server::continuous_queries_compute_no_more_than
+  $hinted_handoff_enabled                       = $influxdb::server::hinted_handoff_enabled
+  $hinted_handoff_dir                           = $influxdb::server::hinted_handoff_dir
+  $hinted_handoff_max_size                      = $influxdb::server::hinted_handoff_max_size
+  $hinted_handoff_max_age                       = $influxdb::server::hinted_handoff_max_age
+  $hinted_handoff_retry_rate_limit              = $influxdb::server::hinted_handoff_retry_rate_limit
+  $hinted_handoff_retry_interval                = $influxdb::server::hinted_handoff_retry_interval
+  $reporting_disabled                           = $influxdb::server::reporting_disabled
 
   file { $config_file:
     ensure  => $ensure,

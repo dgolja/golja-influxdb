@@ -1,0 +1,114 @@
+# This config file is managed by Puppet
+#
+reporting-disabled = <%= @reporting_disabled %>
+
+###
+### [meta]
+###
+### Controls the parameters for the Raft consensus group that stores metadata
+### about the InfluxDB cluster.
+###
+[meta]
+
+  dir = "/var/opt/influxdb/meta"
+<% if @hostname -%>
+hostname = "<%= @hostname -%>"
+<% else -%>
+# hostname = "localhost"
+<% end -%>
+  bind-address = "<%= @bind_address -%>"
+  retention-autocreate = <%= @retention_autocreate %>
+  election-timeout = "<%= @election_timeout -%>"
+  heartbeat-timeout = "<%= @heartbeat_timeout -%>"
+  leader-lease-timeout = "<%= @leader_lease_timeout -%>"
+  commit-timeout = "<%= @commit_timeout -%>"
+
+[data]
+  dir = "<%= @data_dir -%>"
+  max-wal-size = <%= @max_wal_size %>
+  wal-flush-interval = "<%= @wal_flush_interval -%>"
+  wal-partition-flush-delay = "<%= @wal_partition_flush_delay -%>"
+
+[cluster]
+  shard-writer-timeout = "<%= @shard_writer_timeout -%>"
+  write-timeout = "<%= @cluster_write_timeout -%>"
+
+[retention]
+  enabled = <%= @retention_enabled %>
+  check-interval = "<%= @retention_check_interval -%>"
+
+[admin]
+  enabled = <%= @admin_enabled %>
+  bind-address = "<%= @admin_bind_address -%>"
+  https-enabled = <%= @admin_https_enabled %>
+  https-certificate = "<%= @admin_https_certificate -%>"
+
+
+[http]
+  enabled = <%= @http_enabled %>
+  bind-address = "<%= @http_bind_address -%>"
+  auth-enabled = <%= @http_auth_enabled %>
+  log-enabled = <%= @http_log_enabled %>
+  write-tracing = <%= @http_write_tracing %>
+  pprof-enabled = <%= @http_pprof_enabled %>
+  https-enabled = <%= @http_https_enabled %>
+  https-certificate = "<%= @http_https_certificate -%>"
+
+[[graphite]]
+  enabled = <%= @graphite_enabled %>
+  bind-address = "<%= @graphite_bind_address -%>"
+  protocol = "<%= @graphite_protocol -%>"
+  consistency-level = "<%= @graphite_consistency_level -%>"
+  name-separator = "<%= @graphite_separator -%>"
+<% if @graphite_tags and @graphite_tags.size > 0 -%>
+  tags = [<% @graphite_tags.sort.map {|a| "\"#{a}\""}.join(',') -%>]
+<% end -%>
+<% if @graphite_templates and @graphite_templates.size > 0 -%>
+  tags = [<% @graphite_templates.sort.map {|a| "\"#{a}\""}.join(',') -%>]
+<% end -%>
+  ignore-unnamed = <%= @graphite_ignore_unnamed -%>
+
+<% if @collectd_enabled -%>
+[collectd]
+  enabled = <%= @collectd_enabled %>
+  bind-address = "<%= @collectd_bind_address -%>"
+  database = "<%= @collectd_database -%>"
+  typesdb = "<%= @collectd_typesdb -%>"
+<% end -%>
+
+<% if @opentsdb_enabled -%>
+[opentsdb]
+  enabled = <%= @opentsdb_enabled %>
+  bind-address = "<%= @opentsdb_bind_address -%>"
+  database = "<%= @opentsdb_database -%>"
+  retention-policy = "<%= @opentsdb_retention_policy -%>"
+<% end -%>
+
+<% if @udp_enabled -%>
+[udp]
+  enabled = <%= @udp_enabled %>
+  bind-address = "<%= @udp_bind_address -%>"
+  batch-size = <%= @udp_batch_size %>
+  batch-timeout = "<%= @opentsdb_batch_timeout -%>"
+<% end -%>
+
+[monitoring]
+  enabled = <%= @monitoring_enabled %>
+  write-interval = "<%= @monitoring_write_interval -%>"
+
+<% if @continuous_queries_enabled -%>
+[continuous_queries]
+  enabled = <%= @continuous_queries_enabled %>
+  recompute-previous-n = <%= @continuous_queries_recompute_previous_n %>
+  recompute-no-older-than = "<%= @continuous_queries_recompute_no_older_than -%>"
+  compute-runs-per-interval = <%= @continuous_queries_compute_runs_per_interval %>
+  compute-no-more-than = "<%= @continuous_queries_compute_no_more_than -%>"
+<% end -%>
+
+[hinted-handoff]
+  enabled = <%= @hinted_handoff_enabled %>
+  dir = "<%= @hinted_handoff_dir -%>"
+  max-size = <%= @hinted_handoff_max_size %>
+  max-age = "<%= @hinted_handoff_max_age -%>"
+  retry-rate-limit = <%= @hinted_handoff_retry_rate_limit %>
+  retry-interval = "<%= @hinted_handoff_retry_interval -%>"
