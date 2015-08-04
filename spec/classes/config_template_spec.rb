@@ -3,39 +3,68 @@ require 'spec_helper'
 describe 'influxdb::server', :type => :class do
 
   default = {
-    'log_level' => 'warn',
-    'ssl_path' => 'undef',
-    'ssl_port' => 8084,
-    'enable_ssl' => 'undef',
-    'config_file' => '/opt/influxdb/shared/config.toml',
-    'ensure' => 'present',
-    'conf_template' =>'influxdb/config.toml.erb',
-    'influxdb_user' => 'influxdb',
-    'influxdb_group' => 'influxdb',
-    'raft_port' => 8090,
-    'raft_log_dir' => '/opt/influxdb/shared/data/raft',
-    'storage_dir' => '/opt/influxdb/shared/data/db',
-    'storage_write_buffer_size' => 10000,
-    'default_engine' => 'rocksdb',
-    'max_open_shards' => 0,
-    'point_batch_size' => 100,
-    'write_batch_size' => 5000000,
-    'retention_sweep_period' => '10m',
-    'override_storage_engines' => {},
-    'seed_servers' => 'undef',
-    'protobuf_port' => 8099,
-    'protobuf_timeout' => '2s',
-    'protobuf_heartbeat' => '200ms',
-    'protobuf_min_backoff' => '1s',
-    'protobuf_max_backoff' => '10s',
-    'cluster_write_buffer_size' => 1000,
-    'cluster_max_response_buffer_size' => 100,
-    'concurrent_shard_query_limit' => 3,
-    'wal_dir' => '/opt/influxdb/shared/data/wal',
-    'wal_flush_after' => 1000,
-    'wal_bookmark_after' => 1000,
-    'wal_index_after' => 1000,
-    'wal_requests_per_logfile' => 10000
+    'bind_address' => ':8088',
+    'retention_autocreate' => true,
+    'election_timeout' => '1s',
+    'heartbeat_timeout' => '1s',
+    'leader_lease_timeout' => '500ms',
+    'commit_timeout' => '50ms',
+    'data_dir' => '/var/opt/influxdb/data',
+    'max_wal_size' => 104857600,
+    'wal_flush_interval' => '10m',
+    'wal_partition_flush_delay' => '2s',
+    'shard_writer_timeout' => '5s',
+    'cluster_write_timeout' => '5s',
+    'retention_enabled' => true,
+    'retention_check_interval' => '10m',
+    'admin_enabled' => true,
+    'admin_bind_address' => ':8083',
+    'admin_https_enabled' => false,
+    'admin_https_certificate' => '/etc/ssl/influxdb.pem',
+    'http_enabled' => true,
+    'http_bind_address' => ':8086',
+    'http_auth_enabled' => false,
+    'http_log_enabled' => true,
+    'http_write_tracing' => false,
+    'http_pprof_enabled' => false,
+    'http_https_enabled' => false,
+    'http_https_certificate' => '/etc/ssl/influxdb.pem',
+    'graphite_enabled' => false,
+    'graphite_bind_address' => ':2003',
+    'graphite_protocol' => 'tcp',
+    'graphite_consistency_level' => 'one',
+    'graphite_separator' => '.',
+    'graphite_tags' => [],
+    'graphite_templates' => [],
+    'graphite_ignore_unnamed' => true,
+    'collectd_enabled' => false,
+    'collectd_bind_address' => 'undef',
+    'collectd_database' => 'undef',
+    'collectd_typesdb' => 'undef',
+    'opentsdb_enabled' => false,
+    'opentsdb_bind_address' => 'undef',
+    'opentsdb_database' => 'undef',
+    'opentsdb_retention_policy' => 'undef',
+    'udp_enabled' => false,
+    'udp_bind_address' => 'undef',
+    'udp_batch_size' => 0,
+    'udp_batch_timeout' => 0,
+    'monitoring_enabled' => true,
+    'monitoring_write_interval' => '24h',
+    'continuous_queries_enabled' => true,
+    'continuous_queries_recompute_previous_n' => 2,
+    'continuous_queries_recompute_no_older_than' => '10m',
+    'continuous_queries_compute_runs_per_interval' => 10,
+    'continuous_queries_compute_no_more_than' => '2m',
+    'hinted_handoff_enabled' => true,
+    'hinted_handoff_dir' => '/var/opt/influxdb/hh',
+    'hinted_handoff_max_size' => 1073741824,
+    'hinted_handoff_max_age' => '168h',
+    'hinted_handoff_retry_rate_limit' => 0,
+    'hinted_handoff_retry_interval' => '1s',
+    'reporting_disabled' => false,
+    'conf_template' => 'influxdb/influxdb.conf.erb',
+    'config_file' => '/etc/opt/influxdb/influxdb.conf'
   }
 
   context 'normal Ubuntu entry' do
@@ -46,13 +75,13 @@ describe 'influxdb::server', :type => :class do
         :operatingsystemrelease => '12.04',
       }
     end
-    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml') }
-    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/bind-address = "0.0.0.0"/) }
-    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/map-size = "100g"/) }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/commit-timeout = "50ms"/) }
   end
 
   context 'override options for lmdb' do
-    let (:params) {{ :override_storage_engines => { 'storage.engines.lmdb' => { 'map-size' => '200g' } } }}
+    let (:params) {{ :retention_check_interval => '20m' }}
     let :facts do
       {
         :osfamily => 'Debian',
@@ -60,9 +89,9 @@ describe 'influxdb::server', :type => :class do
         :operatingsystemrelease => '12.04',
       }
     end
-    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml') }
-    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/bind-address = "0.0.0.0"/) }
-    it { is_expected.to contain_file('/opt/influxdb/shared/config.toml').with_content(/map-size = "200g"/) }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/check-interval = "20m"/) }
   end
 
 end
