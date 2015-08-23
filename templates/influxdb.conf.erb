@@ -88,6 +88,7 @@ hostname = "<%= @hostname -%>"
 [udp]
   enabled = <%= @udp_enabled %>
   bind-address = "<%= @udp_bind_address -%>"
+  database = "<%= @udp_database %>"
   batch-size = <%= @udp_batch_size %>
   batch-timeout = "<%= @opentsdb_batch_timeout -%>"
 <% end -%>

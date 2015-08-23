@@ -46,6 +46,7 @@ class influxdb::params {
   $opentsdb_retention_policy                    = undef
   $udp_enabled                                  = false
   $udp_bind_address                             = undef
+  $udp_database                                 = undef
   $udp_batch_size                               = 0
   $udp_batch_timeout                            = 0
   $monitoring_enabled                           = true
