@@ -24,6 +24,10 @@ This module manages InfluxDB installation.
 The InfluxDB module manages both the installation and configuration of InfluxDB. I am planning to extend it to
 allow management of InfluxDB resources, such as databases, users, and privileges.
 
+##Deprecation Warning
+
+This release is a major refactoring of the module which means that the API changed in backwards incompatible ways. If your project depends on the old API and you need to use influxdb prior to 0.9.X, please pin your module dependencies to 0.1.2 version to ensure your environments don't break.
+
 *NOTE*: Until 1.0.0 release the API may change, however I will try my best to avoid it.
 
 ##Installation
@@ -46,52 +50,10 @@ If you just want a server installed with the default options you can run include
 
 All interaction for the server is done via `influxdb::server`.
 
-###Overrides
-
-Due to the nature of InfluxDB we use the concept of overrides to add custom input 
-plugins or/and additional storage engines. Some of the standards storage engines
-can be managed via params too. For some examples check below.
-
-###Enable graphite plugin
+###Install influxdb
 
 ```puppet
-class {'influxdb::server':
-  input_plugins => {
-    'input_plugins.graphite' => {
-       'enabled'             => true,
-       'address'             => '0.0.0.0',
-       'port'                => 2003,
-       'database'            => 'graphitedb',
-       'udp_enabled'         => true,
-    }
-  }
-}
-```
-
-###Add custom storage engine
-
-```puppet
-class {'influxdb::server':
-  override_storage_engines => {
-    'storage.engines.dummy' => {
-      'max-open-files' => 1000,
-      'lru-cache-size' => '500m',
-    },
-  }
-}
-```
-
-###Override the default value for rocksdb
-
-```puppet
-class {'influxdb::server':
-  override_storage_engines => {
-    'storage.engines.rocksdb'  => {
-      'max-open-files' => 2000,
-      'lru-cache-size' => '1g',
-    },
-  }
-}
+class {'influxdb::server':}
 ```
 
 ##Reference
@@ -116,7 +78,9 @@ Allows you to install or remove InfluxDB. Can be 'present' or 'absent'.
 
 #####`version`
 
-Version of InfluxDB. Default: latest
+Version of InfluxDB. Default: 0.9.2
+*NOTE*: Unfortunatelly the lastest link available on the influxdb webiste is pointing to an old version. For
+more info check [ISSUE 3533](https://github.com/influxdb/influxdb/issues/3533)
 
 #####`config_file`
 
@@ -147,148 +111,255 @@ from applications on this address. If not specified, the module will use the def
 
 If enabled once every 24 hours InfluxDB will report anonymous data to m.influxdb.com. Default: false
 
-#####`log_level`
+####`retention_autocreate`
 
-logging level can be one of "fine", "debug", "info", "warn" or "error". Default: info
+Default: true
 
-#####`admin_port`
+####`election_timeout`
 
-Configure the admin server port. Binding is disabled if the port isn't set. Default: 8083
+Default: 1s
 
-#####`api_port`
+####`heartbeat_timeout`
 
-Configure the http api. Binding is disabled if the port isn't set. Default: 8086
+Default: 1s
 
-#####`enable_ssl`
+####`leader_lease_timeout`
 
-Enable ssl for the API. Default: false
+Default: 500ms
 
-#####`ssl_port`
+####`commit_timeout`
 
-Ssl port for the API. Default: 8087
+Default: 50ms
 
-#####`ssl_path`
+####`data_dir`
 
-Path of the SSL cert. Default: undef
+Controls where the actual shard data for InfluxDB lives. Default: OS distro
 
-#####`read_timeout`
+####`max_wal_size`
 
-Connections will timeout after this amount of time. Default: 5s
+Maximum size the WAL can reach before a flush. Default: 100MB
 
-#####`input_plugins`
+####`wal_flush_interval`
 
-Hash of input plugins. For more info how to use it check [Usage](#usage)
+Maximum time data can sit in WAL before a flush. Default: 10m
 
-#####`conf_template`
+####`wal_partition_flush_delay`
 
-Location of the config template. Default: influxdb/config.toml.erb
+The delay time between each WAL partition being flushed. Default: 2s
 
-#####`influxdb_user`
+####`shard_writer_timeout`
 
-User under which we run the InfluxDB server. Default: OS specific
+The time within which a shard must respond to write. Default: 5s
 
-#####`influxdb_group`
+####`cluster_write_timeout`
 
-Group under which we run the InfluxDB server. Default: OS specific
+The time within which a write operation must complete on the cluster. Default: 5s
 
-#####`raft_port`
+####`retention_enabled`
 
-Raft port used for cluster: Default: 8090
+Controls the enforcement of retention policies for evicting old data. Default: true
 
-#####`raft_log_dir`
+####`retention_check_interval`
 
-Where the raft logs are stored. The user running InfluxDB will need read/write access. Default: /opt/influxdb/shared/data/raft (OS Specific)
-#####`raft_debug`
+Default: 10m
 
-Turn raft debuging on. Default: false
+####`admin_enabled`
 
-#####`storage_dir`
+Controls the availability of the built-in, web-based admin interface. Default: true
 
-Storage dir. Default: /opt/influxdb/shared/data/db (OS Specific)
+####`admin_bind_address`
 
-#####`storage_write_buffer_size`
+Default: :8083
 
-How many requests to potentially buffer in memory. Default: 10000
+####`admin_https_enabled`
 
-#####`default_engine`
+If HTTPS is enabled for the admin interface, HTTPS must also be enabled on the [http] service. Default: false
 
-the engine to use for new shards, old shards will continue to use the same engine. Default: leveldb
+####`admin_https_certificate`
 
-#####`max_open_shards`
+Default: undef
 
-The default setting on this is 0, which means unlimited.
+####`http_enabled`
 
-#####`point_batch_size`
+Controls how the HTTP endpoints are configured. These are the primary mechanism for getting data into and out of InfluxDB. Default true
 
-This option tells how many points will be fetched from LevelDb before they get flushed into backend. Default: 100
+####`http_bind_address`
 
-#####`write_batch_size`
+Default: :8086
 
-The number of points to batch in memory before writing them to leveldb. Default: 5000000
+####`http_auth_enabled`
 
-#####`retention_sweep_period`
+Default: false
 
-The server will check this often for shards that have expired that should be cleared. Default: 10m
+####`http_log_enabled`
 
-#####`override_storage_engines`
+Default: true
 
-Hash of storage engines. For more info how to use it check [Usage](#usage). Default: {}
+####`http_write_tracing`
 
-#####`seed_servers`
+Default: false
 
-A comma separated list of servers to seed this server. Example: seed-servers = ["hosta:8090","hostb:8090"]. Default: undef
+####`http_pprof_enabled`
 
-#####`protobuf_port`
+Default: false
 
-Replication happens over a TCP connection with a Protobuf protocol. This define the port. Default: 8099
+####`http_https_enabled`
 
-#####`protobuf_timeout`
+Default: false
 
-The write timeout on the protobuf conn any duration parseable by time.ParseDuration. Default: 2s
+####`http_https_certificate`
 
-#####`protobuf_heartbeat`
+Default: undef
 
-The heartbeat interval between the servers. must be parseable by time.ParseDuration. Default: 200ms
+####`graphite_enabled`
 
-#####`protobuf_min_backoff`
+Controls one or many listeners for Graphite data. Default: false
 
-The minimum backoff after a failed heartbeat attempt. Default: 1s
+####`graphite_bind_address`
 
-#####`protobuf_max_backoff`
+Default: :2003
 
-The maxmimum backoff after a failed heartbeat attempt. Default: 10s
+####`graphite_protocol`
 
-#####`cluster_write_buffer_size`
+Default: tcp
 
-How many write requests to potentially buffer in memory per server. Default: 1000
+####`graphite_consistency_level`
 
-#####`cluster_max_response_buffer_size`
+Default: one
 
-The maximum number of responses to buffer from remote nodes. Default: 100
+####`graphite_separator`
 
-#####`concurrent_shard_query_limit`
+Default: .
 
-Limit of concurrent query per shard. Setting this higher will give better performance, but you'll need more memory. Default: 10
+####`graphite_tags`
 
-#####`wal_dir`
+The "measurement" tag is special and the corresponding field will become the name of the metric. Default: [undef]
 
-Dir where to store wal data. Default: OS Specific
+####`graphite_templates`
 
-#####`wal_flush_after`
+Default: false
 
-The number of writes after which wal will be flushed, 0 for flushing on every write. Default: 1000
+####`graphite_ignore_unnamed`
 
-#####`wal_bookmark_after`
+If set to true, when the input metric name has more fields than `name-schema` specified, the extra fields will be ignored. Default: true
 
-The number of writes after which a bookmark will be created. Default: 1000
+####`collectd_enabled`
 
-#####`wal_index_after`
+Controls the listener for collectd data. Default: false
 
-The number of writes after which an index entry is created pointing. Default: 1000
+####`collectd_bind_address`
 
-#####`wal_requests_per_logfile `
+Default: undef
 
-The number of requests per one log file, if new requests came in a new log file will be created. Default: 10000
+####`collectd_database`
+
+Default: undef
+
+####`collectd_typesdb`
+
+Default: undef
+
+####`opentsdb_enabled`
+
+Controls the listener for OpenTSDB data. Default: false
+
+####`opentsdb_bind_address`
+
+Default: undef
+
+####`opentsdb_database`
+
+Default: undef
+
+####`opentsdb_retention_policy`
+
+Default: undef
+
+####`udp_enabled`
+
+Controls the listener for InfluxDB line protocol data via UDP. Default: false
+
+####`udp_bind_address`
+
+Default: undef
+
+####`udp_database`
+
+Default: undef
+
+####`udp_batch_size`
+
+Default: 0
+
+####`udp_batch_timeout`
+
+Default: 0
+
+####`monitoring_enabled`
+
+Default: true
+
+####`monitoring_write_interval`
+
+Default: 24h
+
+####`continuous_queries_enabled`
+
+Controls how continuous queries are run within InfluxDB. Default: true
+
+####`continuous_queries_recompute_previous_n`
+
+Default: 2
+
+####`continuous_queries_recompute_no_older_than`
+
+Default: 10m
+
+####`continuous_queries_compute_runs_per_interval`
+
+Default: 10
+
+####`continuous_queries_compute_no_more_than`
+
+Default: 2m
+
+####`hinted_handoff_enabled`
+
+Controls the hinted handoff feature, which allows nodes to temporarily store queued
+data when one node of a cluster is down for a short period of time. Default: true
+
+####`hinted_handoff_dir`
+
+Default: OS speficis
+
+####`hinted_handoff_max_size`
+
+Default: 1073741824
+
+####`hinted_handoff_max_age`
+
+Default: 168h
+
+####`hinted_handoff_retry_rate_limit`
+
+Default: 0
+
+####`hinted_handoff_retry_interval`
+
+Default: 1s
+
+####`conf_template`
+
+If needed you can add a custom template. Default: influxdb/influxdb.conf.erb
+
+####`influxdb_user`
+
+Default: OS specific
+
+####`influxdb_group`
+
+Default: OS specific
+
 
 ##Limitations
 
