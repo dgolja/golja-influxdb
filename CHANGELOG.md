@@ -1,3 +1,7 @@
+##2015-08-25 - Release 1.0.0
+###Summary
+Major module rewrite to support influxdb 0.9.X. For more info please check the README.md
+
 ##2015-01-25 - Release 0.1.2
 ###Summary
 
