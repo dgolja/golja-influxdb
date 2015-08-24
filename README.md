@@ -111,252 +111,252 @@ from applications on this address. If not specified, the module will use the def
 
 If enabled once every 24 hours InfluxDB will report anonymous data to m.influxdb.com. Default: false
 
-####`retention_autocreate`
+#####`retention_autocreate`
 
 Default: true
 
-####`election_timeout`
+#####`election_timeout`
 
 Default: 1s
 
-####`heartbeat_timeout`
+#####`heartbeat_timeout`
 
 Default: 1s
 
-####`leader_lease_timeout`
+#####`leader_lease_timeout`
 
 Default: 500ms
 
-####`commit_timeout`
+#####`commit_timeout`
 
 Default: 50ms
 
-####`data_dir`
+#####`data_dir`
 
 Controls where the actual shard data for InfluxDB lives. Default: OS distro
 
-####`max_wal_size`
+#####`max_wal_size`
 
 Maximum size the WAL can reach before a flush. Default: 100MB
 
-####`wal_flush_interval`
+#####`wal_flush_interval`
 
 Maximum time data can sit in WAL before a flush. Default: 10m
 
-####`wal_partition_flush_delay`
+#####`wal_partition_flush_delay`
 
 The delay time between each WAL partition being flushed. Default: 2s
 
-####`shard_writer_timeout`
+#####`shard_writer_timeout`
 
 The time within which a shard must respond to write. Default: 5s
 
-####`cluster_write_timeout`
+#####`cluster_write_timeout`
 
 The time within which a write operation must complete on the cluster. Default: 5s
 
-####`retention_enabled`
+#####`retention_enabled`
 
 Controls the enforcement of retention policies for evicting old data. Default: true
 
-####`retention_check_interval`
+#####`retention_check_interval`
 
 Default: 10m
 
-####`admin_enabled`
+#####`admin_enabled`
 
 Controls the availability of the built-in, web-based admin interface. Default: true
 
-####`admin_bind_address`
+#####`admin_bind_address`
 
 Default: :8083
 
-####`admin_https_enabled`
+#####`admin_https_enabled`
 
 If HTTPS is enabled for the admin interface, HTTPS must also be enabled on the [http] service. Default: false
 
-####`admin_https_certificate`
+#####`admin_https_certificate`
 
 Default: undef
 
-####`http_enabled`
+#####`http_enabled`
 
 Controls how the HTTP endpoints are configured. These are the primary mechanism for getting data into and out of InfluxDB. Default true
 
-####`http_bind_address`
+#####`http_bind_address`
 
 Default: :8086
 
-####`http_auth_enabled`
+#####`http_auth_enabled`
 
 Default: false
 
-####`http_log_enabled`
+#####`http_log_enabled`
 
 Default: true
 
-####`http_write_tracing`
+#####`http_write_tracing`
 
 Default: false
 
-####`http_pprof_enabled`
+#####`http_pprof_enabled`
 
 Default: false
 
-####`http_https_enabled`
+#####`http_https_enabled`
 
 Default: false
 
-####`http_https_certificate`
+#####`http_https_certificate`
 
 Default: undef
 
-####`graphite_enabled`
+#####`graphite_enabled`
 
 Controls one or many listeners for Graphite data. Default: false
 
-####`graphite_bind_address`
+#####`graphite_bind_address`
 
 Default: :2003
 
-####`graphite_protocol`
+#####`graphite_protocol`
 
 Default: tcp
 
-####`graphite_consistency_level`
+#####`graphite_consistency_level`
 
 Default: one
 
-####`graphite_separator`
+#####`graphite_separator`
 
 Default: .
 
-####`graphite_tags`
+#####`graphite_tags`
 
 The "measurement" tag is special and the corresponding field will become the name of the metric. Default: [undef]
 
-####`graphite_templates`
+#####`graphite_templates`
 
 Default: false
 
-####`graphite_ignore_unnamed`
+#####`graphite_ignore_unnamed`
 
 If set to true, when the input metric name has more fields than `name-schema` specified, the extra fields will be ignored. Default: true
 
-####`collectd_enabled`
+#####`collectd_enabled`
 
 Controls the listener for collectd data. Default: false
 
-####`collectd_bind_address`
+#####`collectd_bind_address`
 
 Default: undef
 
-####`collectd_database`
+#####`collectd_database`
 
 Default: undef
 
-####`collectd_typesdb`
+#####`collectd_typesdb`
 
 Default: undef
 
-####`opentsdb_enabled`
+#####`opentsdb_enabled`
 
 Controls the listener for OpenTSDB data. Default: false
 
-####`opentsdb_bind_address`
+#####`opentsdb_bind_address`
 
 Default: undef
 
-####`opentsdb_database`
+#####`opentsdb_database`
 
 Default: undef
 
-####`opentsdb_retention_policy`
+#####`opentsdb_retention_policy`
 
 Default: undef
 
-####`udp_enabled`
+#####`udp_enabled`
 
 Controls the listener for InfluxDB line protocol data via UDP. Default: false
 
-####`udp_bind_address`
+#####`udp_bind_address`
 
 Default: undef
 
-####`udp_database`
+#####`udp_database`
 
 Default: undef
 
-####`udp_batch_size`
+#####`udp_batch_size`
 
 Default: 0
 
-####`udp_batch_timeout`
+#####`udp_batch_timeout`
 
 Default: 0
 
-####`monitoring_enabled`
+#####`monitoring_enabled`
 
 Default: true
 
-####`monitoring_write_interval`
+#####`monitoring_write_interval`
 
 Default: 24h
 
-####`continuous_queries_enabled`
+#####`continuous_queries_enabled`
 
 Controls how continuous queries are run within InfluxDB. Default: true
 
-####`continuous_queries_recompute_previous_n`
+#####`continuous_queries_recompute_previous_n`
 
 Default: 2
 
-####`continuous_queries_recompute_no_older_than`
+#####`continuous_queries_recompute_no_older_than`
 
 Default: 10m
 
-####`continuous_queries_compute_runs_per_interval`
+#####`continuous_queries_compute_runs_per_interval`
 
 Default: 10
 
-####`continuous_queries_compute_no_more_than`
+#####`continuous_queries_compute_no_more_than`
 
 Default: 2m
 
-####`hinted_handoff_enabled`
+#####`hinted_handoff_enabled`
 
 Controls the hinted handoff feature, which allows nodes to temporarily store queued
 data when one node of a cluster is down for a short period of time. Default: true
 
-####`hinted_handoff_dir`
+#####`hinted_handoff_dir`
 
 Default: OS speficis
 
-####`hinted_handoff_max_size`
+#####`hinted_handoff_max_size`
 
 Default: 1073741824
 
-####`hinted_handoff_max_age`
+#####`hinted_handoff_max_age`
 
 Default: 168h
 
-####`hinted_handoff_retry_rate_limit`
+#####`hinted_handoff_retry_rate_limit`
 
 Default: 0
 
-####`hinted_handoff_retry_interval`
+#####`hinted_handoff_retry_interval`
 
 Default: 1s
 
-####`conf_template`
+#####`conf_template`
 
 If needed you can add a custom template. Default: influxdb/influxdb.conf.erb
 
-####`influxdb_user`
+#####`influxdb_user`
 
 Default: OS specific
 
-####`influxdb_group`
+#####`influxdb_group`
 
 Default: OS specific
 
