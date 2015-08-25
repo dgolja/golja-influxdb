@@ -1,8 +1,8 @@
 {
   "name": "golja-influxdb",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Dejan Golja",
-  "summary": "Manage influxdb",
+  "summary": "Manage InfluxDB version 0.9.X. For previous versions support check README.md",
   "license": "Apache-2.0",
   "source": "https://github.com/n1tr0g/golja-influxdb",
   "project_page": "https://github.com/n1tr0g/golja-influxdb",
