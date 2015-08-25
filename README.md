@@ -50,10 +50,29 @@ If you just want a server installed with the default options you can run include
 
 All interaction for the server is done via `influxdb::server`.
 
-###Install influxdb
+Install influxdb
 
 ```puppet
 class {'influxdb::server':}
+```
+
+Enable Graphite plugin
+
+```puppet
+class {'influxdb::server':
+  graphite_enabled => true,
+  graphite_tags    => ['region=us-east', 'zone=1c'],
+}
+```
+
+Enable Collectd plugin
+
+```puppet
+class {'influxdb::server':
+  collectd_enabled      => true,
+  collectd_bind_address => ':2004',
+  database              => 'collectd',
+}
 ```
 
 ##Reference
