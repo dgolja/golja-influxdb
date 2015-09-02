@@ -14,6 +14,7 @@ class influxdb::server (
   $leader_lease_timeout                         = $influxdb::params::leader_lease_timeout,
   $commit_timeout                               = $influxdb::params::commit_timeout,
   $data_dir                                     = $influxdb::params::data_dir,
+  $wal_dir                                      = $influxdb::params::wal_dir,
   $max_wal_size                                 = $influxdb::params::max_wal_size,
   $wal_flush_interval                           = $influxdb::params::wal_flush_interval,
   $wal_partition_flush_delay                    = $influxdb::params::wal_partition_flush_delay,

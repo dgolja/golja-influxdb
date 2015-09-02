@@ -9,6 +9,7 @@ class influxdb::params {
   $leader_lease_timeout                         = '500ms'
   $commit_timeout                               = '50ms'
   $data_dir                                     = '/var/opt/influxdb/data'
+  $wal_dir                                      = '/var/opt/influxdb/wal'
   $max_wal_size                                 = 104857600
   $wal_flush_interval                           = '10m'
   $wal_partition_flush_delay                    = '2s'
@@ -72,7 +73,7 @@ class influxdb::params {
       $package_source   = 'http://s3.amazonaws.com/influxdb/influxdb_'
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
-      
+
       $package_suffix = $::architecture ? {
           /64/    => '_amd64.deb',
           default => '_i386.deb',
