@@ -29,6 +29,12 @@ hostname = "<%= @hostname -%>"
   wal-dir = "<%= @wal_dir -%>"
   wal-flush-interval = "<%= @wal_flush_interval -%>"
   wal-partition-flush-delay = "<%= @wal_partition_flush_delay -%>"
+  wal-enable-logging = <%= @wal_enable_logging -%>
+  wal-ready-series-size = <%= @wal_ready_series_size -%>
+  wal-compaction-threshold = <%= @wal_compaction_threshold -%>
+  wal-max-series-size = <%= @wal_max_series_size -%>
+  wal-flush-cold-interval = <%= @wal_flush_cold_interval -%>
+  wal-partition-size-threshold = <%= @wal_partition_size_threshold -%>
 
 [cluster]
   shard-writer-timeout = "<%= @shard_writer_timeout -%>"

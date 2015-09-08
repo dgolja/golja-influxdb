@@ -1,5 +1,5 @@
 class influxdb::params {
-  $version                                      = '0.9.2'
+  $version                                      = '0.9.3'
   $ensure                                       = 'present'
   $service_enabled                              = true
   $bind_address                                 = ':8088'
@@ -10,6 +10,12 @@ class influxdb::params {
   $commit_timeout                               = '50ms'
   $data_dir                                     = '/var/opt/influxdb/data'
   $wal_dir                                      = '/var/opt/influxdb/wal'
+  $wal_enable_logging                           = true
+  $wal_ready_series_size                        = 25600
+  $wal_compaction_threshold                     = '0.6'
+  $wal_max_series_size                          = 2097152
+  $wal_flush_cold_interval                      = '10m'
+  $wal_partition_size_threshold                 = 20971520
   $max_wal_size                                 = 104857600
   $wal_flush_interval                           = '10m'
   $wal_partition_flush_delay                    = '2s'
