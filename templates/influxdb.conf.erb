@@ -26,9 +26,13 @@ hostname = "<%= @hostname -%>"
 [data]
   dir = "<%= @data_dir -%>"
   max-wal-size = <%= @max_wal_size %>
-  wal-dir = "<%= @wal_dir -%>"
   wal-flush-interval = "<%= @wal_flush_interval -%>"
   wal-partition-flush-delay = "<%= @wal_partition_flush_delay -%>"
+<%- if scope.function_versioncmp([@version, '0.9.3']) >= 0 -%>
+  # These are the WAL settings for the storage engine >= 0.9.3
+  wal-dir = "<%= @wal_dir -%>"
+  wal-enable-logging = <%= @wal_enable_logging %>
+<%- end -%>
 
 [cluster]
   shard-writer-timeout = "<%= @shard_writer_timeout -%>"
@@ -65,7 +69,11 @@ hostname = "<%= @hostname -%>"
   tags = [<% @graphite_tags.sort.map {|a| "\"#{a}\""}.join(',') -%>]
 <% end -%>
 <% if @graphite_templates and @graphite_templates.size > 0 -%>
-  tags = [<% @graphite_templates.sort.map {|a| "\"#{a}\""}.join(',') -%>]
+  templates = [
+  <%- @graphite_templates.each do |template| -%>
+    "<%= template %>",
+  <%- end -%>
+  ]
 <% end -%>
   ignore-unnamed = <%= @graphite_ignore_unnamed -%>
 
