@@ -2,6 +2,7 @@
 class influxdb::server::config {
   $config_file                                  = $influxdb::server::config_file
   $ensure                                       = $influxdb::server::ensure
+  $version                                      = $influxdb::server::version
   $conf_template                                = $influxdb::server::conf_template
   $influxdb_user                                = $influxdb::server::influxdb_user
   $influxdb_group                               = $influxdb::server::influxdb_group
@@ -15,6 +16,8 @@ class influxdb::server::config {
   $max_wal_size                                 = $influxdb::server::max_wal_size
   $wal_flush_interval                           = $influxdb::server::wal_flush_interval
   $wal_partition_flush_delay                    = $influxdb::server::wal_partition_flush_delay
+  $wal_dir                                      = $influxdb::server::wal_dir
+  $wal_enable_logging                           = $influxdb::server::wal_enable_logging
   $shard_writer_timeout                         = $influxdb::server::shard_writer_timeout
   $cluster_write_timeout                        = $influxdb::server::cluster_write_timeout
   $retention_enabled                            = $influxdb::server::retention_enabled
