@@ -65,7 +65,11 @@ hostname = "<%= @hostname -%>"
   tags = [<% @graphite_tags.sort.map {|a| "\"#{a}\""}.join(',') -%>]
 <% end -%>
 <% if @graphite_templates and @graphite_templates.size > 0 -%>
-  tags = [<% @graphite_templates.sort.map {|a| "\"#{a}\""}.join(',') -%>]
+  templates = [
+  <%- @graphite_templates.each do |template| -%>
+    "<%= template %>",
+  <%- end -%>
+  ]
 <% end -%>
   ignore-unnamed = <%= @graphite_ignore_unnamed -%>
 
