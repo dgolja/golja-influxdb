@@ -9,10 +9,11 @@ class influxdb::params {
   $leader_lease_timeout                         = '500ms'
   $commit_timeout                               = '50ms'
   $data_dir                                     = '/var/opt/influxdb/data'
-  $wal_dir                                      = '/var/opt/influxdb/wal'
   $max_wal_size                                 = 104857600
   $wal_flush_interval                           = '10m'
   $wal_partition_flush_delay                    = '2s'
+  $wal_dir                                      = '/var/opt/influxdb/wal'
+  $wal_enable_logging                           = true
   $shard_writer_timeout                         = '5s'
   $cluster_write_timeout                        = '5s'
   $retention_enabled                            = true
