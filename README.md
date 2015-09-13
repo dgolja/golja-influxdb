@@ -175,7 +175,7 @@ Flush and compact a partition once this ratio of series are over the ready size.
 
 Force a flush and compaction if any series in a partition gets above this size in bytes. Default: 2097152
 
-#####`wal_flush_cold_interval
+#####`wal_flush_cold_interval`
 
 Force a flush of all series and full compaction if there have been no writes in this amount of time.
 This is useful for ensuring that shards that are cold for writes don't keep a bunch of data cached in
