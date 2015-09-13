@@ -1,3 +1,11 @@
+##2015-09-13 - Release 1.1.0
+###Summary
+- Add support for 0.9.3 influxdb new config parameters
+- Fix graphite template bug
+- Default install version 0.9.3 - (we can't use latest version due to how influxdb is packaged)
+
+Special tnx to Pedro González Serrano - NITEMAN for the graphite and 0.9.3 config template fix
+
 ##2015-08-25 - Release 1.0.1
 ###Summary
 Improved the documentation and the module description

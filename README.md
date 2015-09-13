@@ -97,7 +97,7 @@ Allows you to install or remove InfluxDB. Can be 'present' or 'absent'.
 
 #####`version`
 
-Version of InfluxDB. Default: 0.9.2
+Version of InfluxDB. Default: 0.9.3
 *NOTE*: Unfortunatelly the lastest link available on the influxdb webiste is pointing to an old version. For
 more info check [ISSUE 3533](https://github.com/influxdb/influxdb/issues/3533)
 
