@@ -94,4 +94,30 @@ describe 'influxdb::server', :type => :class do
     it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/check-interval = "20m"/) }
   end
 
+  context 'add 0.9.3 specific wal options' do
+    let (:params) {{ :version => '0.9.3' }}
+    let :facts do
+      {
+        :osfamily => 'Debian',
+        :operatingsystem => 'Ubuntu',
+        :operatingsystemrelease => '12.04',
+      }
+    end
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/wal-dir = "\/var\/opt\/influxdb\/wal"/) }
+  end
+
+  context 'without 0.9.3 options if version installed < 0.9.3' do
+    let (:params) {{ :version => '0.9.2' }}
+    let :facts do
+      {
+        :osfamily => 'Debian',
+        :operatingsystem => 'Ubuntu',
+        :operatingsystemrelease => '12.04',
+      }
+    end
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
+    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').without_content(/wal-dir = "\/var\/opt\/influxdb\/wal"/) }
+  end
+
 end
