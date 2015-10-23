@@ -1,3 +1,7 @@
+##2015-10-23 - Release 1.1.1
+###Summary
+- template fix for the UDP support
+
 ##2015-09-13 - Release 1.1.0
 ###Summary
 - Add support for 0.9.3 influxdb new config parameters
