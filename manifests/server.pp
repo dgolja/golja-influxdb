@@ -56,11 +56,7 @@ class influxdb::server (
   $opentsdb_bind_address                        = $influxdb::params::opentsdb_bind_address,
   $opentsdb_database                            = $influxdb::params::opentsdb_database,
   $opentsdb_retention_policy                    = $influxdb::params::opentsdb_retention_policy,
-  $udp_enabled                                  = $influxdb::params::udp_enabled,
-  $udp_bind_address                             = $influxdb::params::udp_bind_address,
-  $udp_database                                 = $influxdb::params::udp_database,
-  $udp_batch_size                               = $influxdb::params::udp_batch_size,
-  $udp_batch_timeout                            = $influxdb::params::udp_batch_timeout,
+  $udp_options                                  = $influxdb::params::udp_options,
   $monitoring_enabled                           = $influxdb::params::monitoring_enabled,
   $monitoring_write_interval                    = $influxdb::params::monitoring_write_interval,
   $continuous_queries_enabled                   = $influxdb::params::continuous_queries_enabled,
@@ -77,6 +73,9 @@ class influxdb::server (
   $conf_template                                = $influxdb::params::conf_template,
   $influxdb_user                                = $influxdb::params::influxdb_user,
   $influxdb_group                               = $influxdb::params::influxdb_group,
+  $enable_snapshot                              = $influxdb::params::enable_snapshot,
+  $influxdb_stderr_log                          = $influxdb::params::influxdb_stderr_log,
+  $influxdb_stdout_log                          = $influxdb::params::influxdb_stdout_log,
 ) inherits influxdb::params {
 
   if ! ($ensure in ['present','absent']) {

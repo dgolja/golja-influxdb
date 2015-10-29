@@ -47,10 +47,7 @@ class influxdb::server::config {
   $opentsdb_bind_address                        = $influxdb::server::opentsdb_bind_address
   $opentsdb_database                            = $influxdb::server::opentsdb_database
   $opentsdb_retention_policy                    = $influxdb::server::opentsdb_retention_policy
-  $udp_enabled                                  = $influxdb::server::udp_enabled
-  $udp_bind_address                             = $influxdb::server::udp_bind_address
-  $udp_batch_size                               = $influxdb::server::udp_batch_size
-  $udp_batch_timeout                            = $influxdb::server::udp_batch_timeout
+  $udp_options                                  = $influxdb::server::udp_options
   $monitoring_enabled                           = $influxdb::server::monitoring_enabled
   $monitoring_write_interval                    = $influxdb::server::monitoring_write_interval
   $continuous_queries_enabled                   = $influxdb::server::continuous_queries_enabled
@@ -65,6 +62,9 @@ class influxdb::server::config {
   $hinted_handoff_retry_rate_limit              = $influxdb::server::hinted_handoff_retry_rate_limit
   $hinted_handoff_retry_interval                = $influxdb::server::hinted_handoff_retry_interval
   $reporting_disabled                           = $influxdb::server::reporting_disabled
+  $enable_snapshot                              = $influxdb::server::enable_snapshot
+  $influxdb_stderr_log                          = $influxdb::server::influxdb_stderr_log
+  $influxdb_stdout_log                          = $influxdb::server::influxdb_stdout_log
 
   file { $config_file:
     ensure  => $ensure,
@@ -72,6 +72,15 @@ class influxdb::server::config {
     owner   => $influxdb_user,
     group   => $influxdb_group,
     mode    => '0644',
+    notify  => Service['influxdb'],
+  }
+
+  file { '/etc/default/influxdb':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('influxdb/influxdb_default.erb'),
     notify  => Service['influxdb'],
   }
 
