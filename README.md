@@ -80,6 +80,37 @@ class {'influxdb::server':
 }
 ```
 
+Enable UDP listener
+
+```puppet
+$udp_options = [
+    { 'enabled'       => true,
+      'bind-address'  => '":8089"',
+      'database'      => '"udp_db1"',
+      'batch-size'    => 10000,
+      'batch-timeout' => '"1s"',
+      'batch-pending' => 5,
+    },
+    { 'enabled'       => true,
+      'bind-address'  => '":8090"',
+      'database'      => '"udp_db2"',
+      'batch-size'    => 10000,
+      'batch-timeout' => '"1s"',
+      'batch-pending' => 5,
+    },
+]
+
+class {'influxdb::server':
+	reporting_disabled    => true,
+	http_auth_enabled     => true,
+	version               => '0.9.4.2',
+	shard_writer_timeout  => '10s',
+	cluster_write_timeout => '10s',
+	udp_options           => $udp_options,
+}
+```
+
+
 ## Reference
 
 ### Classes
@@ -379,26 +410,10 @@ Default: undef
 
 Default: undef
 
-##### `udp_enabled`
+##### `udp_options`
 
 Controls the listener for InfluxDB line protocol data via UDP.
-Default: false
-
-##### `udp_bind_address`
-
 Default: undef
-
-##### `udp_database`
-
-Default: undef
-
-##### `udp_batch_size`
-
-Default: 0
-
-##### `udp_batch_timeout`
-
-Default: 0
 
 ##### `monitoring_enabled`
 
@@ -467,6 +482,18 @@ Default: OS specific
 ##### `influxdb_group`
 
 Default: OS specific
+
+##### `enable_snapshot`
+
+Default: false
+
+##### `influxdb_stderr_log`
+
+Default: /var/log/influxdb/influxd.log
+
+##### `influxdb_stdout_log`
+
+Default: /dev/null
 
 ## Limitations
 

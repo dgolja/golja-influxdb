@@ -51,11 +51,7 @@ class influxdb::params {
   $opentsdb_bind_address                        = undef
   $opentsdb_database                            = undef
   $opentsdb_retention_policy                    = undef
-  $udp_enabled                                  = false
-  $udp_bind_address                             = undef
-  $udp_database                                 = undef
-  $udp_batch_size                               = 0
-  $udp_batch_timeout                            = 0
+  $udp_options                                  = undef
   $monitoring_enabled                           = true
   $monitoring_write_interval                    = '24h'
   $continuous_queries_enabled                   = true
@@ -72,6 +68,9 @@ class influxdb::params {
   $reporting_disabled                           = false
   $conf_template                                = 'influxdb/influxdb.conf.erb'
   $config_file                                  = '/etc/opt/influxdb/influxdb.conf'
+  $enable_snapshot                              = false
+  $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
+  $influxdb_stdout_log                          = '/dev/null'
 
   case $::osfamily {
     'Debian': {

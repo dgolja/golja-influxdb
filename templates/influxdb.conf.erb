@@ -97,13 +97,23 @@ hostname = "<%= @hostname -%>"
   retention-policy = "<%= @opentsdb_retention_policy -%>"
 <% end -%>
 
-<% if @udp_enabled -%>
+<% if @udp_options and ! @udp_options.empty? -%>
+<% if @udp_options.is_a?(Hash) -%>
 [[udp]]
-  enabled = <%= @udp_enabled %>
-  bind-address = "<%= @udp_bind_address -%>"
-  database = "<%= @udp_database %>"
-  batch-size = <%= @udp_batch_size %>
-  batch-timeout = "<%= @opentsdb_batch_timeout -%>"
+<% @udp_options.each do |key, val| -%>
+  <%= key %> = <%= val %>
+<% end -%>
+<% elsif @udp_options.is_a?(Array) -%>
+<% @udp_options.each do |option| -%>
+[[udp]]
+<% option.each do |key, val| -%>
+  <%= key %> = <%= val %>
+<% end -%>
+<% end -%>
+<% end -%>
+<% else -%>
+[[udp]]
+  enabled = false
 <% end -%>
 
 [monitoring]
@@ -126,3 +136,9 @@ hostname = "<%= @hostname -%>"
   max-age = "<%= @hinted_handoff_max_age -%>"
   retry-rate-limit = <%= @hinted_handoff_retry_rate_limit %>
   retry-interval = "<%= @hinted_handoff_retry_interval -%>"
+
+<% if @enable_snapshot -%>
+[snapshot]
+enabled = <%= @enable_snapshot %>
+<% end -%>
+
