@@ -76,7 +76,7 @@ Enable Collectd plugin
 class {'influxdb::server':
   collectd_enabled      => true,
   collectd_bind_address => ':2004',
-  database              => 'collectd',
+  collectd_database     => 'collectd',
 }
 ```
 
