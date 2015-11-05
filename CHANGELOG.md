@@ -1,4 +1,4 @@
-##2015-10-23 - Release 2.0.0
+##2015-11-05 - Release 2.0.0
 ###Summary
 This release includes support for multiple UDP channels.
 
