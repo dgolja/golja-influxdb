@@ -1,3 +1,20 @@
+##2015-10-23 - Release 2.0.0
+###Summary
+This release includes support for multiple UDP channels.
+
+####Backwards-incompatible changes
+
+Adding support for multiple UDP per database means we had to replace *udp_enabled*, *udp_bind_address*,
+*udp_database*, *udp_batch_size* and *udp_batch_timeout* with a more generic array of hashes (*udp_options*).
+For all the users not using UDP listener (disabled by default) won't have any problem upgrading the module to
+v2.0.0.
+
+####Features
+- Adds support for multiple UDP (tnx to bovy89)
+
+####Bugfixes
+- Fix documentation for proper use of collectd_database (tnx to Philipp Borgers)
+
 ##2015-10-23 - Release 1.1.1
 ###Summary
 - template fix for the UDP support
