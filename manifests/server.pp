@@ -76,6 +76,7 @@ class influxdb::server (
   $enable_snapshot                              = $influxdb::params::enable_snapshot,
   $influxdb_stderr_log                          = $influxdb::params::influxdb_stderr_log,
   $influxdb_stdout_log                          = $influxdb::params::influxdb_stdout_log,
+  $manage_install                               = $influxdb::params::manage_install,
 ) inherits influxdb::params {
 
   if ! ($ensure in ['present','absent']) {
