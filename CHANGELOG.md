@@ -1,3 +1,8 @@
+##2015-11-26 - Release 2.1.0
+###Summary
+This release include support to manage install.
+ - add new parameter manage_install
+
 ##2015-11-05 - Release 2.0.0
 ###Summary
 This release includes support for multiple UDP channels.

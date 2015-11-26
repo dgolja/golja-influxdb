@@ -495,6 +495,11 @@ Default: /var/log/influxdb/influxd.log
 
 Default: /dev/null
 
+##### `manage_install`
+
+enable/disable installation of the influxdb packages
+Default: true
+
 ## Limitations
 
 This module has been tested on:
