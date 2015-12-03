@@ -10,7 +10,7 @@ reporting-disabled = <%= @reporting_disabled %>
 ###
 [meta]
 
-  dir = "/var/opt/influxdb/meta"
+  dir = "<%= @meta_dir -%>"
 <% if @hostname -%>
 hostname = "<%= @hostname -%>"
 <% else -%>
@@ -141,4 +141,3 @@ hostname = "<%= @hostname -%>"
 [snapshot]
 enabled = <%= @enable_snapshot %>
 <% end -%>
-
