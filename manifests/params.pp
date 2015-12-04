@@ -72,6 +72,7 @@ class influxdb::params {
   $enable_snapshot                              = false
   $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log                          = '/dev/null'
+  $influxd_opts                                 = ''
   $manage_install                               = true
 
   case $::osfamily {
