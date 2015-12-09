@@ -1,5 +1,6 @@
 # add more stdlib input validation
 class influxdb::server::config {
+  $version                                      = $influxdb::server::version
   $config_file                                  = $influxdb::server::config_file
   $ensure                                       = $influxdb::server::ensure
   $conf_template                                = $influxdb::server::conf_template
@@ -12,6 +13,13 @@ class influxdb::server::config {
   $leader_lease_timeout                         = $influxdb::server::leader_lease_timeout
   $commit_timeout                               = $influxdb::server::commit_timeout
   $data_dir                                     = $influxdb::server::data_dir
+  $wal_dir                                      = $influxdb::server::wal_dir
+  $wal_enable_logging                           = $influxdb::server::wal_enable_logging
+  $wal_ready_series_size                        = $influxdb::server::wal_ready_series_size
+  $wal_compaction_threshold                     = $influxdb::server::wal_compaction_threshold
+  $wal_max_series_size                          = $influxdb::server::wal_max_series_size
+  $wal_flush_cold_interval                      = $influxdb::server::wal_flush_cold_interval
+  $wal_partition_size_threshold                 = $influxdb::server::wal_partition_size_threshold
   $max_wal_size                                 = $influxdb::server::max_wal_size
   $wal_flush_interval                           = $influxdb::server::wal_flush_interval
   $wal_partition_flush_delay                    = $influxdb::server::wal_partition_flush_delay
