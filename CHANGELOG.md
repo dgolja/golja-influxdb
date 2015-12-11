@@ -1,3 +1,7 @@
+##2015-12-11 - Release 2.1.1
+###Summary
+Explicitly import variables to make avoid compile error in puppet 4
+
 ##2015-11-26 - Release 2.1.0
 ###Summary
 This release include support to manage install.
