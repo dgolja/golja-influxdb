@@ -1,10 +1,9 @@
 class influxdb::server (
   $ensure                                       = $influxdb::params::ensure,
-  $version                                      = $influxdb::params::version,
+  $version                                      = 'latest',
   $config_file                                  = $influxdb::params::config_file,
   $service_provider                             = $influxdb::params::service_provider,
   $service_enabled                              = $influxdb::params::service_enabled,
-  $package_provider                             = $influxdb::params::package_provider,
   $hostname                                     = undef,
   $bind_address                                 = $influxdb::params::bind_address,
   $reporting_disabled                           = $influxdb::params::reporting_disabled,
@@ -80,10 +79,6 @@ class influxdb::server (
   $influxd_opts                                 = $influxdb::params::influxd_opts,
   $manage_install                               = $influxdb::params::manage_install,
 ) inherits influxdb::params {
-
-  if ! ($ensure in ['present','absent']) {
-    fail("Wrong value for ensure ${ensure}. Valid values present or absent")
-  }
 
   anchor { 'influxdb::server::start': }->
   class { 'influxdb::server::install': }->

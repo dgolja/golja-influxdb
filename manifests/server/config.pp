@@ -85,7 +85,7 @@ class influxdb::server::config {
   }
 
   file { '/etc/default/influxdb':
-    ensure  => file,
+    ensure  => $ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

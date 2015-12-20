@@ -1,5 +1,4 @@
 class influxdb::params {
-  $version                                      = '0.9.4'
   $ensure                                       = 'present'
   $service_enabled                              = true
   $bind_address                                 = ':8088'
@@ -8,9 +7,9 @@ class influxdb::params {
   $heartbeat_timeout                            = '1s'
   $leader_lease_timeout                         = '500ms'
   $commit_timeout                               = '50ms'
-  $data_dir                                     = '/var/opt/influxdb/data'
-  $wal_dir                                      = '/var/opt/influxdb/wal'
-  $meta_dir                                     = '/var/opt/influxdb/meta'
+  $data_dir                                     = '/var/lib/influxdb/data'
+  $wal_dir                                      = '/var/lib/influxdb/wal'
+  $meta_dir                                     = '/var/lib/influxdb/meta'
   $wal_enable_logging                           = true
   $wal_ready_series_size                        = 25600
   $wal_compaction_threshold                     = '0.6'
@@ -61,14 +60,14 @@ class influxdb::params {
   $continuous_queries_compute_runs_per_interval = 10
   $continuous_queries_compute_no_more_than      = '2m'
   $hinted_handoff_enabled                       = true
-  $hinted_handoff_dir                           = '/var/opt/influxdb/hh'
+  $hinted_handoff_dir                           = '/var/lib/influxdb/hh'
   $hinted_handoff_max_size                      = 1073741824
   $hinted_handoff_max_age                       = '168h'
   $hinted_handoff_retry_rate_limit              = 0
   $hinted_handoff_retry_interval                = '1s'
   $reporting_disabled                           = false
   $conf_template                                = 'influxdb/influxdb.conf.erb'
-  $config_file                                  = '/etc/opt/influxdb/influxdb.conf'
+  $config_file                                  = '/etc/influxdb/influxdb.conf'
   $enable_snapshot                              = false
   $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log                          = '/dev/null'
@@ -77,15 +76,9 @@ class influxdb::params {
 
   case $::osfamily {
     'Debian': {
-      $package_provider = 'dpkg'
-      $package_source   = 'http://s3.amazonaws.com/influxdb/influxdb_'
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
 
-      $package_suffix = $::architecture ? {
-          /64/    => '_amd64.deb',
-          default => '_i386.deb',
-      }
 
       if $::operatingsystem == 'Ubuntu' {
         $service_provider = 'upstart'
@@ -94,15 +87,11 @@ class influxdb::params {
       }
     }
     'RedHat', 'Amazon': {
-      $package_provider = 'rpm'
-      $package_source = 'http://s3.amazonaws.com/influxdb/influxdb-'
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
-
-      $package_suffix = $::architecture ? {
-          /64/    => '-1.x86_64.rpm',
-          default => '-1.i686.rpm',
-        }
+    }
+    default: {
+      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports managing repos for osfamily RedHat and Debian")
     }
   }
 
