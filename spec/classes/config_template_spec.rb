@@ -68,57 +68,26 @@ describe 'influxdb::server', :type => :class do
 
   }
 
-  context 'normal Ubuntu entry' do
-    let :facts do
-      {
-        :osfamily => 'Debian',
-        :operatingsystem => 'Ubuntu',
-        :operatingsystemrelease => '12.04',
-      }
-    end
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/commit-timeout = "50ms"/) }
-  end
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts
+      end
 
-  context 'override options for lmdb' do
-    let (:params) {{ :retention_check_interval => '20m' }}
-    let :facts do
-      {
-        :osfamily => 'Debian',
-        :operatingsystem => 'Ubuntu',
-        :operatingsystemrelease => '12.04',
-      }
-    end
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/check-interval = "20m"/) }
-  end
+      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf') }
+      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
+      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/commit-timeout = "50ms"/) }
 
-  context 'add 0.9.3 specific wal options' do
-    let (:params) {{ :version => '0.9.3' }}
-    let :facts do
-      {
-        :osfamily => 'Debian',
-        :operatingsystem => 'Ubuntu',
-        :operatingsystemrelease => '12.04',
-      }
-    end
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').with_content(/wal-dir = "\/var\/opt\/influxdb\/wal"/) }
-  end
+      case facts[:osfamily]
+      when 'Debian'
+        let (:params) {{ :retention_check_interval => '20m' }}
+        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf') }
+        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
+        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/check-interval = "20m"/) }
+        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/wal-dir = "\/var\/lib\/influxdb\/wal"/) }
+      end
 
-  context 'without 0.9.3 options if version installed < 0.9.3' do
-    let (:params) {{ :version => '0.9.2' }}
-    let :facts do
-      {
-        :osfamily => 'Debian',
-        :operatingsystem => 'Ubuntu',
-        :operatingsystemrelease => '12.04',
-      }
     end
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf') }
-    it { is_expected.to contain_file('/etc/opt/influxdb/influxdb.conf').without_content(/wal-dir = "\/var\/opt\/influxdb\/wal"/) }
   end
 
 end
