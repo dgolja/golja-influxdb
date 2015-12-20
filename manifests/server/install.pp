@@ -1,4 +1,6 @@
+# PRIVATE CLASS: do not use directly
 class influxdb::server::install {
+  $ensure = $influxdb::server::ensure
   $version = $influxdb::server::version
 
   Exec {
@@ -6,16 +8,17 @@ class influxdb::server::install {
   }
 
   if $influxdb::server::manage_install {
-    # Until they release a proper repository we will need to do with that
-    exec {'get_influxdb':
-      command => "curl -s ${influxdb::params::package_source}${version}${influxdb::params::package_suffix} -o /tmp/influxdb_${version}${influxdb::params::package_suffix} && touch /tmp/.get_influxdb_${version}",
-      creates => "/tmp/.get_influxdb_${version}",
-    } ->
+    if $ensure == 'absent' {
+      $_ensure = $ensure
+      } else {
+        $_ensure = $version
+      }
 
-    package {'influxdb':
-      ensure   => $influxdb::server::ensure,
-      provider => $influxdb::server::package_provider,
-      source   => "/tmp/influxdb_${version}${influxdb::params::package_suffix}",
+    class { 'influxdb::repo': } ->
+
+    package { 'influxdb':
+      ensure => $version,
+      tag    => 'influxdb',
     }
   }
 }
