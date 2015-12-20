@@ -10,6 +10,7 @@ class influxdb::params {
   $commit_timeout                               = '50ms'
   $data_dir                                     = '/var/opt/influxdb/data'
   $wal_dir                                      = '/var/opt/influxdb/wal'
+  $meta_dir                                     = '/var/opt/influxdb/meta'
   $wal_enable_logging                           = true
   $wal_ready_series_size                        = 25600
   $wal_compaction_threshold                     = '0.6'
@@ -71,6 +72,7 @@ class influxdb::params {
   $enable_snapshot                              = false
   $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log                          = '/dev/null'
+  $influxd_opts                                 = ''
   $manage_install                               = true
 
   case $::osfamily {

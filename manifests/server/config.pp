@@ -73,6 +73,7 @@ class influxdb::server::config {
   $enable_snapshot                              = $influxdb::server::enable_snapshot
   $influxdb_stderr_log                          = $influxdb::server::influxdb_stderr_log
   $influxdb_stdout_log                          = $influxdb::server::influxdb_stdout_log
+  $influxd_opts                                 = $influxdb::server::influxd_opts
 
   file { $config_file:
     ensure  => $ensure,

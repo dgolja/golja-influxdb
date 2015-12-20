@@ -15,6 +15,7 @@ class influxdb::server (
   $commit_timeout                               = $influxdb::params::commit_timeout,
   $data_dir                                     = $influxdb::params::data_dir,
   $wal_dir                                      = $influxdb::params::wal_dir,
+  $meta_dir                                     = $influxdb::params::meta_dir,
   $wal_enable_logging                           = $influxdb::params::wal_enable_logging,
   $wal_ready_series_size                        = $influxdb::params::wal_ready_series_size,
   $wal_compaction_threshold                     = $influxdb::params::wal_compaction_threshold,
@@ -76,6 +77,7 @@ class influxdb::server (
   $enable_snapshot                              = $influxdb::params::enable_snapshot,
   $influxdb_stderr_log                          = $influxdb::params::influxdb_stderr_log,
   $influxdb_stdout_log                          = $influxdb::params::influxdb_stdout_log,
+  $influxd_opts                                 = $influxdb::params::influxd_opts,
   $manage_install                               = $influxdb::params::manage_install,
 ) inherits influxdb::params {
 
