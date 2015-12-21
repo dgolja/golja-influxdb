@@ -206,6 +206,11 @@ Default: OS distro
 Wal dir for the storage engine 0.9.3+
 Default: /var/opt/influxdb/wal
 
+##### `meta_dir`
+
+Location of the meta dir
+Default: /var/opt/influxdb/meta
+
 ##### `wal_enable_logging`
 
 Enable WAL logging.
@@ -499,6 +504,11 @@ Default: /dev/null
 
 enable/disable installation of the influxdb packages
 Default: true
+
+##### `influxd_opts`
+
+Additional influxd options used for setting up raft clusters.
+Default: undef
 
 ## Limitations
 

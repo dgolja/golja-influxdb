@@ -1,3 +1,8 @@
+##2015-12-11 - Release 2.2.0
+###Summary
+- add meta_dir as a parameter
+- adding INFLUXD_OPTS to /etc/default/influxdb. This is needed in setting up raft clusters.
+
 ##2015-12-11 - Release 2.1.1
 ###Summary
 Explicitly import variables to make avoid compile error in puppet 4
