@@ -204,12 +204,12 @@ Default: OS distro
 ##### `wal_dir`
 
 Wal dir for the storage engine 0.9.3+
-Default: /var/opt/influxdb/wal
+Default: /var/lib/influxdb/wal
 
 ##### `meta_dir`
 
 Location of the meta dir
-Default: /var/opt/influxdb/meta
+Default: /var/lib/influxdb/meta
 
 ##### `wal_enable_logging`
 
@@ -457,7 +457,7 @@ Default: true
 
 ##### `hinted_handoff_dir`
 
-Default: OS specific
+Default: /var/lib/influxdb/hh
 
 ##### `hinted_handoff_max_size`
 
