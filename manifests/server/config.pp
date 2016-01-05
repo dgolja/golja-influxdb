@@ -12,6 +12,7 @@ class influxdb::server::config {
   $heartbeat_timeout                            = $influxdb::server::heartbeat_timeout
   $leader_lease_timeout                         = $influxdb::server::leader_lease_timeout
   $commit_timeout                               = $influxdb::server::commit_timeout
+  $meta_dir                                     = $influxdb::server::meta_dir
   $data_dir                                     = $influxdb::server::data_dir
   $wal_dir                                      = $influxdb::server::wal_dir
   $wal_enable_logging                           = $influxdb::server::wal_enable_logging
