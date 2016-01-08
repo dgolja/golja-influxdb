@@ -77,6 +77,7 @@ class {'influxdb::server':
   collectd_enabled      => true,
   collectd_bind_address => ':2004',
   collectd_database     => 'collectd',
+  collectd_typesdb      => '/usr/share/collectd/types.db',
 }
 ```
 
