@@ -46,7 +46,7 @@ class influxdb::params {
   $collectd_enabled                             = false
   $collectd_bind_address                        = undef
   $collectd_database                            = undef
-  $collectd_typesdb                             = undef
+  $collectd_typesdb                             = '/usr/share/collectd/types.db'
   $opentsdb_enabled                             = false
   $opentsdb_bind_address                        = undef
   $opentsdb_database                            = undef
