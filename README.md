@@ -61,12 +61,25 @@ Install influxdb
 class {'influxdb::server':}
 ```
 
-Enable Graphite plugin
+Enable Graphite plugin with one database
 
 ```puppet
 class {'influxdb::server':
-  graphite_enabled => true,
-  graphite_tags    => ['region=us-east', 'zone=1c'],
+  graphite_options => {
+    enabled           => true,
+    database          => graphite,
+    bind-address      => ':2003',
+    protocol          => tcp,
+    consistency-level => 'one',
+    name-separator    => '.',
+    batch-size        => 1000,
+    batch-pending     => 5,
+    batch-timeout     => '1s',
+    udp-read-buffer   => 0,
+    name-schema       => 'type.host.measurement.device',
+    templates         => [ "*.app env.service.resource.measurement" ],
+    tags              => [ "region=us-east", "zone=1c"],
+  },
 }
 ```
 
@@ -74,9 +87,16 @@ Enable Collectd plugin
 
 ```puppet
 class {'influxdb::server':
-  collectd_enabled      => true,
-  collectd_bind_address => ':2004',
-  collectd_database     => 'collectd',
+  collectd_options => {
+    enabled => true,
+    bind-address => ':25826',
+    database => 'foo',
+    typesdb => '/usr/share/collectd/types.db',
+    batch-size => 1000,
+    batch-pending => 5,
+    batch-timeout => '1s',
+    read-buffer => 0,
+  },
 }
 ```
 
@@ -103,13 +123,28 @@ $udp_options = [
 class {'influxdb::server':
 	reporting_disabled    => true,
 	http_auth_enabled     => true,
-	version               => '0.9.4.2',
 	shard_writer_timeout  => '10s',
 	cluster_write_timeout => '10s',
 	udp_options           => $udp_options,
 }
 ```
 
+Enable opentsdb
+
+```puppet
+class {'influxdb::server':
+  opentsdb_options => {
+    enabled => true,
+    bind-address => ':4242',
+    database => 'foo',
+    typesdb => '/usr/share/collectd/types.db',
+    batch-size => 1000,
+    batch-pending => 5,
+    batch-timeout => '1s',
+    read-buffer => 0,
+  },
+}
+```
 
 ## Reference
 
@@ -344,75 +379,19 @@ Default: false
 
 Default: undef
 
-##### `graphite_enabled`
+##### `graphite_options`
 
-Controls one or many listeners for Graphite data.
-Default: false
-
-##### `graphite_bind_address`
-
-Default: :2003
-
-##### `graphite_protocol`
-
-Default: tcp
-
-##### `graphite_consistency_level`
-
-Default: one
-
-##### `graphite_separator`
-
-Default: .
-
-##### `graphite_tags`
-
-The "measurement" tag is special and the corresponding field
-will become the name of the metric.
-Default: \[undef\]
-
-##### `graphite_templates`
-
-Default: false
-
-##### `graphite_ignore_unnamed`
-
-If set to true, when the input metric name has more fields than `name-schema`
-specified, the extra fields will be ignored.
-Default: true
-
-##### `collectd_enabled`
-
-Controls the listener for collectd data.
-Default: false
-
-##### `collectd_bind_address`
-
+Controls the listener for InfluxDB line protocol data via Graphite.
 Default: undef
 
-##### `collectd_database`
+##### `collectd_options`
 
+Controls the listener for InfluxDB line protocol data via Collectd.
 Default: undef
 
-##### `collectd_typesdb`
+##### `opentsdb_options`
 
-Default: undef
-
-##### `opentsdb_enabled`
-
-Controls the listener for OpenTSDB data.
-Default: false
-
-##### `opentsdb_bind_address`
-
-Default: undef
-
-##### `opentsdb_database`
-
-Default: undef
-
-##### `opentsdb_retention_policy`
-
+Controls the listener for InfluxDB line protocol data via OpenTSDB.
 Default: undef
 
 ##### `udp_options`
