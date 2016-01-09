@@ -2,6 +2,13 @@
 #
 reporting-disabled = <%= @reporting_disabled %>
 
+<% if @registration_enabled -%>
+[registration]
+enabled = <%= @registration_enabled -%>
+url = "<%= @registration_url -%>"
+token = "<%= @registration_token -%>"
+<% end -%>
+
 ###
 ### [meta]
 ###
@@ -12,9 +19,9 @@ reporting-disabled = <%= @reporting_disabled %>
 
   dir = "<%= @meta_dir -%>"
 <% if @hostname -%>
-hostname = "<%= @hostname -%>"
+  hostname = "<%= @hostname -%>"
 <% else -%>
-# hostname = "localhost"
+  # hostname = "localhost"
 <% end -%>
   bind-address = "<%= @bind_address -%>"
   retention-autocreate = <%= @retention_autocreate %>
@@ -22,9 +29,14 @@ hostname = "<%= @hostname -%>"
   heartbeat-timeout = "<%= @heartbeat_timeout -%>"
   leader-lease-timeout = "<%= @leader_lease_timeout -%>"
   commit-timeout = "<%= @commit_timeout -%>"
+  cluster-tracing = <%= @cluster_tracing %>
+  raft-promotion-enabled = <%= @raft_promotion_enabled %>
 
 [data]
   dir = "<%= @data_dir -%>"
+<% if @data_engine -%>
+  data_engine = "<%= @data_engine %>"
+<% end -%>
   max-wal-size = <%= @max_wal_size %>
   wal-flush-interval = "<%= @wal_flush_interval -%>"
   wal-partition-flush-delay = "<%= @wal_partition_flush_delay -%>"
@@ -35,6 +47,16 @@ hostname = "<%= @hostname -%>"
   wal-max-series-size = <%= @wal_max_series_size %>
   wal-flush-cold-interval = "<%= @wal_flush_cold_interval %>"
   wal-partition-size-threshold = <%= @wal_partition_size_threshold %>
+  query-log-enabled = <%= @query_log_enabled %>
+
+  # TSM settings
+  cache-max-memory-size = <%= @tsm_cache_max_memory_size %>
+  cache-snapshot-memory-size = <%= @tsm_cache_snapshot_memory_size %>
+  cache-snapshot-write-cold-duration = "<%= @tsm_cache_snapshot_write_cold_duration %>"
+  compact-min-file-count = <%= @tsm_compact_min_file_count %>
+  compact-full-write-cold-duration = "<%= @tsm_compact_full_write_cold_duration %>"
+  max-points-per-block = <%= @tsm_max_points_per_block %>
+
 
 [cluster]
   shard-writer-timeout = "<%= @shard_writer_timeout -%>"
@@ -44,12 +66,16 @@ hostname = "<%= @hostname -%>"
   enabled = <%= @retention_enabled %>
   check-interval = "<%= @retention_check_interval -%>"
 
+[shard-precreation]
+  enabled = <%= @shard_precreation_enabled %>
+  check-interval = "<%= @shard_precreation_check_interval %>"
+  advance-period = "<%= @shard_precreation_advance_period %>"
+
 [admin]
   enabled = <%= @admin_enabled %>
   bind-address = "<%= @admin_bind_address -%>"
   https-enabled = <%= @admin_https_enabled %>
   https-certificate = "<%= @admin_https_certificate -%>"
-
 
 [http]
   enabled = <%= @http_enabled %>
@@ -61,51 +87,118 @@ hostname = "<%= @hostname -%>"
   https-enabled = <%= @http_https_enabled %>
   https-certificate = "<%= @http_https_certificate -%>"
 
+<% if @graphite_options and ! @graphite_options.empty? -%>
+<% if @graphite_options.is_a?(Hash) -%>
 [[graphite]]
-  enabled = <%= @graphite_enabled %>
-  bind-address = "<%= @graphite_bind_address -%>"
-  protocol = "<%= @graphite_protocol -%>"
-  consistency-level = "<%= @graphite_consistency_level -%>"
-  name-separator = "<%= @graphite_separator -%>"
-<% if @graphite_tags and @graphite_tags.size > 0 -%>
-  tags = [<% @graphite_tags.sort.map {|a| "\"#{a}\""}.join(',') -%>]
-<% end -%>
-<% if @graphite_templates and @graphite_templates.size > 0 -%>
+<% @graphite_options.each do |key, val| -%>
+<% if key == 'templates' and val.is_a?(Array) -%>
   templates = [
-  <%- @graphite_templates.each do |template| -%>
+  <%- val.each do |template| -%>
     "<%= template %>",
   <%- end -%>
   ]
+<% elsif val.is_a?(Array) or val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+  <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
 <% end -%>
-  ignore-unnamed = <%= @graphite_ignore_unnamed -%>
+<% end -%>
+<% elsif @graphite_options.is_a?(Array) -%>
+<% @graphite_options.each do |option| -%>
+[[graphite]]
+<% @options.each do |key, val| -%>
+<% if key == 'templates' and val.is_a?(Array) -%>
+  templates = [
+  <%- val.each do |template| -%>
+    "<%= template %>",
+  <%- end -%>
+  ]
+<% elsif val.is_a?(Array) or val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+  <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% else -%>
+[[graphite]]
+  enabled = false
+<% end -%>
 
-<% if @collectd_enabled -%>
+<% if @collectd_options and ! @collectd_options.empty? -%>
+<% if @collectd_options.is_a?(Hash) -%>
 [collectd]
-  enabled = <%= @collectd_enabled %>
-  bind-address = "<%= @collectd_bind_address -%>"
-  database = "<%= @collectd_database -%>"
-  typesdb = "<%= @collectd_typesdb -%>"
+<% @collectd_options.each do |key, val| -%>
+<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+  <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
+<% end -%>
+<% elsif @collectd_options.is_a?(Array) -%>
+<% @collectd_options.each do |option| -%>
+[collectd]
+<% option.each do |key, val| -%>
+<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+  <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% else -%>
+[collectd]
+  enabled = false
 <% end -%>
 
-<% if @opentsdb_enabled -%>
+<% if @opentsdb_options and ! @opentsdb_options.empty? -%>
+<% if @opentsdb_options.is_a?(Hash) -%>
 [opentsdb]
-  enabled = <%= @opentsdb_enabled %>
-  bind-address = "<%= @opentsdb_bind_address -%>"
-  database = "<%= @opentsdb_database -%>"
-  retention-policy = "<%= @opentsdb_retention_policy -%>"
+<% @opentsdb_options.each do |key, val| -%>
+<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+  <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
+<% end -%>
+<% elsif @opentsdb_options.is_a?(Array) -%>
+<% @opentsdb_options.each do |option| -%>
+[opentsdb]
+<% option.each do |key, val| -%>
+<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+  <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
+<% end -%>
+<% end -%>
+<% end -%>
+<% else -%>
+[opentsdb]
+  enabled = false
 <% end -%>
 
 <% if @udp_options and ! @udp_options.empty? -%>
 <% if @udp_options.is_a?(Hash) -%>
 [[udp]]
 <% @udp_options.each do |key, val| -%>
+<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
   <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
 <% end -%>
 <% elsif @udp_options.is_a?(Array) -%>
 <% @udp_options.each do |option| -%>
 [[udp]]
 <% option.each do |key, val| -%>
+<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
   <%= key %> = <%= val %>
+<% else -%>
+  <%= key %> = "<%= val %>"
+<% end -%>
 <% end -%>
 <% end -%>
 <% end -%>
@@ -134,6 +227,8 @@ hostname = "<%= @hostname -%>"
   max-age = "<%= @hinted_handoff_max_age -%>"
   retry-rate-limit = <%= @hinted_handoff_retry_rate_limit %>
   retry-interval = "<%= @hinted_handoff_retry_interval -%>"
+  retry-max-interval = "<%= @hinted_handoff_retry_max_interval %>"
+  purge-interval = "<%= @hinted_handoff_purge_interval %>"
 
 <% if @enable_snapshot -%>
 [snapshot]
