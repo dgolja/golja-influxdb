@@ -97,7 +97,7 @@ token = "<%= @registration_token -%>"
     "<%= template %>",
   <%- end -%>
   ]
-<% elsif val.is_a?(Array) or val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -113,7 +113,7 @@ token = "<%= @registration_token -%>"
     "<%= template %>",
   <%- end -%>
   ]
-<% elsif val.is_a?(Array) or val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -130,7 +130,7 @@ token = "<%= @registration_token -%>"
 <% if @collectd_options.is_a?(Hash) -%>
 [collectd]
 <% @collectd_options.each do |key, val| -%>
-<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -140,7 +140,7 @@ token = "<%= @registration_token -%>"
 <% @collectd_options.each do |option| -%>
 [collectd]
 <% option.each do |key, val| -%>
-<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -157,7 +157,7 @@ token = "<%= @registration_token -%>"
 <% if @opentsdb_options.is_a?(Hash) -%>
 [opentsdb]
 <% @opentsdb_options.each do |key, val| -%>
-<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -167,7 +167,7 @@ token = "<%= @registration_token -%>"
 <% @opentsdb_options.each do |option| -%>
 [opentsdb]
 <% option.each do |key, val| -%>
-<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -184,7 +184,7 @@ token = "<%= @registration_token -%>"
 <% if @udp_options.is_a?(Hash) -%>
 [[udp]]
 <% @udp_options.each do |key, val| -%>
-<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
@@ -194,7 +194,7 @@ token = "<%= @registration_token -%>"
 <% @udp_options.each do |option| -%>
 [[udp]]
 <% option.each do |key, val| -%>
-<% if val =~ /(true|false|^[0-9]+$)/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) -%>
+<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%= key %> = <%= val %>
 <% else -%>
   <%= key %> = "<%= val %>"
