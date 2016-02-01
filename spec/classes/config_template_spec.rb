@@ -80,11 +80,19 @@ describe 'influxdb::server', :type => :class do
 
       case facts[:osfamily]
       when 'Debian'
-        let (:params) {{ :retention_check_interval => '20m' }}
+        let (:params) {{
+          :retention_check_interval => '20m',
+          :collectd_options => {
+            'enabled' => true,
+            'batch-size' => 5000,
+          }
+        }}
+
         it { is_expected.to contain_file('/etc/influxdb/influxdb.conf') }
         it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
         it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/check-interval = "20m"/) }
         it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/wal-dir = "\/var\/lib\/influxdb\/wal"/) }
+        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/batch-size = 5000/) }
       end
 
     end
