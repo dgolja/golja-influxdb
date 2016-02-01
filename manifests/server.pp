@@ -14,6 +14,7 @@ class influxdb::server (
   $commit_timeout                               = $influxdb::params::commit_timeout,
   $data_dir                                     = $influxdb::params::data_dir,
   $wal_dir                                      = $influxdb::params::wal_dir,
+  $data_engine                                  = undef,
   $meta_dir                                     = $influxdb::params::meta_dir,
   $wal_enable_logging                           = $influxdb::params::wal_enable_logging,
   $wal_ready_series_size                        = $influxdb::params::wal_ready_series_size,

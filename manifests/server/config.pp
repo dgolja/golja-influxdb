@@ -17,6 +17,7 @@ class influxdb::server::config {
   $meta_dir                                     = $influxdb::server::meta_dir
   $data_dir                                     = $influxdb::server::data_dir
   $wal_dir                                      = $influxdb::server::wal_dir
+  $data_engine                                  = $influxdb::server::data_engine
   $wal_enable_logging                           = $influxdb::server::wal_enable_logging
   $wal_ready_series_size                        = $influxdb::server::wal_ready_series_size
   $wal_compaction_threshold                     = $influxdb::server::wal_compaction_threshold
