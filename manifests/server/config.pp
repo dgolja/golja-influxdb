@@ -33,14 +33,14 @@ class influxdb::server::config {
   $tsm_cache_snapshot_write_cold_duration       = $influxdb::server::tsm_cache_snapshot_write_cold_duration
   $tsm_compact_min_file_count                   = $influxdb::server::tsm_compact_min_file_count
   $tsm_compact_full_write_cold_duration         = $influxdb::server::tsm_compact_full_write_cold_duration
-  $tsm_max_points_per_block                      = $influxdb::server::tsm_max_points_per_block
+  $tsm_max_points_per_block                     = $influxdb::server::tsm_max_points_per_block
   $shard_writer_timeout                         = $influxdb::server::shard_writer_timeout
   $cluster_write_timeout                        = $influxdb::server::cluster_write_timeout
   $retention_enabled                            = $influxdb::server::retention_enabled
   $retention_check_interval                     = $influxdb::server::retention_check_interval
   $shard_precreation_enabled                    = $influxdb::server::shard_precreation_enabled
   $shard_precreation_check_interval             = $influxdb::server::shard_precreation_check_interval
-  $shart_precreation_advance_period             = $influxdb::server::shart_precreation_advance_period
+  $shard_precreation_advance_period             = $influxdb::server::shard_precreation_advance_period
   $admin_enabled                                = $influxdb::server::admin_enabled
   $admin_bind_address                           = $influxdb::server::admin_bind_address
   $admin_https_enabled                          = $influxdb::server::admin_https_enabled
