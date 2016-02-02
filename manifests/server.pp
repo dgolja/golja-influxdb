@@ -1,6 +1,6 @@
 class influxdb::server (
   $ensure                                       = $influxdb::params::ensure,
-  $version                                      = 'latest',
+  $version                                      = 'installed',
   $config_file                                  = $influxdb::params::config_file,
   $service_provider                             = $influxdb::params::service_provider,
   $service_enabled                              = $influxdb::params::service_enabled,
