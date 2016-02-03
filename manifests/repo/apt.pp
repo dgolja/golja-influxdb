@@ -18,5 +18,7 @@ class influxdb::repo::apt {
     },
   }
 
-  Apt::Source['repos.influxdata.com'] -> Package<| tag == 'influxdb' |>
+  Apt::Source['repos.influxdata.com'] ->
+  Class['apt::update'] ->
+  Package<| tag == 'influxdb' |>
 }
