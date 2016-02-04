@@ -45,6 +45,7 @@ class influxdb::server::config {
   $admin_bind_address                           = $influxdb::server::admin_bind_address
   $admin_https_enabled                          = $influxdb::server::admin_https_enabled
   $admin_https_certificate                      = $influxdb::server::admin_https_certificate
+  $hostname                                     = $influxdb::server::hostname
   $http_enabled                                 = $influxdb::server::http_enabled
   $http_bind_address                            = $influxdb::server::http_bind_address
   $http_auth_enabled                            = $influxdb::server::http_auth_enabled
