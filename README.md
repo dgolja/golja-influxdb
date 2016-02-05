@@ -61,6 +61,18 @@ Install influxdb
 class {'influxdb::server':}
 ```
 
+Join a cluster
+```puppet
+class {'influxdb::server':
+  meta_bind_address      => "${::fqdn}:8088",
+  meta_http_bind_address => "${::fqdn}:8091",
+  http_bind_address      => "${::fqdn}:8086",
+  influxd_opts           => "-join my.other.node1:8091,my.other.node2:8091"
+}
+```
+For more info on setting up a raft cluster, see the [InfluxDB docs](https://docs.influxdata.com/influxdb/v0.10/guides/clustering/)
+
+
 Enable Graphite plugin with one database
 
 ```puppet
@@ -194,16 +206,19 @@ Boolean to decide if the service should be enabled.
 
 What provider should be used to install the package.
 
-##### `hostname`
+##### `meta_bind_address`
 
-Server hostname used for clustering.
-Default: undef
+This setting can be used to configure InfluxDB to bind to and listen for 
+cluster connections on this address, default is `":8088"`
 
-##### `bind_address`
+For clustering this must be set to `<fqdn>:<port>` (usually 8088)
+
+##### `meta_http_bind_address`
 
 This setting can be used to configure InfluxDB to bind to and listen for
-connections from applications on this address.
-If not specified, the module will use the default for your OS distro.
+cluster connections on this address, default is `":8091"`
+
+For clustering this must be set to `<fqdn>:<port>` (usually 8091)
 
 ##### `reporting_disabled`
 
@@ -407,26 +422,22 @@ Default: true
 
 Default: 24h
 
+##### `monitoring_database`
+
+Default: _internal
+
 ##### `continuous_queries_enabled`
 
 Controls how continuous queries are run within InfluxDB.
 Default: true
 
-##### `continuous_queries_recompute_previous_n`
+##### `continuous_queries_log_enabled`
 
-Default: 2
+Default true
 
-##### `continuous_queries_recompute_no_older_than`
+##### `continuous_queries_run_interval`
 
-Default: 10m
-
-##### `continuous_queries_compute_runs_per_interval`
-
-Default: 10
-
-##### `continuous_queries_compute_no_more_than`
-
-Default: 2m
+Default: 1s
 
 ##### `hinted_handoff_enabled`
 
@@ -466,10 +477,6 @@ Default: OS specific
 ##### `influxdb_group`
 
 Default: OS specific
-
-##### `enable_snapshot`
-
-Default: false
 
 ##### `influxdb_stderr_log`
 
