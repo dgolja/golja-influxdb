@@ -6,6 +6,8 @@ class influxdb::server::config {
   $conf_template                                = $influxdb::server::conf_template
   $config_file                                  = $influxdb::server::config_file
 
+  $influxdb_user                                = $influxdb::server::influxdb_user
+  $influxdb_group                               = $influxdb::server::influxdb_group
   $influxdb_stderr_log                          = $influxdb::server::influxdb_stderr_log
   $influxdb_stdout_log                          = $influxdb::server::influxdb_stdout_log
   $influxd_opts                                 = $influxdb::server::influxd_opts
