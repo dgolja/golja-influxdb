@@ -3,7 +3,8 @@ require 'spec_helper'
 describe 'influxdb::server', :type => :class do
 
   default = {
-    'bind_address' => ':8088',
+    'meta_bind_address' => ':8088',
+    'meta_http_bind_address' => ':8091',
     'retention_autocreate' => true,
     'election_timeout' => '1s',
     'heartbeat_timeout' => '1s',
@@ -29,30 +30,10 @@ describe 'influxdb::server', :type => :class do
     'http_pprof_enabled' => false,
     'http_https_enabled' => false,
     'http_https_certificate' => '/etc/ssl/influxdb.pem',
-    'graphite_enabled' => false,
-    'graphite_bind_address' => ':2003',
-    'graphite_protocol' => 'tcp',
-    'graphite_consistency_level' => 'one',
-    'graphite_separator' => '.',
-    'graphite_tags' => [],
-    'graphite_templates' => [],
-    'graphite_ignore_unnamed' => true,
-    'collectd_enabled' => false,
-    'collectd_bind_address' => 'undef',
-    'collectd_database' => 'undef',
-    'collectd_typesdb' => 'undef',
-    'opentsdb_enabled' => false,
-    'opentsdb_bind_address' => 'undef',
-    'opentsdb_database' => 'undef',
-    'opentsdb_retention_policy' => 'undef',
-    'udp_options' => 'undef',
     'monitoring_enabled' => true,
+    'monitoring_database' => '_internal',
     'monitoring_write_interval' => '24h',
     'continuous_queries_enabled' => true,
-    'continuous_queries_recompute_previous_n' => 2,
-    'continuous_queries_recompute_no_older_than' => '10m',
-    'continuous_queries_compute_runs_per_interval' => 10,
-    'continuous_queries_compute_no_more_than' => '2m',
     'hinted_handoff_enabled' => true,
     'hinted_handoff_dir' => '/var/opt/influxdb/hh',
     'hinted_handoff_max_size' => 1073741824,
@@ -76,6 +57,7 @@ describe 'influxdb::server', :type => :class do
 
       it { is_expected.to contain_file('/etc/influxdb/influxdb.conf') }
       it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
+      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/http-bind-address = ":8091"/) }
       it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/commit-timeout = "50ms"/) }
 
       case facts[:osfamily]
