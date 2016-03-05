@@ -28,10 +28,11 @@ such as databases, users, and privileges.
 
 This release is a major refactoring of the module which means that the API
 changed in backwards incompatible ways. If your project depends on the old API
-and you need to use influxdb prior to 0.9.X, please pin your module
-dependencies to 0.1.2 version to ensure your environments don't break.
+and you need to use influxdb prior to 0.10.X, please pin your module
+dependencies to 0.1.2 (0.8.X) or 2.2.2 (0.9.X) version to ensure your environments
+don't break.
 
-*NOTE*: Until 1.0.0 release the API may change,
+*NOTE*: Until influxdb 1.0.0 is releases the API of this module may change,
 however I will try my best to avoid it.
 
 ## Installation

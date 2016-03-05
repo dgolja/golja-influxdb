@@ -2,7 +2,7 @@
   "name": "golja-influxdb",
   "version": "3.0.0",
   "author": "Dejan Golja",
-  "summary": "Manage InfluxDB version 0.9.X. For previous versions support check README.md",
+  "summary": "Manage InfluxDB version 0.10.X. For previous supported version check README.md",
   "license": "Apache-2.0",
   "source": "https://github.com/n1tr0g/golja-influxdb",
   "project_page": "https://github.com/n1tr0g/golja-influxdb",

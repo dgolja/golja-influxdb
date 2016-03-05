@@ -1,3 +1,16 @@
+##2016-03-05 - Release 3.0.0
+###Summary
+Install influxdb from the official influxdata repository
+
+####Backwards-incompatible changes
+
+- Influxdata repository has only the latest 0.10.X version available. To manage version prior to 0.9.6 use previous
+modules, which install influxdb from the AWS S3 repository. I raised an issue https://github.com/influxdata/influxdb/issues/5913
+asking influxdb maintainer to stop removing previous versions from the repos
+- Now by default the module will install the latest version. To modify that overwrite version parameters
+
+Special tnx to andyroyle for the 0.10.X fixes
+
 ##2015-12-11 - Release 2.2.0
 ###Summary
 - add meta_dir as a parameter
