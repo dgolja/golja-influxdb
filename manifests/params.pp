@@ -1,5 +1,5 @@
 class influxdb::params {
-  $version                                      = '0.10.0-1'
+  $version                                      = 'installed'
   $ensure                                       = 'present'
   $service_enabled                              = true
   $conf_template                                = 'influxdb/influxdb.conf.erb'
