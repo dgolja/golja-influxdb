@@ -108,8 +108,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% if @graphite_options and ! @graphite_options.empty? -%>
 <% if @graphite_options.is_a?(Hash) -%>
 [[graphite]]
-<% @graphite_options.each do |key, val| -%>
-<% if key == 'templates' and val.is_a?(Array) -%>
+<% @graphite_options.keys.sort.each do |key| -%>
+<% val = @graphite_options[key] 
+  if key == 'templates' and val.is_a?(Array) -%>
   templates = [
   <%- val.each do |template| -%>
     "<%=template %>",
@@ -124,8 +125,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% elsif @graphite_options.is_a?(Array) -%>
 <% @graphite_options.each do |option| -%>
 [[graphite]]
-<% @options.each do |key, val| -%>
-<% if key == 'templates' and val.is_a?(Array) -%>
+<% @options.key.sort.each do |key| -%>
+<% val = @options[key] 
+  if key == 'templates' and val.is_a?(Array) -%>
   templates = [
   <%- val.each do |template| -%>
     "<%=template %>",
@@ -147,8 +149,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% if @collectd_options and ! @collectd_options.empty? -%>
 <% if @collectd_options.is_a?(Hash) -%>
 [collectd]
-<% @collectd_options.each do |key, val| -%>
-<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+<% @collectd_options.keys.sort.each do |key| -%>
+<% val = @collectd_options[key] 
+  if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
   <%=key %> = "<%=val %>"
@@ -157,8 +160,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% elsif @collectd_options.is_a?(Array) -%>
 <% @collectd_options.each do |option| -%>
 [collectd]
-<% option.each do |key, val| -%>
-<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+<% option.keys.sort.each do |key| -%>
+<% val = @option[key] 
+  if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
   <%=key %> = "<%=val %>"
@@ -174,7 +178,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% if @opentsdb_options and ! @opentsdb_options.empty? -%>
 <% if @opentsdb_options.is_a?(Hash) -%>
 [opentsdb]
-<% @opentsdb_options.each do |key, val| -%>
+<% @opentsdb_options.keys.sort.each do |key| 
+   val = @opentsdb_options[key] 
+  -%>
 <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
@@ -184,7 +190,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% elsif @opentsdb_options.is_a?(Array) -%>
 <% @opentsdb_options.each do |option| -%>
 [opentsdb]
-<% option.each do |key, val| -%>
+<% option.keys.sort.each do |key|
+   val = @option[key]
+  -%>
 <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
@@ -201,7 +209,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% if @udp_options and ! @udp_options.empty? -%>
 <% if @udp_options.is_a?(Hash) -%>
 [[udp]]
-<% @udp_options.each do |key, val| -%>
+<% @udp_options.keys.sort.each do |key| 
+   val =  @udp_options[key]
+   -%>
 <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
@@ -211,7 +221,9 @@ reporting-disabled = <%= @reporting_disabled %>
 <% elsif @udp_options.is_a?(Array) -%>
 <% @udp_options.each do |option| -%>
 [[udp]]
-<% option.each do |key, val| -%>
+<% option.keys.sort.each do |key| 
+ val = @option[key]
+  -%>
 <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
