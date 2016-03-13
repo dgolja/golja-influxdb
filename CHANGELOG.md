@@ -1,3 +1,7 @@
+##2016-03-13 - Release 3.0.1
+###Summary
+processing sorted hash sets for predictable template results
+
 ##2016-03-05 - Release 3.0.0
 ###Summary
 Install influxdb from the official influxdata repository
