@@ -489,7 +489,7 @@ Default: /dev/null
 
 ##### `manage_install`
 
-enable/disable installation of the influxdb packages
+enable/disable installation of the influxdb packages from the yum/apt repo
 Default: true
 
 ##### `influxd_opts`
