@@ -10,14 +10,14 @@ class influxdb::server::install {
   if $influxdb::server::manage_install {
     if $ensure == 'absent' {
       $_ensure = $ensure
-      } else {
+    } else {
         $_ensure = $version
-      }
+    }
 
     class { 'influxdb::repo': } ->
 
     package { 'influxdb':
-      ensure => $version,
+      ensure => $_ensure,
       tag    => 'influxdb',
     }
   }
