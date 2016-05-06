@@ -7,18 +7,29 @@ class influxdb::server::install {
     path => '/usr/bin:/bin',
   }
 
-  if $influxdb::server::manage_install {
-    if $ensure == 'absent' {
-      $_ensure = $ensure
-    } else {
-        $_ensure = $version
+  case $influxdb::server::install_method {
+    'repo': {
+      if $ensure == 'absent' {
+        $_ensure = $ensure
+      } else {
+          $_ensure = $version
+      }
+
+      class { 'influxdb::repo': } ->
+
+      package { 'influxdb':
+        ensure => $_ensure,
+        tag    => 'influxdb',
+      }
     }
-
-    class { 'influxdb::repo': } ->
-
-    package { 'influxdb':
-      ensure => $_ensure,
-      tag    => 'influxdb',
+    'package': {
+      class { 'influxdb::repo::package':
+        package_source => $influxdb::server::package_source,
+        version        => $influxdb::server::version
+      }
+    }
+    default: {
+      fail { 'unsupported install_method!': }
     }
   }
 }

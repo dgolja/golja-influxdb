@@ -4,6 +4,8 @@ class influxdb::server (
   $service_enabled                              = $influxdb::params::service_enabled,
   $conf_template                                = $influxdb::params::conf_template,
   $config_file                                  = $influxdb::params::config_file,
+  $install_method                               = $influxdb::params::install_method,
+  $package_source                               = $influxdb::params::package_source,
 
   $influxdb_stderr_log                          = $influxdb::params::influxdb_stderr_log,
   $influxdb_stdout_log                          = $influxdb::params::influxdb_stdout_log,

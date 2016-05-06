@@ -1,5 +1,4 @@
 class influxdb::repo {
-
   case $::osfamily {
     'Debian': {
       class { 'influxdb::repo::apt': }

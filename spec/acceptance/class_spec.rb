@@ -5,7 +5,7 @@ describe 'influxdb class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfam
   context 'default parameters' do
 
     pp = <<-EOS
-    class { 'influxdb::server': }
+    class { 'influxdb::server':}
     EOS
 
     it 'should work with no errors' do

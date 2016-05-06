@@ -4,6 +4,8 @@ class influxdb::params {
   $service_enabled                              = true
   $conf_template                                = 'influxdb/influxdb.conf.erb'
   $config_file                                  = '/etc/influxdb/influxdb.conf'
+  $install_method                               = 'repo'
+  $package_source                               = undef
 
   $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log                          = '/dev/null'

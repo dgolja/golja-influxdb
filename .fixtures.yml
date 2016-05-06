@@ -2,6 +2,6 @@ fixtures:
   repositories:
     "stdlib": "https://github.com/puppetlabs/puppetlabs-stdlib"
     "apt" : "https://github.com/puppetlabs/puppetlabs-apt"
+    "wget": "https://github.com/maestrodev/puppet-wget.git"
   symlinks:
     influxdb: "#{source_dir}"
-
