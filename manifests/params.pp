@@ -9,6 +9,7 @@ class influxdb::params {
   $influxdb_stdout_log                          = '/dev/null'
   $influxd_opts                                 = undef
   $manage_install                               = true
+  $apt_repo_dist                                = $::lsbdistcodename
 
   $reporting_disabled                           = false
 

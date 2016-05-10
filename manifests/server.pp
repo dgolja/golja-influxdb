@@ -9,6 +9,7 @@ class influxdb::server (
   $influxdb_stdout_log                          = $influxdb::params::influxdb_stdout_log,
   $influxd_opts                                 = $influxdb::params::influxd_opts,
   $manage_install                               = $influxdb::params::manage_install,
+  $apt_repo_dist                                = $influxdb::params::apt_repo_dist,
 
   $reporting_disabled                           = $influxdb::params::reporting_disabled,
 

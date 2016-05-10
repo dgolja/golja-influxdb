@@ -62,6 +62,13 @@ Install influxdb
 class {'influxdb::server':}
 ```
 
+Install influxdb on Debian Squeeze using Repo from Wheezy
+
+```puppet
+class {'influxdb::server':
+  apt_repo_dist => 'wheezy'
+}
+
 Join a cluster
 ```puppet
 class {'influxdb::server':
