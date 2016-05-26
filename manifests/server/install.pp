@@ -7,14 +7,16 @@ class influxdb::server::install {
     path => '/usr/bin:/bin',
   }
 
+  if $influxdb::server::manage_repos {
+    class { 'influxdb::repo': }
+  }
+
   if $influxdb::server::manage_install {
     if $ensure == 'absent' {
       $_ensure = $ensure
     } else {
         $_ensure = $version
     }
-
-    class { 'influxdb::repo': } ->
 
     package { 'influxdb':
       ensure => $_ensure,

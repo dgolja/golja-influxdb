@@ -12,6 +12,7 @@ class influxdb::server::config {
   $influxdb_stdout_log                          = $influxdb::server::influxdb_stdout_log
   $influxd_opts                                 = $influxdb::server::influxd_opts
   $manage_install                               = $influxdb::server::manage_install
+  $manage_repos                                 = $influxdb::server::manage_repos
 
   $reporting_disabled                           = $influxdb::server::reporting_disabled
 
