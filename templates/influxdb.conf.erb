@@ -125,8 +125,8 @@ reporting-disabled = <%= @reporting_disabled %>
 <% elsif @graphite_options.is_a?(Array) -%>
 <% @graphite_options.each do |option| -%>
 [[graphite]]
-<% @options.key.sort.each do |key| -%>
-<% val = @options[key] 
+<% option.keys.sort.each do |key| -%>
+<% val = option[key]
   if key == 'templates' and val.is_a?(Array) -%>
   templates = [
   <%- val.each do |template| -%>
