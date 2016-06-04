@@ -93,13 +93,6 @@ class influxdb::params {
     'Debian': {
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
-
-
-      if $::operatingsystem == 'Ubuntu' {
-        $service_provider = 'upstart'
-      } else {
-        $service_provider = undef
-      }
     }
     'RedHat', 'Amazon': {
       $influxdb_user    = 'influxdb'
