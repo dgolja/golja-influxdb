@@ -1,3 +1,9 @@
+##2016-06-05 - Release 3.1.0
+###Summary
+- Added support for external repositories
+- Fix in the udp template
+- autodetect service provider
+
 ##2016-03-13 - Release 3.0.1
 ###Summary
 processing sorted hash sets for predictable template results

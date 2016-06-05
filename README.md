@@ -492,6 +492,11 @@ Default: /dev/null
 enable/disable installation of the influxdb packages from the yum/apt repo
 Default: true
 
+##### `manage_repos`
+
+enable/disable repository installation
+Default: true
+
 ##### `influxd_opts`
 
 Additional influxd options used for setting up raft clusters.
