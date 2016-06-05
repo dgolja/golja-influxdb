@@ -1,6 +1,6 @@
 {
   "name": "golja-influxdb",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "author": "Dejan Golja",
   "summary": "Manage InfluxDB version 0.10.X. For previous supported version check README.md",
   "license": "Apache-2.0",
@@ -44,11 +44,11 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": "3.x"
+      "version_requirement": ">= 3.0.0 < 2015.4.0"
     },
     {
       "name": "puppet",
-      "version_requirement": "3.x"
+      "version_requirement": ">= 3.0.0 < 5.0.0"
     }
   ],
   "dependencies": [

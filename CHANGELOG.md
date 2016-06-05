@@ -1,5 +1,9 @@
 ##2016-06-05 - Release 3.1.0
 ###Summary
+- Fix compatibility requirements
+
+##2016-06-05 - Release 3.1.0
+###Summary
 - Added support for external repositories
 - Fix in the udp template
 - autodetect service provider
