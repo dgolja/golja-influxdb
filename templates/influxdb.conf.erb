@@ -133,6 +133,12 @@ reporting-disabled = <%= @reporting_disabled %>
     "<%=template %>",
   <%- end -%>
   ]
+  <%- elsif key == 'tags' and val.is_a?(Array) -%>
+  tags = [
+  <%- val.each do |tag| -%>
+    "<%=tag %>",
+  <%- end -%>
+  ]
 <% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
