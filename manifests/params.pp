@@ -97,7 +97,8 @@ class influxdb::params {
       $manage_repos = false
     }
     default: {
-      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
+      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
+      module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
     }
   }
 
