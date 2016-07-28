@@ -7,7 +7,7 @@ class influxdb::repo::apt {
 
   apt::source { 'repos.influxdata.com':
     location    => "https://repos.influxdata.com/${_operatingsystem}",
-    release     => $::lsbdistcodename,
+    release     => $influxdb::server::apt_repo_dist,
     repos       => 'stable',
     key         => '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
     key_source  => 'https://repos.influxdata.com/influxdb.key',
