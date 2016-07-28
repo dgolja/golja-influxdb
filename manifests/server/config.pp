@@ -3,7 +3,11 @@ class influxdb::server::config {
   $version                                      = $influxdb::server::version
   $ensure                                       = $influxdb::server::ensure
   $service_enabled                              = $influxdb::server::service_enabled
-  $conf_template                                = $influxdb::server::conf_template
+  if $version =~ /^1.[0-9]+.[0-9]+.*/ {
+    $conf_template                              = 'influxdb/influxdb_1_0_0.conf.erb'
+  } else {
+    $conf_template                              = $influxdb::server::conf_template
+  }
   $config_file                                  = $influxdb::server::config_file
 
   $influxdb_user                                = $influxdb::server::influxdb_user
