@@ -100,7 +100,8 @@ class influxdb::params {
       $influxdb_group   = 'influxdb'
     }
     default: {
-      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports managing repos for osfamily RedHat and Debian")
+      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},
+            module ${module_name} currently only supports managing repos for osfamily RedHat and Debian")
     }
   }
 
