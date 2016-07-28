@@ -10,6 +10,7 @@ class influxdb::params {
   $influxd_opts                                 = undef
   $manage_install                               = true
   $apt_repo_dist                                = $::lsbdistcodename
+  $manage_repos                                 = true
 
   $reporting_disabled                           = false
 
@@ -93,13 +94,6 @@ class influxdb::params {
     'Debian': {
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
-
-
-      if $::operatingsystem == 'Ubuntu' {
-        $service_provider = 'upstart'
-      } else {
-        $service_provider = undef
-      }
     }
     'RedHat', 'Amazon': {
       $influxdb_user    = 'influxdb'
