@@ -2,6 +2,7 @@ class influxdb::server (
   $version                                      = $influxdb::params::version,
   $ensure                                       = $influxdb::params::ensure,
   $service_enabled                              = $influxdb::params::service_enabled,
+  $service_provider                             = $influxdb::params::service_provider,
   $conf_template                                = $influxdb::params::conf_template,
   $config_file                                  = $influxdb::params::config_file,
 

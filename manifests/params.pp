@@ -2,6 +2,7 @@ class influxdb::params {
   $version                                      = 'installed'
   $ensure                                       = 'present'
   $service_enabled                              = true
+  $service_provider                             = 'systemd'
   $conf_template                                = 'influxdb/influxdb.conf.erb'
   $config_file                                  = '/etc/influxdb/influxdb.conf'
 
