@@ -1,3 +1,7 @@
+##2016-06-06 - Release 3.1.1
+###Summary
+- metadata updates (quality score update)
+
 ##2016-06-05 - Release 3.1.0
 ###Summary
 - Fix compatibility requirements
