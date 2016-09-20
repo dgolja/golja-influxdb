@@ -8,7 +8,7 @@ class influxdb::server::install {
   }
 
   if $influxdb::server::manage_repos {
-    class { 'influxdb::repo': }
+    class { '::influxdb::repo': }
   }
 
   if $influxdb::server::manage_install {

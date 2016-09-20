@@ -91,9 +91,9 @@ class influxdb::server (
 ) inherits influxdb::params {
 
   anchor { 'influxdb::server::start': }->
-  class { 'influxdb::server::install': }->
-  class { 'influxdb::server::config': }->
-  class { 'influxdb::server::service': }->
+  class { '::influxdb::server::install': }->
+  class { '::influxdb::server::config': }->
+  class { '::influxdb::server::service': }->
   anchor { 'influxdb::server::end': }
 
 }
