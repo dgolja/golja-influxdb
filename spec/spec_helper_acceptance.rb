@@ -1,12 +1,11 @@
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 
-
 unless ENV['RS_PROVISION'] == 'no'
   # This will install the latest available package on el and deb based
   # systems fail on windows and osx, and install via gem on other *nixes
-  foss_opts = { :default_action => 'gem_install' }
-  if default.is_pe?; then install_pe; else install_puppet( foss_opts ); end
+  foss_opts = { default_action: 'gem_install' }
+  default.is_pe? ? install_pe : install_puppet(foss_opts)
 
   hosts.each do |host|
     if host['platform'] =~ /debian/
@@ -17,7 +16,7 @@ unless ENV['RS_PROVISION'] == 'no'
   end
 end
 
-UNSUPPORTED_PLATFORMS = ['Suse','windows','AIX','Solaris']
+UNSUPPORTED_PLATFORMS = %w(Suse windows AIX Solaris).freeze
 
 RSpec.configure do |c|
   # Project root
@@ -31,8 +30,8 @@ RSpec.configure do |c|
     # Install module and dependencies
     hosts.each do |host|
       shell("/bin/touch #{default['puppetpath']}/hiera.yaml")
-      on host, puppet('module install puppetlabs-stdlib --version 3.2.0'), { :acceptable_exit_codes => [0,1] }
-      copy_module_to(host, :source => proj_root, :module_name => 'influxdb')
+      on host, puppet('module install puppetlabs-stdlib --version 3.2.0'), acceptable_exit_codes: [0, 1]
+      copy_module_to(host, source: proj_root, module_name: 'influxdb')
     end
   end
 end
