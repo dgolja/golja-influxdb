@@ -7,6 +7,7 @@ describe 'influxdb::params', :type => :class do
       :operatingsystem => 'Ubuntu',
       :operatingsystemrelease => '12.04',
       :lsbdistcodename => 'precice',
+      :puppetversion  => Puppet.version,
     }
   end
   it { is_expected.to contain_class("influxdb::params") }
