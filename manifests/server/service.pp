@@ -10,7 +10,7 @@ class influxdb::server::service {
     ensure     => $service_ensure,
     enable     => $influxdb::server::service_enabled,
     hasrestart => true,
-    provider => $influxdb::server::service_provider,
+    provider   => $influxdb::server::service_provider,
     require    => Package['influxdb'],
   }
 

@@ -87,7 +87,7 @@ class influxdb::params {
   $continuous_queries_enabled                   = true
   $continuous_queries_log_enabled               = true
   $continuous_queries_run_interval              = undef
-  $service_provider = undef
+  $service_provider                             = undef
 
   $influxdb_user                                = 'influxdb'
   $influxdb_group                               = 'influxdb'

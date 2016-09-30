@@ -88,7 +88,7 @@ class influxdb::server (
   $continuous_queries_enabled                   = $influxdb::params::continuous_queries_enabled,
   $continuous_queries_log_enabled               = $influxdb::params::continuous_queries_log_enabled,
   $continuous_queries_run_interval              = $influxdb::params::continuous_queries_run_interval,
-  $service_provider = $influxdb::params::service_provider
+  $service_provider                             = $influxdb::params::service_provider
 ) inherits influxdb::params {
 
   anchor { 'influxdb::server::start': }->
