@@ -1,7 +1,6 @@
 # PRIVATE CLASS: do not use directly
 
 class influxdb::repo::apt {
-
   #downcase operatingsystem
   $_operatingsystem = downcase($::operatingsystem)
 

@@ -9,7 +9,6 @@ class influxdb::params {
   $influxdb_stdout_log                          = '/dev/null'
   $influxd_opts                                 = undef
   $manage_install                               = true
-  $manage_repos                                 = true
 
   $reporting_disabled                           = false
 
@@ -30,7 +29,7 @@ class influxdb::params {
   $wal_partition_flush_delay                    = '2s'
   $wal_dir                                      = '/var/lib/influxdb/wal'
   $wal_logging_enabled                          = true
-  $data_logging_enabled                         = true
+  $trace_logging_enabled                        = true
   $wal_ready_series_size                        = undef
   $wal_compaction_threshold                     = undef
   $wal_max_series_size                          = undef
@@ -90,17 +89,18 @@ class influxdb::params {
   $continuous_queries_run_interval              = undef
   $service_provider = undef
 
+  $influxdb_user                                = 'influxdb'
+  $influxdb_group                               = 'influxdb'
   case $::osfamily {
-    'Debian': {
-      $influxdb_user    = 'influxdb'
-      $influxdb_group   = 'influxdb'
+    'Debian', 'RedHat', 'Amazon': {
+      $manage_repos = true
     }
-    'RedHat', 'Amazon': {
-      $influxdb_user    = 'influxdb'
-      $influxdb_group   = 'influxdb'
+    'Archlinux': {
+      $manage_repos = false
     }
     default: {
-      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports managing repos for osfamily RedHat and Debian")
+      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
+      module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
     }
   }
 
