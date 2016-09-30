@@ -161,7 +161,7 @@ reporting-disabled = <%= @reporting_disabled %>
 <% @collectd_options.each do |option| -%>
 [[collectd]]
 <% option.keys.sort.each do |key| -%>
-<% val = @option[key] 
+<% val = option[key] 
   if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
   <%=key %> = <%=val %>
 <% else -%>
