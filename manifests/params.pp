@@ -82,6 +82,9 @@ class influxdb::params {
   $http_pprof_enabled                           = false
   $http_https_enabled                           = false
   $http_https_certificate                       = '/etc/ssl/influxdb.pem'
+  $http_https_private_key                       = undef
+  $http_max_row_limit                           = 10000
+  $http_realm                                   = 'InfluxDB'
 
   $graphite_options                             = undef
   $collectd_options                             = undef

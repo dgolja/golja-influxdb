@@ -108,6 +108,12 @@ reporting-disabled = <%= @reporting_disabled %>
   pprof-enabled = <%= @http_pprof_enabled %>
   https-enabled = <%= @http_https_enabled %>
   https-certificate = "<%= @http_https_certificate %>"
+<% if @http_https_private_key -%>
+  https-private-key = "<%= @http_https_private_key %>"
+<% end -%>
+  max-row-limit = <%= @http_max_row_limit %>
+  realm = "<%= @http_realm %>"
+
 
 <% if @graphite_options and ! @graphite_options.empty? -%>
 <% if @graphite_options.is_a?(Hash) -%>

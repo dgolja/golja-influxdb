@@ -86,6 +86,9 @@ class influxdb::server::config {
   $http_pprof_enabled                           = $influxdb::server::http_pprof_enabled
   $http_https_enabled                           = $influxdb::server::http_https_enabled
   $http_https_certificate                       = $influxdb::server::http_https_certificate
+  $http_https_private_key                       = $influxdb::server::http_https_private_key
+  $http_max_row_limit                           = $influxdb::server::http_max_row_limit
+  $http_realm                                   = $influxdb::server::http_realm
 
   $graphite_options                             = $influxdb::server::graphite_options
   $collectd_options                             = $influxdb::server::collectd_options

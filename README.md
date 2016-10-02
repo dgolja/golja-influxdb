@@ -403,6 +403,18 @@ Default: false
 
 Default: undef
 
+##### `http_https_private_key`
+
+Default: undef
+
+##### `http_max_row_limit`
+
+Default: 10000
+
+##### `http_realm`
+
+Default: InfluxDB
+
 ##### `graphite_options`
 
 Controls the listener for InfluxDB line protocol data via Graphite.
