@@ -126,17 +126,17 @@ Enable UDP listener
 ```puppet
 $udp_options = [
     { 'enabled'       => true,
-      'bind-address'  => '":8089"',
-      'database'      => '"udp_db1"',
+      'bind-address'  => ':8089',
+      'database'      => 'udp_db1',
       'batch-size'    => 10000,
-      'batch-timeout' => '"1s"',
+      'batch-timeout' => '1s',
       'batch-pending' => 5,
     },
     { 'enabled'       => true,
-      'bind-address'  => '":8090"',
-      'database'      => '"udp_db2"',
+      'bind-address'  => ':8090',
+      'database'      => 'udp_db2',
       'batch-size'    => 10000,
-      'batch-timeout' => '"1s"',
+      'batch-timeout' => '1s',
       'batch-pending' => 5,
     },
 ]
