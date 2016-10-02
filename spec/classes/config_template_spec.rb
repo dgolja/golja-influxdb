@@ -56,6 +56,7 @@ describe 'influxdb::server', :type => :class do
       it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
       it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/http-bind-address = ":8091"/) }
       it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/commit-timeout = "50ms"/) }
+      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/http-timeout = "30s"/) }
 
       case facts[:osfamily]
       when 'Debian'
