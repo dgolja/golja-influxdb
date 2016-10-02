@@ -86,6 +86,9 @@ class influxdb::params {
   $http_max_row_limit                           = 10000
   $http_realm                                   = 'InfluxDB'
 
+  $subscriber_enabled                           = true
+  $subscriber_http_timeout                      = '30s'
+
   $graphite_options                             = undef
   $collectd_options                             = undef
   $opentsdb_options                             = undef

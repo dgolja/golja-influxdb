@@ -87,6 +87,9 @@ class influxdb::server (
   $http_max_row_limit                           = $influxdb::params::http_max_row_limit,
   $http_realm                                   = $influxdb::params::http_realm,
 
+  $subscriber_enabled                            = $influxdb::params::subscriber_enabled,
+  $subscriber_http_timeout                       = $influxdb::params::subscriber_http_timeout,
+
   $graphite_options                             = $influxdb::params::graphite_options,
   $collectd_options                             = $influxdb::params::collectd_options,
   $opentsdb_options                             = $influxdb::params::opentsdb_options,

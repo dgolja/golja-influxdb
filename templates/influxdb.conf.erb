@@ -114,6 +114,9 @@ reporting-disabled = <%= @reporting_disabled %>
   max-row-limit = <%= @http_max_row_limit %>
   realm = "<%= @http_realm %>"
 
+[subsciber]
+  enabled = <%= @subsciber_enabled %>
+  http-timeout = "<%= @subsciber_http_timeout %>"
 
 <% if @graphite_options and ! @graphite_options.empty? -%>
 <% if @graphite_options.is_a?(Hash) -%>

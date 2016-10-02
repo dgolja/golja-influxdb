@@ -415,6 +415,16 @@ Default: 10000
 
 Default: InfluxDB
 
+##### `subscriber_enabled`
+
+Controls the subscriptions, which can be used to fork a copy of all data
+received by the InfluxDB host.
+Default: true
+
+##### `subscriber_http_timeout`
+
+Default: 30s
+
 ##### `graphite_options`
 
 Controls the listener for InfluxDB line protocol data via Graphite.
