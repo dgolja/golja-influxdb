@@ -28,17 +28,9 @@ class influxdb::server::config {
 
   $data_enabled                                 = $influxdb::server::data_enabled
   $data_dir                                     = $influxdb::server::data_dir
-  $max_wal_size                                 = $influxdb::server::max_wal_size
-  $wal_flush_interval                           = $influxdb::server::wal_flush_interval
-  $wal_partition_flush_delay                    = $influxdb::server::wal_partition_flush_delay
   $wal_dir                                      = $influxdb::server::wal_dir
   $wal_logging_enabled                          = $influxdb::server::wal_logging_enabled
   $trace_logging_enabled                        = $influxdb::server::trace_logging_enabled
-  $wal_ready_series_size                        = $influxdb::server::wal_ready_series_size
-  $wal_compaction_threshold                     = $influxdb::server::wal_compaction_threshold
-  $wal_max_series_size                          = $influxdb::server::wal_max_series_size
-  $wal_flush_cold_interval                      = $influxdb::server::wal_flush_cold_interval
-  $wal_partition_size_threshold                 = $influxdb::server::wal_partition_size_threshold
   $cache_max_memory_size                        = $influxdb::server::cache_max_memory_size
   $cache_snapshot_memory_size                   = $influxdb::server::cache_snapshot_memory_size
   $cache_snapshot_write_cold_duration           = $influxdb::server::cache_snapshot_write_cold_duration

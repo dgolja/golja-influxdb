@@ -24,17 +24,9 @@ class influxdb::params {
 
   $data_enabled                                 = true
   $data_dir                                     = '/var/lib/influxdb/data'
-  $max_wal_size                                 = 104857600
-  $wal_flush_interval                           = '10m'
-  $wal_partition_flush_delay                    = '2s'
   $wal_dir                                      = '/var/lib/influxdb/wal'
   $wal_logging_enabled                          = true
   $trace_logging_enabled                        = false
-  $wal_ready_series_size                        = undef
-  $wal_compaction_threshold                     = undef
-  $wal_max_series_size                          = undef
-  $wal_flush_cold_interval                      = undef
-  $wal_partition_size_threshold                 = undef
   $cache_max_memory_size                        = undef
   $cache_snapshot_memory_size                   = undef
   $cache_snapshot_write_cold_duration           = undef
