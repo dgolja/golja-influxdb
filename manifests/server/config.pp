@@ -55,8 +55,12 @@ class influxdb::server::config {
   $hinted_handoff_retry_max_interval            = $influxdb::server::hinted_handoff_retry_max_interval
   $hinted_handoff_purge_interval                = $influxdb::server::hinted_handoff_purge_interval
 
-  $shard_writer_timeout                         = $influxdb::server::shard_writer_timeout
   $cluster_write_timeout                        = $influxdb::server::cluster_write_timeout
+  $query_timeout                                = $influxdb::server::query_timeout
+  $log_queries_after                            = $influxdb::server::log_queries_after
+  $max_select_point                             = $influxdb::server::max_select_point
+  $max_select_series                            = $influxdb::server::max_select_series
+  $max_select_buckets                           = $influxdb::server::max_select_buckets
 
   $retention_enabled                            = $influxdb::server::retention_enabled
   $retention_check_interval                     = $influxdb::server::retention_check_interval

@@ -29,7 +29,7 @@ class influxdb::params {
   $wal_partition_flush_delay                    = '2s'
   $wal_dir                                      = '/var/lib/influxdb/wal'
   $wal_logging_enabled                          = true
-  $trace_logging_enabled                        = true
+  $trace_logging_enabled                        = false
   $wal_ready_series_size                        = undef
   $wal_compaction_threshold                     = undef
   $wal_max_series_size                          = undef
@@ -51,8 +51,12 @@ class influxdb::params {
   $hinted_handoff_retry_max_interval            = '1m'
   $hinted_handoff_purge_interval                = '1h'
 
-  $shard_writer_timeout                         = '5s'
   $cluster_write_timeout                        = '10s'
+  $query_timeout                                = '0'
+  $log_queries_after                            = '0'
+  $max_select_point                             = 0
+  $max_select_series                            = 0
+  $max_select_buckets                           = 0
 
   $retention_enabled                            = true
   $retention_check_interval                     = '30m'

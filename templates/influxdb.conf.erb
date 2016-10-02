@@ -72,8 +72,12 @@ reporting-disabled = <%= @reporting_disabled %>
   purge-interval = "<%= @hinted_handoff_purge_interval %>"
 
 [coordinator]
-  shard-writer-timeout = "<%= @shard_writer_timeout %>"
   write-timeout = "<%= @cluster_write_timeout %>"
+  query-timeout = "<%= @query_timeout %>"
+  log-queries-after = "<%= @log_queries_after %>"
+  max-select-point = <%= @max_select_point %>
+  max-select-series = <%= @max_select_series %>
+  max-select-buckets = <%= @max_select_buckets %>
 
 [retention]
   enabled = <%= @retention_enabled %>
