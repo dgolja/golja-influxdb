@@ -31,6 +31,7 @@ describe 'influxdb::server', :type => :class do
     'monitoring_database' => '_internal',
     'monitoring_write_interval' => '24h',
     'continuous_queries_enabled' => true,
+    'max_series_per_database' => 1000000,
     'hinted_handoff_enabled' => true,
     'hinted_handoff_dir' => '/var/opt/influxdb/hh',
     'hinted_handoff_max_size' => 1073741824,

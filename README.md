@@ -415,6 +415,12 @@ Default true
 
 Default: 1s
 
+##### `max_series_per_database`
+
+Controls the number of series allowed per database. Change the setting
+to 0 to allow an unlimited number of series per database.
+Default: 1000000
+
 ##### `hinted_handoff_enabled`
 
 Controls the hinted handoff feature, which allows nodes to temporarily
