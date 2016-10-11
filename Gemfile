@@ -11,7 +11,7 @@ group :development, :test do
   gem 'json_pure','~> 1.8',     :require => false
   gem 'json',                   :require => false
   gem 'metadata-json-lint',     :require => false
-  gem 'rspec-puppet-facts', '~> 0.10'
+  gem 'rspec-puppet-facts', '~> 1.7.0'
 end
 
 group :system_tests do
