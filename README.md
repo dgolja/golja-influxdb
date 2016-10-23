@@ -26,7 +26,7 @@ such as databases, users, and privileges.
 
 ## Deprecation Warning
 
-Notes for version 3.1.1+:
+Notes for version 4.0.0+:
 
 influxdb 1.0.0 contains [breaking changes](https://github.com/influxdata/influxdb/blob/master/CHANGELOG.md#v100-2016-09-08)
 which require changing the `data_logging_enabled` config attribute to `trace_logging_enabled`.
