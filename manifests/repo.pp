@@ -2,10 +2,10 @@ class influxdb::repo {
 
   case $::osfamily {
     'Debian': {
-      class { 'influxdb::repo::apt': }
+      class { '::influxdb::repo::apt': }
     }
     'RedHat': {
-      class { 'influxdb::repo::yum': }
+      class { '::influxdb::repo::yum': }
     }
     default: {
       fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
