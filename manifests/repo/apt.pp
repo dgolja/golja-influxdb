@@ -14,5 +14,9 @@ class influxdb::repo::apt {
     include_src => false,
   }
 
-  Apt::Source['repos.influxdata.com'] -> Package<| tag == 'influxdb' |>
+  exec { "apt-update":
+      command => "/usr/bin/apt-get update"
+  }
+
+  Apt::Source['repos.influxdata.com'] -> Exec["apt-update"] -> Package<| tag == 'influxdb' |>
 }
