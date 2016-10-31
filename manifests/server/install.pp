@@ -8,7 +8,9 @@ class influxdb::server::install {
   }
 
   if $influxdb::server::manage_repos {
-    class { 'influxdb::repo': }
+    class { 'influxdb::repo':
+      before => Package['influxdb'],
+    }
   }
 
   if $influxdb::server::manage_install {
