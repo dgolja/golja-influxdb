@@ -8,7 +8,7 @@ describe 'influxdb::server', :type => :class do
         facts
      end
     it { should contain_class('influxdb::server::install') }
-    it { should contain_class('influxdb::repo') }
+    it { should contain_class('influxdb::repo').that_comes_before('Package[influxdb]') }
     it { should contain_class('influxdb::server::config') }
     it { should contain_class('influxdb::server::service') }
     case facts[:osfamily]
