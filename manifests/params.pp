@@ -34,6 +34,7 @@ class influxdb::params {
   $compact_full_write_cold_duration             = undef
   $max_points_per_block                         = undef
   $max_series_per_database                      = 1000000
+  $max_values_per_tag                           = 100000
 
   $hinted_handoff_enabled                       = true
   $hinted_handoff_dir                           = '/var/lib/influxdb/hh'
