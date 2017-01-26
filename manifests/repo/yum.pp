@@ -6,13 +6,16 @@ class influxdb::repo::yum {
     default  => 'rhel',
   }
 
-  yumrepo { 'repos.influxdata.com':
-    descr    => "InfluxDB Repository - ${::operatingsystem} \$releasever",
-    baseurl  => "https://repos.influxdata.com/${$_operatingsystem}/\$releasever/\$basearch/stable",
-    enabled  => 1,
-    gpgcheck => 1,
-    gpgkey   => 'https://repos.influxdata.com/influxdb.key',
-  }
+  if !defined(Yumrepo['influxdata'])
+  {
+    yumrepo {'influxdata':
+      descr    => "InfluxData Repository - ${::operatingsystem} \$releasever",
+      baseurl  => "https://repos.influxdata.com/${_operatingsystem}/\$releasever/\$basearch/stable",
+      enabled  => 1,
+      gpgcheck => 1,
+      gpgkey   => 'https://repos.influxdata.com/influxdb.key',
+    }
 
-  Yumrepo['repos.influxdata.com'] -> Package<| tag == 'influxdb' |>
+    Yumrepo['influxdata'] -> Package<| tag == 'influxdb' |>
+  }
 }
