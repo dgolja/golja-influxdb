@@ -3,5 +3,7 @@
 Gemfile.lock
 spec/fixtures
 pkg/
+log/
 vendor/bundle
 .bundle
+
