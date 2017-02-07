@@ -1,3 +1,4 @@
+require 'beaker-rspec'
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 
@@ -22,6 +23,7 @@ UNSUPPORTED_PLATFORMS = ['Suse','windows','AIX','Solaris']
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  module_name = File.basename(proj_root.split('-').last)
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -31,8 +33,8 @@ RSpec.configure do |c|
     # Install module and dependencies
     hosts.each do |host|
       shell("/bin/touch #{default['puppetpath']}/hiera.yaml")
-      on host, puppet('module install puppetlabs-stdlib --version 3.2.0'), { :acceptable_exit_codes => [0,1] }
-      copy_module_to(host, :source => proj_root, :module_name => 'influxdb')
+      on host, puppet('module install puppetlabs-stdlib --version 4.12.0'), { :acceptable_exit_codes => [0,1] }
+      copy_module_to(host, :source => proj_root, :module_name => module_name)
     end
   end
 end
