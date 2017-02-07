@@ -1,3 +1,4 @@
+#
 class influxdb::server::service {
 
   if $influxdb::server::service_enabled {

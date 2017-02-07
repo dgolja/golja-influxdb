@@ -1,3 +1,4 @@
+#
 class influxdb::repo {
 
   case $::osfamily {

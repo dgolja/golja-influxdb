@@ -1,3 +1,4 @@
+#
 class influxdb::params {
   $version                                      = 'installed'
   $ensure                                       = 'present'

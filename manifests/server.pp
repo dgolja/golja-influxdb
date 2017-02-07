@@ -1,3 +1,4 @@
+#
 class influxdb::server (
   $version                                      = $influxdb::params::version,
   $ensure                                       = $influxdb::params::ensure,
