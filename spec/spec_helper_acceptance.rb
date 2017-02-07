@@ -2,8 +2,12 @@ require 'beaker-rspec'
 require 'beaker_spec_helper'
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
+require 'beaker/puppet_install_helper'
 
 include BeakerSpecHelper
+
+# https://github.com/puppetlabs/beaker-puppet_install_helper
+run_puppet_install_helper
 
 unless ENV['RS_PROVISION'] == 'no'
   # This will install the latest available package on el and deb based
@@ -34,8 +38,8 @@ RSpec.configure do |c|
   c.before :suite do
     # Install module and dependencies
     hosts.each do |host|
-      shell("/bin/touch #{default['puppetpath']}/hiera.yaml")
 
+      on host, puppet('resource package git ensure=installed')
       on host, puppet('module install puppetlabs-stdlib --version 4.12.0'), { :acceptable_exit_codes => [0,1] }
 
       copy_module_to(host, :source => proj_root, :module_name => module_name)
