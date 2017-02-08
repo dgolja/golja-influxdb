@@ -18,8 +18,6 @@ class influxdb::config(
   $hinted_handoff_config     = $influxdb::hinted_handoff_config,
 ) {
 
-  include influxdb::params
-
   $conf = '/tmp/influxdb.conf'
 
   file { $conf:
