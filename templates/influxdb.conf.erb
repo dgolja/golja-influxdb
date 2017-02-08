@@ -1,241 +1,124 @@
 # This config file is managed by Puppet
-#
+<%-
+  def value_parser(v)
+    return v if v =~ /^[\d]+$/
 
-reporting-disabled = <%= @reporting_disabled %>
+    return v if v.is_a?(Integer)
+
+    return v if v.is_a?(TrueClass)
+
+    return v if v.is_a?(FalseClass)
+
+    return v if v.is_a?(Float)
+
+    return v if v.is_a?(Array)
+
+    # if we get here just return a string
+    return "\"#{v}\""
+  end
+-%>
+
+
+# GLOBAL configuration options
+<%- if @global_config and ! @global_config.empty? -%>
+  <%-  @global_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+  <%- end -%>
+<%- end -%>
 
 [meta]
-  enabled = true
-  dir = "<%= @meta_dir %>"
-  bind-address = "<%= @meta_bind_address %>"
-  http-bind-address = "<%= @meta_http_bind_address -%>"
-  retention-autocreate = <%= @retention_autocreate %>
-  election-timeout = "<%= @election_timeout %>"
-  heartbeat-timeout = "<%= @heartbeat_timeout %>"
-  leader-lease-timeout = "<%= @leader_lease_timeout %>"
-  commit-timeout = "<%= @commit_timeout %>"
-  cluster-tracing = <%= @cluster_tracing %>
+<%- @meta_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [data]
-  enabled = <%= @data_enabled %>
-  dir = "<%= @data_dir %>"
-  wal-dir = "<%= @wal_dir %>"
-  wal-logging-enabled = <%= @wal_logging_enabled %>
-  trace-logging-enabled = <%= @trace_logging_enabled %>
-<% if @query_log_enabled -%>
-  query-log-enabled = <%@query_log_enabled %>
-<% end -%>
-<% if @cache_max_memory_size -%>
-  cache-max-memory-size = <%= @cache_max_memory_size %>
-<% end -%>
-<% if @cache_snapshot_memory_size -%>
-  cache-snapshot-memory-size = <%= @cache_snapshot_memory_size %>
-<% end -%>
-<% if @cache_snapshot_write_cold_duration -%>
-  cache-snapshot-write-cold-duration = "<%= @cache_snapshot_write_cold_duration %>"
-<% end -%>
-<% if @compact_min_file_count -%>
-  compact-min-file-count = <%= @compact_min_file_count %>
-<% end -%>
-<% if @compact_full_write_cold_duration -%>
-  compact-full-write-cold-duration = "<%= @compact_full_write_cold_duration %>"
-<% end -%>
-<% if @max_points_per_block -%>
-  max-points-per-block = <%= @max_points_per_block %>
-<% end -%>
-  max-series-per-database = <%= @max_series_per_database %>
-
-[hinted-handoff]
-  enabled = <%= @hinted_handoff_enabled %>
-  dir = "<%= @hinted_handoff_dir %>"
-  max-size = <%= @hinted_handoff_max_size %>
-  max-age = "<%= @hinted_handoff_max_age %>"
-  retry-rate-limit = <%= @hinted_handoff_retry_rate_limit %>
-  retry-interval = "<%= @hinted_handoff_retry_interval %>"
-  retry-max-interval = "<%= @hinted_handoff_retry_max_interval %>"
-  purge-interval = "<%= @hinted_handoff_purge_interval %>"
+<%- @data_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [coordinator]
-  write-timeout = "<%= @cluster_write_timeout %>"
-  query-timeout = "<%= @query_timeout %>"
-  log-queries-after = "<%= @log_queries_after %>"
-  max-select-point = <%= @max_select_point %>
-  max-select-series = <%= @max_select_series %>
-  max-select-buckets = <%= @max_select_buckets %>
+<%- @coordinator_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [retention]
-  enabled = <%= @retention_enabled %>
-  check-interval = "<%= @retention_check_interval %>"
+<%- @retention_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [shard-precreation]
-  enabled = <%= @shard_precreation_enabled %>
-  check-interval = "<%= @shard_precreation_check_interval %>"
-  advance-period = "<%= @shard_precreation_advance_period %>"
+<%- @shard_precreation_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [monitor]
-  store-enabled = <%= @monitoring_enabled %>
-  store-database = "<%= @monitoring_database %>"
-  store-interval = "<%= @monitoring_write_interval %>"
+<%- @shard_precreation_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [admin]
-  enabled = <%= @admin_enabled %>
-  bind-address = "<%= @admin_bind_address %>"
-  https-enabled = <%= @admin_https_enabled %>
-  https-certificate = "<%= @admin_https_certificate %>"
+<%- @admin_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [http]
-  enabled = <%= @http_enabled %>
-  bind-address = "<%= @http_bind_address %>"
-  auth-enabled = <%= @http_auth_enabled %>
-  log-enabled = <%= @http_log_enabled %>
-  write-tracing = <%= @http_write_tracing %>
-  pprof-enabled = <%= @http_pprof_enabled %>
-  https-enabled = <%= @http_https_enabled %>
-  https-certificate = "<%= @http_https_certificate %>"
-<% if @http_https_private_key -%>
-  https-private-key = "<%= @http_https_private_key %>"
-<% end -%>
-  max-row-limit = <%= @http_max_row_limit %>
-  realm = "<%= @http_realm %>"
+<%- @http_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
 [subscriber]
-  enabled = <%= @subscriber_enabled %>
-  http-timeout = "<%= @subscriber_http_timeout %>"
+<%- @http_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+<%- end -%>
 
-<% if @graphite_options and ! @graphite_options.empty? -%>
-<% if @graphite_options.is_a?(Hash) -%>
-[[graphite]]
-<% @graphite_options.keys.sort.each do |key| -%>
-<% val = @graphite_options[key] 
-  if key == 'templates' and val.is_a?(Array) -%>
-  templates = [
-  <%- val.each do |template| -%>
-    "<%=template %>",
+<%- if @hinted_handoff_config and ! @hinted_handoff_config.empty? -%>
+[hinted-handoff]
+  <%- @hinted_handoff_config.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
   <%- end -%>
-  ]
-<% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% elsif @graphite_options.is_a?(Array) -%>
-<% @graphite_options.each do |option| -%>
+<%- end -%>
+
+<%- if @graphite_config and ! @graphite_config.empty? -%>
 [[graphite]]
-<% @options.key.sort.each do |key| -%>
-<% val = @options[key] 
-  if key == 'templates' and val.is_a?(Array) -%>
-  templates = [
-  <%- val.each do |template| -%>
-    "<%=template %>",
+  <%- @graphite_config.each do |section_name, data| -%>
+    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+    <%- end -%>
   <%- end -%>
-  ]
-<% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% end -%>
-<% end -%>
-<% else -%>
-[[graphite]]
-  enabled = false
-<% end -%>
+<%- end -%>
 
-<% if @collectd_options and ! @collectd_options.empty? -%>
-<% if @collectd_options.is_a?(Hash) -%>
+<%- if @collectd_config and ! @collectd_config.empty? -%>
 [[collectd]]
-<% @collectd_options.keys.sort.each do |key| -%>
-<% val = @collectd_options[key] 
-  if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% elsif @collectd_options.is_a?(Array) -%>
-<% @collectd_options.each do |option| -%>
-[[collectd]]
-<% option.keys.sort.each do |key| -%>
-<% val = @option[key] 
-  if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% end -%>
-<% end -%>
-<% else -%>
-[[collectd]]
-  enabled = false
-<% end -%>
+  <%- @collectd_config.each do |section_name, data| -%>
+    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
 
-<% if @opentsdb_options and ! @opentsdb_options.empty? -%>
-<% if @opentsdb_options.is_a?(Hash) -%>
+<%- if @opentsdb_config and ! @opentsdb_config.empty? -%>
 [[opentsdb]]
-<% @opentsdb_options.keys.sort.each do |key| 
-   val = @opentsdb_options[key] 
-  -%>
-<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% elsif @opentsdb_options.is_a?(Array) -%>
-<% @opentsdb_options.each do |option| -%>
-[[opentsdb]]
-<% option.keys.sort.each do |key|
-   val = @option[key]
-  -%>
-<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% end -%>
-<% end -%>
-<% else -%>
-[[opentsdb]]
-  enabled = false
-<% end -%>
+  <%- @opentsdb_config.each do |section_name, data| -%>
+    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
 
-<% if @udp_options and ! @udp_options.empty? -%>
-<% if @udp_options.is_a?(Hash) -%>
+[<%- if @udp_config and ! @udp_config.empty? -%>
 [[udp]]
-<% @udp_options.keys.sort.each do |key| 
-   val =  @udp_options[key]
-   -%>
-<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% elsif @udp_options.is_a?(Array) -%>
-<% @udp_options.each do |option| -%>
-[[udp]]
-<% option.keys.sort.each do |key| 
- val = option[key]
-  -%>
-<% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
-  <%=key %> = <%=val %>
-<% else -%>
-  <%=key %> = "<%=val %>"
-<% end -%>
-<% end -%>
-<% end -%>
-<% end -%>
-<% else -%>
-[[udp]]
-  enabled = false
-<% end -%>
+  <%- @udp_config.each do |section_name, data| -%>
+    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
 
+[<%- if @continuous_queries_config and ! @continuous_queries_config.empty? -%>
 [continuous_queries]
-  enabled = <%= @continuous_queries_enabled %>
-  log-enabled = <%= @continuous_queries_log_enabled %>
-<% if @continuous_queries_run_interval -%>
-  run-interval = "<%= @continuous_queries_run_interval %>"
-<% end -%>
+  <%- @continuous_queries_config.each do |section_name, data| -%>
+    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
+<%= key %> = <%= value_parser(value) %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

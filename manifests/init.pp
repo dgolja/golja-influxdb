@@ -6,5 +6,5 @@
 #
 # Dejan Golja <dejan@golja.org>
 #
-class influxdb {
+class influxdb inherits influxdb::params {
 }

@@ -13,89 +13,171 @@ class influxdb::params {
 
   $reporting_disabled                           = false
 
-  $meta_dir                                     = '/var/lib/influxdb/meta'
-  $meta_bind_address                            = ':8088'
-  $meta_http_bind_address                       = ':8091'
-  $retention_autocreate                         = true
-  $election_timeout                             = '1s'
-  $heartbeat_timeout                            = '1s'
-  $leader_lease_timeout                         = '500ms'
-  $commit_timeout                               = '50ms'
-  $cluster_tracing                              = false
+  $global_config = {
+    'reporting-disabled' => false,
+    'bind-address'       => ':8088',
+  }
 
-  $data_enabled                                 = true
-  $data_dir                                     = '/var/lib/influxdb/data'
-  $wal_dir                                      = '/var/lib/influxdb/wal'
-  $wal_logging_enabled                          = true
-  $trace_logging_enabled                        = false
-  $cache_max_memory_size                        = undef
-  $cache_snapshot_memory_size                   = undef
-  $cache_snapshot_write_cold_duration           = undef
-  $compact_min_file_count                       = undef
-  $compact_full_write_cold_duration             = undef
-  $max_points_per_block                         = undef
-  $max_series_per_database                      = 1000000
+  $meta_config = {
+    'dir'                  => '/var/lib/influxdb/meta',
+    'retention-autocreate' => true,
+    'logging-enabled'      => true,
+  }
 
-  $hinted_handoff_enabled                       = true
-  $hinted_handoff_dir                           = '/var/lib/influxdb/hh'
-  $hinted_handoff_max_size                      = 1073741824
-  $hinted_handoff_max_age                       = '168h'
-  $hinted_handoff_retry_rate_limit              = 0
-  $hinted_handoff_retry_interval                = '1s'
-  $hinted_handoff_retry_max_interval            = '1m'
-  $hinted_handoff_purge_interval                = '1h'
+  $data_config = {
+    'dir'                                => '/var/lib/influxdb/data',
+    'wal-dir'                            => '/var/lib/influxdb/wal',
+    'trace-logging-enabled'              => false,
+    'query-log-enabled'                  => true,
+    'cache-max-memory-size'              => 1048576000,
+    'cache-snapshot-memory-size'         => 26214400,
+    'cache-snapshot-write-cold-duration' => '10m',
+    'compact-full-write-cold-duration'   => '4h',
+    'max-series-per-database'            => 1000000,
+    'max-values-per-tag'                 => 100000,
+  }
 
-  $cluster_write_timeout                        = '10s'
-  $query_timeout                                = '0'
-  $log_queries_after                            = '0'
-  $max_select_point                             = 0
-  $max_select_series                            = 0
-  $max_select_buckets                           = 0
+  $coordinator_config = {
+    'write-timeout'          => '10s',
+    'max-concurrent-queries' => 0,
+    'query-timeout'          => '0s',
+    'log-queries-after'      => '0s',
+    'max-select-point'       => 0,
+    'max-select-series'      => 0,
+    'max-select-buckets'     => 0,
+  }
 
-  $retention_enabled                            = true
-  $retention_check_interval                     = '30m'
+  $retention_config = {
+    'enabled'        => true,
+    'check-interval' => '30m',
+  }
 
-  $shard_precreation_enabled                    = true
-  $shard_precreation_check_interval             = '10m'
-  $shard_precreation_advance_period             = '30m'
+  $shard_precreation_config = {
+    'enabled'        => true,
+    'check-interval' => '10m',
+    'advance-period' => '30m',
+  }
 
-  $monitoring_enabled                           = true
-  $monitoring_database                          = '_internal'
-  $monitoring_write_interval                    = '10s'
+  $monitor_config = {
+    'store-enabled'  => true,
+    'store-database' => '_internal',
+    'store-interval' => '10s',
+  }
 
-  $admin_enabled                                = true
-  $admin_bind_address                           = ':8083'
-  $admin_https_enabled                          = false
-  $admin_https_certificate                      = '/etc/ssl/influxdb.pem'
+  # NOTE: As of Influx >= 1.2 the admin section is deprecated.
+  # https://docs.influxdata.com/influxdb/v1.2/administration/config/#admin
+  $admin_config = {
+    'enabled'           => false,
+    'bind-address'      => ':8083',
+    'https-enabled'     => false,
+    'https-certificate' => '/etc/ssl/influxdb.pem',
+  }
 
-  $http_enabled                                 = true
-  $http_bind_address                            = ':8086'
-  $http_auth_enabled                            = false
-  $http_log_enabled                             = true
-  $http_write_tracing                           = false
-  $http_pprof_enabled                           = false
-  $http_https_enabled                           = false
-  $http_https_certificate                       = '/etc/ssl/influxdb.pem'
-  $http_https_private_key                       = undef
-  $http_max_row_limit                           = 10000
-  $http_realm                                   = 'InfluxDB'
+  $http_config = {
+    'enabled'              => true,
+    'bind-address'         => ":8086",
+    'auth-enabled'         => false,
+    'realm'                => "InfluxDB",
+    'log-enabled'          => true,
+    'write-tracing'        => false,
+    'pprof-enabled'        => true,
+    'https-enabled'        => false,
+    'https-certificate'    => "/etc/ssl/influxdb.pem",
+    'https-private-key'    => "",
+    'shared-sercret'       => "",
+    'max-row-limit'        => 10000,
+    'max-connection-limit' => 0,
+    'unix-socket-enabled'  => false,
+    'bind-socket'          => "/var/run/influxdb.sock",
+  }
 
-  $subscriber_enabled                           = true
-  $subscriber_http_timeout                      = '30s'
+  $subscriber_config = {
+    'enabled'              => true,
+    'http-timeout'         => '30s',
+    'insecure-skip-verify' => false,
+    'ca-certs'             => '',
+    'write-concurrency'    => 40,
+    'write-buffer-size'    => 1000,
+  }
 
-  $graphite_options                             = undef
-  $collectd_options                             = undef
-  $opentsdb_options                             = undef
-  $udp_options                                  = undef
+  $graphite_config = {
+    'default' => {
+      'enabled'           => false,
+      'database'          => "graphite",
+      'retention-policy'  => '',
+      'bind-address'      => ':2003',
+      'protocol'          => 'tcp',
+      'consistency-level' => 'one',
+      'batch-size'        => 5000,
+      'batch-pending'     => 10,
+      'batch-timeout'     => '1s',
+      'udp-read-buffer'   => 0,
+      'separator'         => '.',
+      'tags'              => [],
+      'templates'         => [],
+    }
+  }
 
-  $continuous_queries_enabled                   = true
-  $continuous_queries_log_enabled               = true
-  $continuous_queries_run_interval              = undef
+  $collectd_config = {
+    'default' => {
+      'enabled'          => false,
+      'bind-address'     => ':25826',
+      'database'         => 'collectd',
+      'retention-policy' => '',
+      'typesdb'          => '/usr/share/collectd/types.db',
+      'batch-size'       => 5000,
+      'batch-pending'    => 10,
+      'batch-timeout'    => '10s',
+      'read-buffer'      => 0,
+    }
+  }
+
+  $opentsdb_config = {
+    'default' => {
+      'enabled'           => false,
+      'bind-address'      => ':4242',
+      'database'          => 'opentsdb',
+      'retention-policy'  => '',
+      'consistency-level' => 'one',
+      'tls-enabled'       => false,
+      'certificate'       => '/etc/ssl/influxdb.pem',
+      'log-point-errors'  => true,
+      'batch-size'        => 1000,
+      'batch-pending'     => 5,
+      'batch-timeout'     => '1s'
+    }
+  }
+
+  $udp_config = {
+    'default' => {
+      'enabled'          => false,
+      'bind-address'     => ':8089',
+      'database'         => 'udp',
+      'retention-policy' => '',
+      'batch-size'       => 5000,
+      'batch-pending'    => 10,
+      'batch-timeout'    => '1s',
+      'read-buffer'      => 0,
+    }
+  }
+
+  $continuous_queries_config = {
+    'default' => {
+      'enabled'      => true,
+      'log-enabled'  => true,
+      'run-interval' => '1s',
+    }
+  }
+
+  # deprecated? 
+  $hinted_handoff_config = {}
+
   $influxdb_user                                = 'influxdb'
   $influxdb_group                               = 'influxdb'
+
   case $::osfamily {
     'Debian', 'RedHat', 'Amazon': {
-      $manage_repos = true
+      $manage_repos = false
     }
     'Archlinux': {
       $manage_repos = false
