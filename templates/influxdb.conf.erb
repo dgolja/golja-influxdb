@@ -16,109 +16,69 @@
     # if we get here just return a string
     return "\"#{v}\""
   end
+
+  def build_section(section_name, config, show_header=true)
+    result = []
+
+    if config and ! config.empty?
+      result << "[#{section_name}]" if show_header
+      config.sort_by{|key, value| key}.each do |key, value|
+        val = value_parser(value)
+        result << "#{key} = #{val}"
+      end
+    end
+
+    result.empty? ? '' : result.join("\n")
+  end
+
+  def build_sub_section(section_name, config)
+
+    result = []
+
+    if config and ! config.empty?
+
+      result << "[[#{section_name}]]"
+
+      config.each do |name, data|
+        result << build_section(name, data, false)
+      end
+
+    end
+
+    result.empty? ? '' : result.join("\n").chomp
+  end
+
 -%>
 
-
 # GLOBAL configuration options
-<%- if @global_config and ! @global_config.empty? -%>
-  <%-  @global_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-  <%- end -%>
-<%- end -%>
+<%= build_section('global', @global_config, false) %>
 
-[meta]
-<%- @meta_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('meta', @meta_config) %>
 
-[data]
-<%- @data_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('data', @data_config) %>
 
-[coordinator]
-<%- @coordinator_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('coordinator', @coordinator_config) %>
 
-[retention]
-<%- @retention_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('retention', @retention_config) %>
 
-[shard-precreation]
-<%- @shard_precreation_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('shard-precreation', @shard_precreation_config) %>
 
-[monitor]
-<%- @shard_precreation_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('monitor', @monitor_config) %>
 
-[admin]
-<%- @admin_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('admin', @admin_config) %>
 
-[http]
-<%- @http_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('http', @http_config) %>
 
-[subscriber]
-<%- @http_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-<%- end -%>
+<%= build_section('subscriber', @subscriber_config) %>
 
-<%- if @hinted_handoff_config and ! @hinted_handoff_config.empty? -%>
-[hinted-handoff]
-  <%- @hinted_handoff_config.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-  <%- end -%>
-<%- end -%>
+<%= build_section('hinted-handoff', @hinted_handoff_config) %>
 
-<%- if @graphite_config and ! @graphite_config.empty? -%>
-[[graphite]]
-  <%- @graphite_config.each do |section_name, data| -%>
-    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
+<%= build_sub_section('graphite', @graphite_config) %>
 
-<%- if @collectd_config and ! @collectd_config.empty? -%>
-[[collectd]]
-  <%- @collectd_config.each do |section_name, data| -%>
-    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
+<%= build_sub_section('collectd', @collectd_config) %>
 
-<%- if @opentsdb_config and ! @opentsdb_config.empty? -%>
-[[opentsdb]]
-  <%- @opentsdb_config.each do |section_name, data| -%>
-    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
+<%= build_sub_section('opentsdb', @opentsdb_config) %>
 
-[<%- if @udp_config and ! @udp_config.empty? -%>
-[[udp]]
-  <%- @udp_config.each do |section_name, data| -%>
-    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
+<%= build_sub_section('udp', @udp_config) %>
 
-[<%- if @continuous_queries_config and ! @continuous_queries_config.empty? -%>
-[continuous_queries]
-  <%- @continuous_queries_config.each do |section_name, data| -%>
-    <%- data.sort_by{|key, value| key}.each do |key, value| -%>
-<%= key %> = <%= value_parser(value) %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
+<%= build_sub_section('continuous_queries', @continuous_queries_config) %>
