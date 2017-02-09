@@ -1,5 +1,10 @@
 #
 class influxdb::config(
+  $conf                      = '/tmp/influxdb::config',
+  $conf_owner                = 'root',
+  $conf_group                = 'root',
+  $conf_mode                 = '0644',
+  $conf_template             = $influxdb::conf_template,
   $global_config             = $influxdb::global_config,
   $meta_config               = $influxdb::meta_config,
   $data_config               = $influxdb::data_config,
@@ -18,12 +23,12 @@ class influxdb::config(
   $hinted_handoff_config     = $influxdb::hinted_handoff_config,
 ) {
 
-  $conf = '/tmp/influxdb.conf'
-
   file { $conf:
     ensure  => 'file',
-    mode    => '0644',
-    content => template($::influxdb::params::conf_template),
+    owner   => $conf_owner,
+    group   => $conf_group,
+    mode    => $conf_mode,
+    content => template($conf_template),
   }
 
 }
