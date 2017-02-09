@@ -169,23 +169,56 @@ class influxdb::params {
     }
   }
 
-  # deprecated? 
+  # deprecated as of 1.x?
   $hinted_handoff_config = {}
 
-  $influxdb_user                                = 'influxdb'
-  $influxdb_group                               = 'influxdb'
-
   case $::osfamily {
-    'Debian', 'RedHat', 'Amazon': {
+
+    'Debian': {
+
+      $manage_repos          = false
+      $startup_conf_template = '/etc/default/influxdb'
+
+    }
+
+    'RedHat' {
+      $manage_repos = false
+
+      case $operatingsystemmajrelease {
+
+        7: {
+
+          $startup_conf          = '/etc/default/influxdb'
+          $startup_conf_template = 'influxdb_default.erb'
+
+        }
+
+        default: {
+
+          $startup_conf          = '/etc/sysconfig/influxdb'
+          $startup_conf_template = 'influxdb_default.erb'
+
+        }
+
+      }
+
+    }
+
+    'Amazon': {
       $manage_repos = false
     }
+
     'Archlinux': {
       $manage_repos = false
     }
+
     default: {
+
       fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
+
       module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
     }
+
   }
 
 }

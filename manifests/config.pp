@@ -5,6 +5,10 @@ class influxdb::config(
   $conf_group                = 'root',
   $conf_mode                 = '0644',
   $conf_template             = $influxdb::conf_template,
+
+  $startup_conf              = $influxdb::startup_conf,
+  $startup_conf_template     = $influxdb::startup_conf_temlate,
+
   $global_config             = $influxdb::global_config,
   $meta_config               = $influxdb::meta_config,
   $data_config               = $influxdb::data_config,
@@ -29,6 +33,18 @@ class influxdb::config(
     group   => $conf_group,
     mode    => $conf_mode,
     content => template($conf_template),
+  }
+
+  if $startup_conf {
+
+    file { $startup_conf:
+      ensure  => 'file',
+      owner   => $conf_owner,
+      group   => $conf_group,
+      mode    => $conf_mode,
+      content => template($startup_conf_template),
+    }
+
   }
 
 }
