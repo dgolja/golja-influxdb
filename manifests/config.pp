@@ -9,6 +9,10 @@ class influxdb::config(
   $startup_conf              = $influxdb::startup_conf,
   $startup_conf_template     = $influxdb::startup_conf_template,
 
+  $influxdb_stderr_log       = $influxdb::influxdb_stderr_log,
+  $influxdb_stdout_log       = $influxdb::influxdb_stdout_log,
+  $influxd_opts              = $influxdb::influxd_opts,
+
   $global_config             = $influxdb::global_config,
   $meta_config               = $influxdb::meta_config,
   $data_config               = $influxdb::data_config,

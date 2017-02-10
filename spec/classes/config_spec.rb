@@ -10,13 +10,13 @@ describe 'influxdb::config' do
     context "on #{os}" do
       let(:facts) { facts }
 
-      let(:pre_condition) do
-        <<-EOS
-include ::influxdb
-        EOS
-      end
-
       describe 'with default params' do
+        let(:pre_condition) do
+          <<-EOS
+include influxdb
+          EOS
+        end
+
 
         it { is_expected.to contain_class('influxdb') }
         it { is_expected.to contain_class('influxdb::service') }
@@ -28,6 +28,16 @@ include ::influxdb
           facts.merge({
             :influxdb_version => '1.0.0'
           })
+        end
+
+        let(:pre_condition) do
+          <<-EOS
+
+class { 'influxdb':
+  influxd_opts => 'foo bar',
+}
+
+          EOS
         end
 
         describe "influxdb.conf" do
@@ -206,7 +216,6 @@ include ::influxdb
             end
           end
 
-
         end
 
         describe 'startup config' do
@@ -219,6 +228,10 @@ include ::influxdb
             end
           end
 
+          $stderr_expected = esc_regex('/var/log/influxdb/influxd.log')
+          $stdout_expected = esc_regex('/var/log/influxdb/influxd.log')
+          $influxd_opts_expected = esc_regex('"foo bar"')
+
           it do
             is_expected.to contain_file(startup_conf).with({
               :ensure => 'file',
@@ -226,6 +239,18 @@ include ::influxdb
               :group  => 'root',
               :mode   => '0644',
             })
+          end
+
+          it "STDERR=#{$stderr_expected}" do
+            is_expected.to contain_file(startup_conf).with_content(/STDERR=#{$stderr_expected}/)
+          end
+
+          it "STDOUT=#{$stdout_expected}" do
+            is_expected.to contain_file(startup_conf).with_content(/STDOUT=#{$stdout_expected}/)
+          end
+
+          it "INFLUXD_OPTS=#{$influxd_opts_expected}" do
+            is_expected.to contain_file(startup_conf).with_content(/INFLUXD_OPTS=#{$influxd_opts_expected}/)
           end
 
         end
