@@ -14,5 +14,4 @@ class influxdb::repo::yum {
     gpgkey   => 'https://repos.influxdata.com/influxdb.key',
   }
 
-  Yumrepo['repos.influxdata.com'] -> Package<| tag == 'influxdb' |>
 }

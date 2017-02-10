@@ -14,5 +14,4 @@ class influxdb::repo::apt {
     include_src => false,
   }
 
-  Apt::Source['repos.influxdata.com'] -> Package<| tag == 'influxdb' |>
 }
