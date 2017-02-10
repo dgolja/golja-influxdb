@@ -7,7 +7,7 @@ class influxdb::config(
   $conf_template             = $influxdb::conf_template,
 
   $startup_conf              = $influxdb::startup_conf,
-  $startup_conf_template     = $influxdb::startup_conf_temlate,
+  $startup_conf_template     = $influxdb::startup_conf_template,
 
   $global_config             = $influxdb::global_config,
   $meta_config               = $influxdb::meta_config,

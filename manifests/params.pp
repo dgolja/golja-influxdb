@@ -1,15 +1,21 @@
 #
 class influxdb::params {
-  $version                                      = 'installed'
-  $ensure                                       = 'present'
-  $service_enabled                              = true
-  $conf_template                                = 'influxdb/influxdb.conf.erb'
-  $config_file                                  = '/etc/influxdb/influxdb.conf'
+  $version               = 'installed'
+  $ensure                = 'present'
+  $service_enabled       = true
+  $service_ensure        = 'running'
 
-  $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
-  $influxdb_stdout_log                          = '/var/log/influxdb/influxd.log'
-  $influxd_opts                                 = undef
-  $manage_install                               = true
+  $conf_template         = 'influxdb/influxdb.conf.erb'
+  $startup_conf_template = 'influxdb/influxdb_default.erb'
+
+  $config_file           = '/etc/influxdb/influxdb.conf'
+
+  $manage_repos          = false
+
+  $influxdb_stderr_log   = '/var/log/influxdb/influxd.log'
+  $influxdb_stdout_log   = '/var/log/influxdb/influxd.log'
+  $influxd_opts          = undef
+  $manage_install        = true
 
   $global_config = {
     'reporting-disabled' => false,
@@ -174,40 +180,28 @@ class influxdb::params {
 
     'Debian': {
 
-      $manage_repos          = false
-      $startup_conf_template = '/etc/default/influxdb'
+      $startup_conf          = '/etc/default/influxdb'
 
     }
 
     'RedHat': {
-      $manage_repos = false
 
       case $operatingsystemmajrelease {
 
         7: {
 
           $startup_conf          = '/etc/default/influxdb'
-          $startup_conf_template = 'influxdb_default.erb'
 
         }
 
         default: {
 
           $startup_conf          = '/etc/sysconfig/influxdb'
-          $startup_conf_template = 'influxdb_default.erb'
 
         }
 
       }
 
-    }
-
-    'Amazon': {
-      $manage_repos = false
-    }
-
-    'Archlinux': {
-      $manage_repos = false
     }
 
     default: {
