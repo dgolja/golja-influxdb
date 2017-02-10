@@ -10,6 +10,7 @@ class influxdb(
   $ensure                    = $influxdb::params::ensure,
   $service_enabled           = $influxdb::params::service_enabled,
   $service_ensure            = $influxdb::params::service_ensure,
+  $manage_service            = $influxdb::params::manage_service,
   $conf_template             = $influxdb::params::conf_template,
   $config_file               = $influxdb::params::config_file,
 

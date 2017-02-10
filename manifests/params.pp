@@ -4,6 +4,7 @@ class influxdb::params {
   $ensure                = 'present'
   $service_enabled       = true
   $service_ensure        = 'running'
+  $manage_service        = true
 
   $conf_template         = 'influxdb/influxdb.conf.erb'
   $startup_conf_template = 'influxdb/influxdb_default.erb'
