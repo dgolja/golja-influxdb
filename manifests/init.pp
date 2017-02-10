@@ -37,7 +37,7 @@ class influxdb(
   $manage_repos              = $influxdb::params::manage_repos,
 ) inherits influxdb::params {
 
-  anchor { 'influxdb::tart': }   ->
+  anchor { 'influxdb::start': }  ->
   class { 'influxdb::install': } ->
   class { 'influxdb::config': }  ~>
   class { 'influxdb::service': } ->
