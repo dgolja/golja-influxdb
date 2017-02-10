@@ -1,79 +1,234 @@
 require 'spec_helper'
 
-describe 'influxdb::server', :type => :class do
+def esc_regex(v)
+  return Regexp.new(Regexp.escape(v))
+end
 
-  default = {
-    'meta_bind_address' => ':8088',
-    'meta_http_bind_address' => ':8091',
-    'retention_autocreate' => true,
-    'election_timeout' => '1s',
-    'heartbeat_timeout' => '1s',
-    'leader_lease_timeout' => '500ms',
-    'commit_timeout' => '50ms',
-    'data_dir' => '/var/opt/influxdb/data',
-    'shard_writer_timeout' => '5s',
-    'cluster_write_timeout' => '5s',
-    'retention_enabled' => true,
-    'retention_check_interval' => '10m',
-    'admin_enabled' => true,
-    'admin_bind_address' => ':8083',
-    'admin_https_enabled' => false,
-    'admin_https_certificate' => '/etc/ssl/influxdb.pem',
-    'http_enabled' => true,
-    'http_bind_address' => ':8086',
-    'http_auth_enabled' => false,
-    'http_log_enabled' => true,
-    'http_write_tracing' => false,
-    'http_pprof_enabled' => false,
-    'http_https_enabled' => false,
-    'http_https_certificate' => '/etc/ssl/influxdb.pem',
-    'monitoring_enabled' => true,
-    'monitoring_database' => '_internal',
-    'monitoring_write_interval' => '24h',
-    'continuous_queries_enabled' => true,
-    'max_series_per_database' => 1000000,
-    'hinted_handoff_enabled' => true,
-    'hinted_handoff_dir' => '/var/opt/influxdb/hh',
-    'hinted_handoff_max_size' => 1073741824,
-    'hinted_handoff_max_age' => '168h',
-    'hinted_handoff_retry_rate_limit' => 0,
-    'hinted_handoff_retry_interval' => '1s',
-    'reporting_disabled' => false,
-    'conf_template' => 'influxdb/influxdb.conf.erb',
-    'config_file' => '/etc/opt/influxdb/influxdb.conf',
-    'enable_snapshot' => false,
-    'influxdb_stderr_log' => '/var/log/influxdb/influxd.log',
-    'influxdb_stdout_log' => '/dev/null'
-
-  }
+describe 'influxdb::config' do
 
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) do
-        facts
+      let(:facts) { facts }
+
+      let(:pre_condition) do
+        <<-EOS
+include ::influxdb
+        EOS
       end
 
-      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf') }
-      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
-      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/http-bind-address = ":8091"/) }
-      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/commit-timeout = "50ms"/) }
-      it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/http-timeout = "30s"/) }
+      describe 'with default params' do
 
-      case facts[:osfamily]
-      when 'Debian'
-        let (:params) {{
-          :retention_check_interval => '20m',
-          :collectd_options => {
-            'enabled' => true,
-            'batch-size' => 5000,
+        it { is_expected.to contain_class('influxdb') }
+        it { is_expected.to contain_class('influxdb::service') }
+
+      end
+
+      context 'when Fact[:influxdb_version] = 1.x' do
+        let(:facts) do
+          facts.merge({
+            :influxdb_version => '1.0.0'
+          })
+        end
+
+        describe "influxdb.conf" do
+          let(:conf) { '/etc/influxdb/influxdb.conf' }
+
+          $template_data = {
+           'global' => {
+              'bind-address'       => '":8088"',
+              'reporting-disabled' => false,
+            },
+            'meta' => {
+              'dir'                  => esc_regex('"/var/lib/influxdb/meta"'),
+              'retention-autocreate' => true,
+              'logging-enabled'      => true,
+            },
+            'data' => {
+              'dir'                                => esc_regex('"/var/lib/influxdb/data"'),
+              'wal-dir'                            => esc_regex('"/var/lib/influxdb/wal"'),
+              'trace-logging-enabled'              => false,
+              'query-log-enabled'                  => true,
+              'cache-max-memory-size'              => 1048576000,
+              'cache-snapshot-memory-size'         => 26214400,
+              'cache-snapshot-write-cold-duration' => esc_regex('"10m"'),
+              'compact-full-write-cold-duration'   => esc_regex('"4h"'),
+              'max-series-per-database'            => 1000000,
+              'max-values-per-tag'                 => 100000,
+            },
+            'coordinator' => {
+              'write-timeout'          => esc_regex('"10s"'),
+              'max-concurrent-queries' => 0,
+              'query-timeout'          => esc_regex('"0s"'),
+              'log-queries-after'      => esc_regex('"0s"'),
+              'max-select-point'       => 0,
+              'max-select-series'      => 0,
+              'max-select-buckets'     => 0,
+            },
+            'retention' => {
+              'enabled'        => true,
+              'check-interval' => esc_regex('"30m"'),
+            },
+            'shard_precreation' => {
+              'enabled'        => true,
+              'check-interval' => esc_regex('"10m"'),
+              'advance-period' => esc_regex('"30m"'),
+            },
+            'monitor' => {
+              'store-enabled'  => true,
+              'store-database' => esc_regex('"_internal"'),
+              'store-interval' => esc_regex('"10s"'),
+            },
+            'admin' => {
+              'enabled'           => false,
+              'bind-address'      => esc_regex('":8083"'),
+              'https-enabled'     => false,
+              'https-certificate' => esc_regex('"/etc/ssl/influxdb.pem"'),
+            },
+            'http' => {
+              'enabled'              => true,
+              'bind-address'         => esc_regex('":8086"'),
+              'auth-enabled'         => false,
+              'realm'                => esc_regex('"InfluxDB"'),
+              'log-enabled'          => true,
+              'write-tracing'        => false,
+              'pprof-enabled'        => true,
+              'https-enabled'        => false,
+              'https-certificate'    => esc_regex('"/etc/ssl/influxdb.pem"'),
+              'https-private-key'    => "",
+              'shared-sercret'       => "",
+              'max-row-limit'        => 10000,
+              'max-connection-limit' => 0,
+              'unix-socket-enabled'  => false,
+              'bind-socket'          => esc_regex('"/var/run/influxdb.sock"'),
+            },
+            'subscriber' => {
+              'enabled'              => true,
+              'http-timeout'         => esc_regex('"30s"'),
+              'insecure-skip-verify' => false,
+              'ca-certs'             => '""',
+              'write-concurrency'    => 40,
+              'write-buffer-size'    => 1000,
+            },
           }
-        }}
 
-        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf') }
-        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/bind-address = ":8088"/) }
-        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/check-interval = "20m"/) }
-        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/wal-dir = "\/var\/lib\/influxdb\/wal"/) }
-        it { is_expected.to contain_file('/etc/influxdb/influxdb.conf').with_content(/batch-size = 5000/) }
+          $toml_section_data = {
+            'graphite' => {
+              'default' => {
+                'enabled'           => false,
+                'database'          => esc_regex('"graphite"'),
+                'retention-policy'  => '',
+                'bind-address'      => esc_regex('":2003"'),
+                'protocol'          => esc_regex('"tcp"'),
+                'consistency-level' => esc_regex('"one"'),
+                'batch-size'        => 5000,
+                'batch-pending'     => 10,
+                'batch-timeout'     => esc_regex('"1s"'),
+                'udp-read-buffer'   => 0,
+                'separator'         => esc_regex('"."'),
+                'tags'              => esc_regex("[]"),
+                'templates'         => esc_regex("[]"),
+              }
+            },
+            'collectd' => {
+              'default' => {
+                'enabled'          => false,
+                'bind-address'     => esc_regex('":25826"'),
+                'database'         => esc_regex('"collectd"'),
+                'retention-policy' => esc_regex('""'),
+                'typesdb'          => esc_regex('"/usr/share/collectd/types.db"'),
+                'batch-size'       => 5000,
+                'batch-pending'    => 10,
+                'batch-timeout'    => esc_regex('"10s"'),
+                'read-buffer'      => 0,
+              }
+            },
+            'opentsdb' => {
+              'default' => {
+                'enabled'           => false,
+                'bind-address'      => esc_regex('":4242"'),
+                'database'          => esc_regex('"opentsdb"'),
+                'retention-policy'  => esc_regex('""'),
+                'consistency-level' => esc_regex('"one"'),
+                'tls-enabled'       => false,
+                'certificate'       => esc_regex('"/etc/ssl/influxdb.pem"'),
+                'log-point-errors'  => true,
+                'batch-size'        => 1000,
+                'batch-pending'     => 5,
+                'batch-timeout'     => esc_regex('"1s"'),
+              }
+            },
+            'udp' => {
+              'default' => {
+                'enabled'          => false,
+                'bind-address'     => esc_regex('":8089"'),
+                'database'         => esc_regex('"udp"'),
+                'retention-policy' => '""',
+                'batch-size'       => 5000,
+                'batch-pending'    => 10,
+                'batch-timeout'    => esc_regex('"1s"'),
+                'read-buffer'      => 0,
+              }
+            },
+            'continuous' => {
+              'default' => {
+                'enabled'      => true,
+                'log-enabled'  => true,
+                'run-interval' => esc_regex('"1s"'),
+              }
+            },
+            'hinted_handoff' => {},
+          }
+
+          it do
+            is_expected.to contain_file(conf).with({
+              :ensure => 'file',
+              :owner  => 'root',
+              :group  => 'root',
+              :mode   => '0644',
+            })
+          end
+
+          $template_data.each do |section, section_data|
+            describe "Section #{section}" do
+              section_data.each do |setting, expectation|
+                it { is_expected.to contain_file(conf).with_content(/#{setting} = #{expectation}/) }
+              end
+            end
+          end
+
+          $toml_section_data.each do |section, toml_data|
+            describe "Section #{section}" do
+              toml_data.each do |name, section_data|
+                section_data.each do |setting, expectation|
+                  it { is_expected.to contain_file(conf).with_content(/#{setting} = #{expectation}/) }
+                end
+              end
+            end
+          end
+
+
+        end
+
+        describe 'startup config' do
+
+          let(:startup_conf) do
+            if facts[:operatingsystemmajrelease].to_i < 7 and facts[:osfamily] == 'RedHat'
+              '/etc/sysconfig/influxdb'
+            else
+              '/etc/default/influxdb'
+            end
+          end
+
+          it do
+            is_expected.to contain_file(startup_conf).with({
+              :ensure => 'file',
+              :owner  => 'root',
+              :group  => 'root',
+              :mode   => '0644',
+            })
+          end
+
+        end
       end
 
     end

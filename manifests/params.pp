@@ -187,20 +187,9 @@ class influxdb::params {
 
     'RedHat': {
 
-      case $operatingsystemmajrelease {
-
-        7: {
-
-          $startup_conf          = '/etc/default/influxdb'
-
-        }
-
-        default: {
-
-          $startup_conf          = '/etc/sysconfig/influxdb'
-
-        }
-
+      $startup_conf = $::operatingsystemmajrelease ? {
+        /7/     => '/etc/default/influxdb',
+        default => '/etc/sysconfig/influxdb'
       }
 
     }

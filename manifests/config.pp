@@ -1,6 +1,6 @@
 #
 class influxdb::config(
-  $conf                      = '/tmp/influxdb::config',
+  $conf                      = $influxdb::config_file,
   $conf_owner                = 'root',
   $conf_group                = 'root',
   $conf_mode                 = '0644',
