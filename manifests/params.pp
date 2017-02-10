@@ -11,8 +11,6 @@ class influxdb::params {
   $influxd_opts                                 = undef
   $manage_install                               = true
 
-  $reporting_disabled                           = false
-
   $global_config = {
     'reporting-disabled' => false,
     'bind-address'       => ':8088',
@@ -181,7 +179,7 @@ class influxdb::params {
 
     }
 
-    'RedHat' {
+    'RedHat': {
       $manage_repos = false
 
       case $operatingsystemmajrelease {
