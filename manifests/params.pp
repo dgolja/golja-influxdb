@@ -7,7 +7,7 @@ class influxdb::params {
   $config_file                                  = '/etc/influxdb/influxdb.conf'
 
   $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
-  $influxdb_stdout_log                          = '/dev/null'
+  $influxdb_stdout_log                          = '/var/log/influxdb/influxd.log'
   $influxd_opts                                 = undef
   $manage_install                               = true
 
