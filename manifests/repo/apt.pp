@@ -1,11 +1,14 @@
 # PRIVATE CLASS: do not use directly
 
-class influxdb::repo::apt {
+class influxdb::repo::apt(
+  $ensure = 'present'
+) {
 
   #downcase operatingsystem
   $_operatingsystem = downcase($::operatingsystem)
 
   apt::source { 'repos.influxdata.com':
+    ensure      => $ensure,
     location    => "https://repos.influxdata.com/${_operatingsystem}",
     release     => $::lsbdistcodename,
     repos       => 'stable',
