@@ -167,11 +167,9 @@ class influxdb::params {
   }
 
   $continuous_queries_config = {
-    'default' => {
-      'enabled'      => true,
-      'log-enabled'  => true,
-      'run-interval' => '1s',
-    }
+    'enabled'      => true,
+    'log-enabled'  => true,
+    'run-interval' => '1s',
   }
 
   # deprecated as of 1.x?

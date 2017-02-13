@@ -119,6 +119,11 @@ class { 'influxdb':
               'write-concurrency'    => 40,
               'write-buffer-size'    => 1000,
             },
+            'continuous' => {
+              'enabled'      => true,
+              'log-enabled'  => true,
+              'run-interval' => esc_regex('"1s"'),
+            },
           }
 
           $toml_section_data = {
@@ -179,14 +184,7 @@ class { 'influxdb':
                 'read-buffer'      => 0,
               }
             },
-            'continuous' => {
-              'default' => {
-                'enabled'      => true,
-                'log-enabled'  => true,
-                'run-interval' => esc_regex('"1s"'),
-              }
-            },
-            'hinted_handoff' => {},
+           'hinted_handoff' => {},
           }
 
           it do
