@@ -8,28 +8,17 @@ describe 'influxdb::repo' do
 
       describe 'with default params' do
 
-        let(:defined_repos) do
-          {
-            'Debian' => {
-              'contain'     => 'influxdb::repo::apt',
-              'not_contain' => 'influxdb::repo::yum',
-            },
-            'RedHat' => {
-              'contain'     => 'influxdb::repo::yum',
-              'not_contain' => 'influxdb::repo::apt',
-            }
-          }
-        end
-
-        let(:osfamily) { facts[:osfamily].to_s }
-        let(:contained_class) { defined_repos[osfamily]['contain'] }
-        let(:not_contained_class) { defined_repos[osfamily]['not_contain'] }
+        let(:contained_class) { get_repo_contain_class(facts) }
+        let(:not_contained_class) { get_repo_not_contain_class(facts) }
 
         it { is_expected.to contain_class(contained_class) }
         it { is_expected.to_not contain_class(not_contained_class) }
 
         it { is_expected.to contain_class('influxdb::repo') }
         it { is_expected.to compile }
+
+        # ordering tests
+        it { is_expected.to contain_class(contained_class).that_comes_before('Class[influxdb::repo]') }
 
       end
 

@@ -30,6 +30,25 @@ include influxdb
 
       end
 
+      describe 'when $manage_repos=true' do
+        let(:pre_condition) do
+          <<-EOS
+
+          class { 'influxdb':
+            manage_repos => true,
+          }
+
+          EOS
+        end
+
+        let(:contained_class) { get_repo_contain_class(facts) }
+
+        it { is_expected.to contain_class(contained_class).that_comes_before('Class[influxdb::repo]') }
+        it { is_expected.to contain_class('influxdb::repo').that_comes_before('Class[influxdb::install]') }
+        it { is_expected.to contain_class('influxdb::install').that_comes_before('Class[influxdb::config]') }
+
+      end
+
     end
   end
 
