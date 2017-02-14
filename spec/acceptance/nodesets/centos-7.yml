@@ -5,6 +5,7 @@ HOSTS:
     platform: el-7-x86_64
     image: centos:7
     hypervisor: docker
+    docker_preserve_image: true
     docker_image_commands:
       - 'yum install -y tar'
     docker_cmd: '["/sbin/init", "/usr/sbin/sshd","-D"]'

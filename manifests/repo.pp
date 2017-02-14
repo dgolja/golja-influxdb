@@ -3,11 +3,11 @@ class influxdb::repo {
 
   case $::osfamily {
     'Debian': {
-      include influxdb::repo::apt
+      require influxdb::repo::apt
     }
 
     'RedHat': {
-      include influxdb::repo::yum
+      require influxdb::repo::yum
     }
 
     default: {

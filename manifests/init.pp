@@ -40,7 +40,7 @@ class influxdb(
 
   anchor { 'influxdb::start': }  ->
   class { 'influxdb::install': } ->
-  class { 'influxdb::config': }  ~>
+  class { 'influxdb::config': }  ->
   class { 'influxdb::service': } ->
   anchor { 'influxdb::end': }
 

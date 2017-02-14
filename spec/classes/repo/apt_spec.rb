@@ -13,15 +13,27 @@ describe 'influxdb::repo::apt' do
         describe 'with default params' do
           let(:_operatingsystem) { facts[:operatingsystem].downcase }
 
+          let(:key) do
+            {
+              'id'     => '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
+              'source' => 'https://repos.influxdata.com/influxdb.key',
+            }
+          end
+
+          let(:include) do
+            {
+              'src' => false,
+            }
+          end
+
           it do
             is_expected.to contain_apt__source('repos.influxdata.com').with({
-              :ensure      => 'present',
-              :location    => "https://repos.influxdata.com/#{_operatingsystem}",
-              :release     => facts[:lsbdistcodename],
-              :repos       => 'stable',
-              :key         => '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
-              :key_source  => 'https://repos.influxdata.com/influxdb.key',
-              :include_src => false,
+              :ensure   => 'present',
+              :location => "https://repos.influxdata.com/#{_operatingsystem}",
+              :release  => facts[:lsbdistcodename],
+              :repos    => 'stable',
+              :key      => key,
+              :include  => include,
             })
           end
 

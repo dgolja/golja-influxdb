@@ -37,6 +37,7 @@ class influxdb::config(
     group   => $conf_group,
     mode    => $conf_mode,
     content => template($conf_template),
+    require => Package['influxdb'],
   }
 
   if $startup_conf {
@@ -47,6 +48,7 @@ class influxdb::config(
       group   => $conf_group,
       mode    => $conf_mode,
       content => template($startup_conf_template),
+      require => Package['influxdb'],
     }
 
   }

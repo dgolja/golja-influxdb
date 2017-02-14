@@ -27,7 +27,7 @@ describe 'influxdb class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfam
       it { should be_listening }
     end
 
-    describe process("influxdb") do
+    describe process("influxd") do
       its(:user) { should eq "influxdb" }
     end
 

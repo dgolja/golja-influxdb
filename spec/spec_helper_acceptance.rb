@@ -9,22 +9,9 @@ include BeakerSpecHelper
 # https://github.com/puppetlabs/beaker-puppet_install_helper
 run_puppet_install_helper
 
-unless ENV['RS_PROVISION'] == 'no'
-  # This will install the latest available package on el and deb based
-  # systems fail on windows and osx, and install via gem on other *nixes
-  foss_opts = { :default_action => 'gem_install' }
-  if default.is_pe?; then install_pe; else install_puppet( foss_opts ); end
-
-  hosts.each do |host|
-    if host['platform'] =~ /debian/
-      on host, 'echo \'export PATH=/var/lib/gems/1.8/bin/:${PATH}\' >> ~/.bashrc'
-    end
-
-    on host, "mkdir -p #{host['distmoduledir']}"
-  end
-end
-
 UNSUPPORTED_PLATFORMS = ['Suse','windows','AIX','Solaris']
+
+$BEAKER_LOG = '/tmp/beaker.log'
 
 RSpec.configure do |c|
   # Project root
@@ -39,8 +26,21 @@ RSpec.configure do |c|
     # Install module and dependencies
     hosts.each do |host|
 
+      File.open($BEAKER_LOG, "w") do |fd|
+        fd.write(JSON.pretty_generate(host.host_hash))
+        fd.write("\n" + "-"*80 + "\n")
+        fd.write(JSON.pretty_generate(host.options))
+      end
+
+      if host['platform'] =~ /ubuntu/
+        on host, puppet('resource package apt-transport-https ensure=installed')
+      end
+
       on host, puppet('resource package git ensure=installed')
-      on host, puppet('module install puppetlabs-stdlib --version 4.12.0'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('resource package net-tools ensure=installed')
+      on host, puppet('resource package iproute ensure=installed')
+      # on host, puppet('module install puppetlabs-stdlib --version 4.12.0'), { :acceptable_exit_codes => [0,1] }
+      # on host, puppet('module install puppetlabs-apt    --version 2.3.0'), { :acceptable_exit_codes => [0,1] }
 
       copy_module_to(host, :source => proj_root, :module_name => module_name)
 
