@@ -306,15 +306,23 @@ Default: undef
 
 ##### `global_config`
 
-A hash of global configuration settings, which is dependent on the
-version of influxdb that you are installing.  Consult the influxdb docs.
+A hash of global configuration options for `influxdb.conf`
 
-*NOTE*: The default for this hash is what is in 1.2.0 of the influx
-docs.
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs.
 
-[global options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#global-options)
+[Influx Global Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#global-options)
 
 [params.pp](manifests/params.pp#L21)
+
+##### `meta_config`
+
+A hash of meta configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Meta Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#meta)
+[params.pp](manifests/params.pp#26)
+
 
 ## Limitations
 
