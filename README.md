@@ -89,7 +89,6 @@ Install influxdb
 class {'influxdb':}
 ```
 
-Join a cluster
 ```puppet
 
 # These are defaults, but demonstrates how you can change sections of data
@@ -105,8 +104,6 @@ class {'influxdb':
   version        => '1.2.0',
 }
 ```
-For more info on setting up a raft cluster, see the [InfluxDB docs](https://docs.influxdata.com/influxdb/v0.10/guides/clustering/)
-
 
 Enable Graphite plugin with one database
 
