@@ -40,10 +40,9 @@ Highlights
 * A new fact was added `influxdb_version`.
 * The influxdb.conf.erb file was refactored.
 * Added and fixed a lot of rspec puppet tests.
-* Fixed all the beaker tests and they are now in working order again.
+* Fixed all the beaker tests, they work now.
 * This module now supports influxdb >= 1.x < 2.x
-* Major change to the abundance of class parameters now hashes vs
-  individual items.
+* Major change to the original class parameters now hashes vs individual items.
 
 
 Notes for version 4.0.0+:
