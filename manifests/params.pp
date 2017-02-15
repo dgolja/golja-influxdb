@@ -19,7 +19,7 @@ class influxdb::params {
   $manage_install        = true
 
   $global_config = {
-    'reporting-disabled' => false,
+    'reporting-disabled' => true,
     'bind-address'       => ':8088',
   }
 

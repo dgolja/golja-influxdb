@@ -46,7 +46,7 @@ class { 'influxdb':
           $template_data = {
            'global' => {
               'bind-address'       => '":8088"',
-              'reporting-disabled' => false,
+              'reporting-disabled' => true,
             },
             'meta' => {
               'dir'                  => esc_regex('"/var/lib/influxdb/meta"'),
