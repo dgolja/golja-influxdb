@@ -42,6 +42,9 @@ RSpec.configure do |c|
       # on host, puppet('module install puppetlabs-stdlib --version 4.12.0'), { :acceptable_exit_codes => [0,1] }
       # on host, puppet('module install puppetlabs-apt    --version 2.3.0'), { :acceptable_exit_codes => [0,1] }
 
+      scp_to(host, "#{proj_root}/spec/fixtures/test_facter.sh", '/usr/bin/test_facter.sh')
+      scp_to(host, "#{proj_root}/spec/fixtures/test_facter.rb", '/usr/bin/test_facter.rb')
+
       copy_module_to(host, :source => proj_root, :module_name => module_name)
 
       # https://github.com/camptocamp/beaker_spec_helper

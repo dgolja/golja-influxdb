@@ -31,6 +31,10 @@ describe 'influxdb class', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfam
       its(:user) { should eq "influxdb" }
     end
 
+    describe command("/usr/bin/test_facter.sh influxdb_version") do
+      its(:stdout) { is_expected.to eq "1.2.0\n" }
+    end
+
     describe port('8089') do
       it { should_not be_listening }
     end
