@@ -6,6 +6,7 @@ HOSTS:
     image: centos:7
     hypervisor: docker
     docker_preserve_image: true
+    docker_container_name: "beaker-influxdb-centos-7"
     docker_image_commands:
       - 'yum install -y tar'
     docker_cmd: '["/sbin/init", "/usr/sbin/sshd","-D"]'

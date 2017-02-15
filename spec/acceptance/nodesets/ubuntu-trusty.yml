@@ -6,6 +6,7 @@ HOSTS:
     image: ubuntu:trusty
     hypervisor: docker
     docker_preserve_image: true
+    docker_container_name: "beaker-influxdb-ubuntu-trusty"
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
       # ensure that upstart is booting correctly in the container

@@ -6,6 +6,7 @@ HOSTS:
     image: ubuntu:precise
     hypervisor: docker
     docker_preserve_image: true
+    docker_container_name: "beaker-influxdb-ubuntu-precise"
     docker_image_commands:
       - 'apt-get install -y net-tools'
     docker_cmd: '["/sbin/init"]'
