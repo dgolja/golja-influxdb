@@ -312,7 +312,8 @@ version of influxdb that you are installing.  Consult the influxdb docs.
 *NOTE*: The default for this hash is what is in 1.2.0 of the influx
 docs.
 
-https://docs.influxdata.com/influxdb/v1.2/administration/config/#global-options
+[global options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#global-options)
+
 [params.pp](manifests/params.pp#L21)
 
 ## Limitations
