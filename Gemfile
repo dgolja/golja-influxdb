@@ -10,6 +10,13 @@ def location_for(place, fake_version = nil)
   end
 end
 
+ruby_ver = RUBY_VERSION.gsub(/\./, "").to_i
+if ruby_ver < 225
+  ENV['BEAKER_VERSION'].nil? ? ENV['BEAKER_VERSION'] = '2.51.0' : nil
+else
+  ENV['BEAKER_VERSION'].nil? ? ENV['BEAKER_VERSION'] = '3.10.0' : nil
+end
+
 group :development, :test do
   gem 'rake',                   require: false
   gem 'rspec',                  require: false

@@ -298,6 +298,7 @@ Default: /var/log/influxdb/influxd.log
 Where influx will log stdout messages
 Default: /var/log/influxdb/influxd.log
 
+
 ##### `influxd_opts`
 
 String of startup config options that need to be present.
@@ -314,6 +315,7 @@ A hash of global configuration options for `influxdb.conf`
 
 [params.pp](manifests/params.pp#L21)
 
+
 ##### `meta_config`
 
 A hash of meta configuration options for `influxdb.conf`
@@ -321,8 +323,157 @@ A hash of meta configuration options for `influxdb.conf`
 *NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
 
 [Influx Meta Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#meta)
+
 [params.pp](manifests/params.pp#26)
 
+
+##### `data_config`
+
+A hash of data configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Data Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#data)
+
+[params.pp](manifests/params.pp#32)
+
+
+##### `coordinator_config`
+
+A hash of coordinator configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Coordinator Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#coordinator)
+
+[params.pp](manifests/params.pp#45)
+
+
+##### `retention_config`
+
+A hash of retention configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Retention Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#retention)
+
+[params.pp](manifests/params.pp#55)
+
+
+##### `shard_precreation_config`
+
+A hash of shard_precreation configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Shard Precreation Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#shard-precreation)
+
+[params.pp](manifests/params.pp#60)
+
+
+##### `monitor_config`
+
+A hash of monitor configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Monitor Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#monitor)
+
+[params.pp](manifests/params.pp#66)
+
+
+##### `admin_config`
+
+A hash of admin configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Admin Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#admin)
+
+[params.pp](manifests/params.pp#74)
+
+
+##### `http_config`
+
+A hash of http configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx HTTP Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#http)
+
+[params.pp](manifests/params.pp#81)
+
+
+##### `subscriber_config`
+
+A hash of subscriber configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Subscriber Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#subscriber)
+
+[params.pp](manifests/params.pp#99)
+
+
+##### `graphite_config`
+
+A hash of graphite configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Graphite Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#graphite)
+
+[params.pp](manifests/params.pp#108)
+
+
+##### `collectd_config`
+
+A hash of collectd configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Collectd Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#collectd)
+
+[params.pp](manifests/params.pp#126)
+
+
+##### `opentsdb_config`
+
+A hash of opentsdb configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Opentsdb Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#opentsdb)
+
+[params.pp](manifests/params.pp#140)
+
+
+##### `udp_config`
+
+A hash of udp configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Udp Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#udp)
+
+[params.pp](manifests/params.pp#156)
+
+
+##### `continuous_queries_config`
+
+A hash of continuous queries configuration options for `influxdb.conf`
+
+*NOTE*: The default for this hash is what is in 1.2.0 of the influx docs
+
+[Influx Continuous Queries Options](https://docs.influxdata.com/influxdb/v1.2/administration/config/#continuous-queries)
+
+[params.pp](manifests/params.pp#169)
+
+
+##### `hinted_handoff_config`
+
+This is depcreated as of influxdb >= 1.0
+Default: {}
 
 ## Limitations
 
@@ -333,6 +484,14 @@ This module has been tested on:
 *   CentOS 6/7
 
 ## Development
+
+In order to better facilitate beaker testing, the Gemfile was modified to
+support environment variables.  You must set this enviroment variable
+before running `bundle exec *`.  The Gemfile will automatically set this
+for you but you can also override it.
+```
+export BEAKER_VERSION=3.10.0 # assumes ruby >= 2.2.5
+```
 
 Please see CONTRIBUTING.md
 
