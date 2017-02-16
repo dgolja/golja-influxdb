@@ -80,20 +80,20 @@ class influxdb::params {
 
   $http_config = {
     'enabled'              => true,
-    'bind-address'         => ":8086",
+    'bind-address'         => ':8086',
     'auth-enabled'         => false,
-    'realm'                => "InfluxDB",
+    'realm'                => 'InfluxDB',
     'log-enabled'          => true,
     'write-tracing'        => false,
     'pprof-enabled'        => true,
     'https-enabled'        => false,
-    'https-certificate'    => "/etc/ssl/influxdb.pem",
-    'https-private-key'    => "",
-    'shared-sercret'       => "",
+    'https-certificate'    => '/etc/ssl/influxdb.pem',
+    'https-private-key'    => '',
+    'shared-sercret'       => '',
     'max-row-limit'        => 10000,
     'max-connection-limit' => 0,
     'unix-socket-enabled'  => false,
-    'bind-socket'          => "/var/run/influxdb.sock",
+    'bind-socket'          => '/var/run/influxdb.sock',
   }
 
   $subscriber_config = {
@@ -108,7 +108,7 @@ class influxdb::params {
   $graphite_config = {
     'default' => {
       'enabled'           => false,
-      'database'          => "graphite",
+      'database'          => 'graphite',
       'retention-policy'  => '',
       'bind-address'      => ':2003',
       'protocol'          => 'tcp',
