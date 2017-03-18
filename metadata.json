@@ -39,6 +39,9 @@
         "12.04",
         "14.04"
       ]
+    },
+    {
+      "operatingsystem": "Archlinux"
     }
   ],
   "requirements": [
