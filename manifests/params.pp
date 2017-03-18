@@ -11,8 +11,6 @@ class influxdb::params {
 
   $config_file           = '/etc/influxdb/influxdb.conf'
 
-  $manage_repos          = false
-
   $influxdb_stderr_log   = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log   = '/var/log/influxdb/influxd.log'
   $influxd_opts          = undef
@@ -176,29 +174,24 @@ class influxdb::params {
   $hinted_handoff_config = {}
 
   case $::osfamily {
-
     'Debian': {
-
-      $startup_conf          = '/etc/default/influxdb'
-
+      $startup_conf = '/etc/default/influxdb'
+      $manage_repos = false
     }
-
     'RedHat': {
-
       $startup_conf = $::operatingsystemmajrelease ? {
         /7/     => '/etc/default/influxdb',
         default => '/etc/sysconfig/influxdb'
       }
-
+      $manage_repos = false
     }
-
+    'Archlinux': {
+      $startup_conf = '/etc/default/influxdb'
+      $manage_repos = false
+    }
     default: {
-
       fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
-
       module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
     }
-
   }
-
 }
