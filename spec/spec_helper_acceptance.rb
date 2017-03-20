@@ -9,9 +9,9 @@ include BeakerSpecHelper
 # https://github.com/puppetlabs/beaker-puppet_install_helper
 run_puppet_install_helper
 
-UNSUPPORTED_PLATFORMS = ['Suse','windows','AIX','Solaris']
+UNSUPPORTED_PLATFORMS = %w(Suse windows AIX Solaris).freeze
 
-$BEAKER_LOG = '/tmp/beaker.log'
+BEAKER_LOG = '/tmp/beaker.log'.freeze
 
 RSpec.configure do |c|
   # Project root
@@ -25,14 +25,13 @@ RSpec.configure do |c|
   c.before :suite do
     # Install module and dependencies
     hosts.each do |host|
-
-      File.open($BEAKER_LOG, "w") do |fd|
+      File.open(BEAKER_LOG, 'w') do |fd|
         fd.write(JSON.pretty_generate(host.host_hash))
-        fd.write("\n" + "-"*80 + "\n")
+        fd.write("\n" + '-' * 80 + "\n")
         fd.write(JSON.pretty_generate(host.options))
       end
 
-      if host['platform'] =~ /ubuntu/
+      if host['platform'] =~ %r{ubuntu}
         on host, puppet('resource package apt-transport-https ensure=installed')
       end
 
@@ -45,10 +44,10 @@ RSpec.configure do |c|
       scp_to(host, "#{proj_root}/spec/fixtures/test_facter.sh", '/usr/bin/test_facter.sh')
       scp_to(host, "#{proj_root}/spec/fixtures/test_facter.rb", '/usr/bin/test_facter.rb')
 
-      copy_module_to(host, :source => proj_root, :module_name => module_name)
+      copy_module_to(host, source: proj_root, module_name: module_name)
 
       # https://github.com/camptocamp/beaker_spec_helper
-      BeakerSpecHelper::spec_prep(host)
+      BeakerSpecHelper.spec_prep(host)
     end
   end
 end
