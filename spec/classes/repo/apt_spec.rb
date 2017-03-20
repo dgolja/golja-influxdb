@@ -4,7 +4,7 @@ describe 'influxdb::repo::apt' do
 
   on_supported_os.each do |os, facts|
 
-    # A little ugly, but we only want to run our tests for RHEL based machines.
+    # A little ugly, but we only want to run our tests for Debian based machines.
     if facts[:operatingsystem] == 'Debian'
 
       context "on #{os}" do
@@ -38,7 +38,7 @@ describe 'influxdb::repo::apt' do
           end
 
           it { is_expected.to contain_class('influxdb::repo::apt') }
-          it { is_expected.to compile }
+          it { is_expected.to compile.with_all_deps }
         end
       end
     end

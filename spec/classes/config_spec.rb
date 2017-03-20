@@ -20,6 +20,7 @@ include influxdb
 
         it { is_expected.to contain_class('influxdb') }
         it { is_expected.to contain_class('influxdb::service') }
+        it { is_expected.to compile.with_all_deps }
 
       end
 
