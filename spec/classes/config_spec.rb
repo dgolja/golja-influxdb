@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 def esc_regex(v)
-  return Regexp.new(Regexp.escape(v))
+  Regexp.new(Regexp.escape(v))
 end
 
 describe 'influxdb::config' do
-
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -17,18 +16,14 @@ include influxdb
           EOS
         end
 
-
         it { is_expected.to contain_class('influxdb') }
         it { is_expected.to contain_class('influxdb::service') }
         it { is_expected.to compile.with_all_deps }
-
       end
 
       context 'when Fact[:influxdb_version] = 1.x' do
         let(:facts) do
-          facts.merge({
-            :influxdb_version => '1.0.0'
-          })
+          facts.merge(influxdb_version: '1.0.0')
         end
 
         let(:pre_condition) do
@@ -41,59 +36,59 @@ class { 'influxdb':
           EOS
         end
 
-        describe "influxdb.conf" do
+        describe 'influxdb.conf' do
           let(:conf) { '/etc/influxdb/influxdb.conf' }
 
-          $template_data = {
-           'global' => {
-              'bind-address'       => '":8088"',
-              'reporting-disabled' => true,
+          template_data = {
+            'global' => {
+              'bind-address' => '":8088"',
+              'reporting-disabled' => true
             },
             'meta' => {
-              'dir'                  => esc_regex('"/var/lib/influxdb/meta"'),
+              'dir' => esc_regex('"/var/lib/influxdb/meta"'),
               'retention-autocreate' => true,
-              'logging-enabled'      => true,
+              'logging-enabled'      => true
             },
             'data' => {
-              'dir'                                => esc_regex('"/var/lib/influxdb/data"'),
+              'dir' => esc_regex('"/var/lib/influxdb/data"'),
               'wal-dir'                            => esc_regex('"/var/lib/influxdb/wal"'),
               'trace-logging-enabled'              => false,
               'query-log-enabled'                  => true,
-              'cache-max-memory-size'              => 1048576000,
-              'cache-snapshot-memory-size'         => 26214400,
+              'cache-max-memory-size'              => 1_048_576_000,
+              'cache-snapshot-memory-size'         => 26_214_400,
               'cache-snapshot-write-cold-duration' => esc_regex('"10m"'),
               'compact-full-write-cold-duration'   => esc_regex('"4h"'),
-              'max-series-per-database'            => 1000000,
-              'max-values-per-tag'                 => 100000,
+              'max-series-per-database'            => 1_000_000,
+              'max-values-per-tag'                 => 100_000
             },
             'coordinator' => {
-              'write-timeout'          => esc_regex('"10s"'),
+              'write-timeout' => esc_regex('"10s"'),
               'max-concurrent-queries' => 0,
               'query-timeout'          => esc_regex('"0s"'),
               'log-queries-after'      => esc_regex('"0s"'),
               'max-select-point'       => 0,
               'max-select-series'      => 0,
-              'max-select-buckets'     => 0,
+              'max-select-buckets'     => 0
             },
             'retention' => {
               'enabled'        => true,
-              'check-interval' => esc_regex('"30m"'),
+              'check-interval' => esc_regex('"30m"')
             },
             'shard_precreation' => {
               'enabled'        => true,
               'check-interval' => esc_regex('"10m"'),
-              'advance-period' => esc_regex('"30m"'),
+              'advance-period' => esc_regex('"30m"')
             },
             'monitor' => {
               'store-enabled'  => true,
               'store-database' => esc_regex('"_internal"'),
-              'store-interval' => esc_regex('"10s"'),
+              'store-interval' => esc_regex('"10s"')
             },
             'admin' => {
-              'enabled'           => false,
+              'enabled' => false,
               'bind-address'      => esc_regex('":8083"'),
               'https-enabled'     => false,
-              'https-certificate' => esc_regex('"/etc/ssl/influxdb.pem"'),
+              'https-certificate' => esc_regex('"/etc/ssl/influxdb.pem"')
             },
             'http' => {
               'enabled'              => true,
@@ -105,12 +100,12 @@ class { 'influxdb':
               'pprof-enabled'        => true,
               'https-enabled'        => false,
               'https-certificate'    => esc_regex('"/etc/ssl/influxdb.pem"'),
-              'https-private-key'    => "",
-              'shared-sercret'       => "",
-              'max-row-limit'        => 10000,
+              'https-private-key'    => '',
+              'shared-sercret'       => '',
+              'max-row-limit'        => 10_000,
               'max-connection-limit' => 0,
               'unix-socket-enabled'  => false,
-              'bind-socket'          => esc_regex('"/var/run/influxdb.sock"'),
+              'bind-socket'          => esc_regex('"/var/run/influxdb.sock"')
             },
             'subscriber' => {
               'enabled'              => true,
@@ -118,16 +113,16 @@ class { 'influxdb':
               'insecure-skip-verify' => false,
               'ca-certs'             => '""',
               'write-concurrency'    => 40,
-              'write-buffer-size'    => 1000,
+              'write-buffer-size'    => 1000
             },
             'continuous' => {
-              'enabled'      => true,
+              'enabled' => true,
               'log-enabled'  => true,
-              'run-interval' => esc_regex('"1s"'),
-            },
+              'run-interval' => esc_regex('"1s"')
+            }
           }
 
-          $toml_section_data = {
+          toml_section_data = {
             'graphite' => {
               'default' => {
                 'enabled'           => false,
@@ -141,8 +136,8 @@ class { 'influxdb':
                 'batch-timeout'     => esc_regex('"1s"'),
                 'udp-read-buffer'   => 0,
                 'separator'         => esc_regex('"."'),
-                'tags'              => esc_regex("[]"),
-                'templates'         => esc_regex("[]"),
+                'tags'              => esc_regex('[]'),
+                'templates'         => esc_regex('[]')
               }
             },
             'collectd' => {
@@ -155,7 +150,7 @@ class { 'influxdb':
                 'batch-size'       => 5000,
                 'batch-pending'    => 10,
                 'batch-timeout'    => esc_regex('"10s"'),
-                'read-buffer'      => 0,
+                'read-buffer'      => 0
               }
             },
             'opentsdb' => {
@@ -170,7 +165,7 @@ class { 'influxdb':
                 'log-point-errors'  => true,
                 'batch-size'        => 1000,
                 'batch-pending'     => 5,
-                'batch-timeout'     => esc_regex('"1s"'),
+                'batch-timeout'     => esc_regex('"1s"')
               }
             },
             'udp' => {
@@ -182,80 +177,71 @@ class { 'influxdb':
                 'batch-size'       => 5000,
                 'batch-pending'    => 10,
                 'batch-timeout'    => esc_regex('"1s"'),
-                'read-buffer'      => 0,
+                'read-buffer'      => 0
               }
             },
-           'hinted_handoff' => {},
+            'hinted_handoff' => {}
           }
 
           it do
-            is_expected.to contain_file(conf).with({
-              :ensure => 'file',
-              :owner  => 'root',
-              :group  => 'root',
-              :mode   => '0644',
-            })
+            is_expected.to contain_file(conf).with(ensure: 'file',
+                                                   owner: 'root',
+                                                   group: 'root',
+                                                   mode: '0644')
           end
 
-          $template_data.each do |section, section_data|
+          template_data.each do |section, section_data|
             describe "Section #{section}" do
               section_data.each do |setting, expectation|
-                it { is_expected.to contain_file(conf).with_content(/#{setting} = #{expectation}/) }
+                it { is_expected.to contain_file(conf).with_content(%r{#{setting} = #{expectation}}) }
               end
             end
           end
 
-          $toml_section_data.each do |section, toml_data|
+          toml_section_data.each do |section, toml_data|
             describe "Section #{section}" do
-              toml_data.each do |name, section_data|
+              toml_data.each do |_name, section_data|
                 section_data.each do |setting, expectation|
-                  it { is_expected.to contain_file(conf).with_content(/#{setting} = #{expectation}/) }
+                  it { is_expected.to contain_file(conf).with_content(%r{#{setting} = #{expectation}}) }
                 end
               end
             end
           end
-
         end
 
         describe 'startup config' do
-
           let(:startup_conf) do
-            if facts[:operatingsystemmajrelease].to_i < 7 and facts[:osfamily] == 'RedHat'
+            if facts[:operatingsystemmajrelease].to_i < 7 && (facts[:osfamily] == 'RedHat')
               '/etc/sysconfig/influxdb'
             else
               '/etc/default/influxdb'
             end
           end
 
-          $stderr_expected = esc_regex('/var/log/influxdb/influxd.log')
-          $stdout_expected = esc_regex('/var/log/influxdb/influxd.log')
-          $influxd_opts_expected = esc_regex('"foo bar"')
+          stderr_expected = esc_regex('/var/log/influxdb/influxd.log')
+          stdout_expected = esc_regex('/var/log/influxdb/influxd.log')
+          influxd_opts_expected = esc_regex('"foo bar"')
 
           it do
-            is_expected.to contain_file(startup_conf).with({
-              :ensure => 'file',
-              :owner  => 'root',
-              :group  => 'root',
-              :mode   => '0644',
-            })
+            is_expected.to contain_file(startup_conf).with(ensure: 'file',
+                                                           owner: 'root',
+                                                           group: 'root',
+                                                           mode: '0644')
           end
 
-          it "STDERR=#{$stderr_expected}" do
-            is_expected.to contain_file(startup_conf).with_content(/STDERR=#{$stderr_expected}/)
+          it "STDERR=#{stderr_expected}" do
+            is_expected.to contain_file(startup_conf).with_content(%r{STDERR=#{stderr_expected}})
           end
 
-          it "STDOUT=#{$stdout_expected}" do
-            is_expected.to contain_file(startup_conf).with_content(/STDOUT=#{$stdout_expected}/)
+          it "STDOUT=#{stdout_expected}" do
+            is_expected.to contain_file(startup_conf).with_content(%r{STDOUT=#{stdout_expected}})
           end
 
-          it "INFLUXD_OPTS=#{$influxd_opts_expected}" do
-            is_expected.to contain_file(startup_conf).with_content(/INFLUXD_OPTS=#{$influxd_opts_expected}/)
+          it "INFLUXD_OPTS=#{influxd_opts_expected}" do
+            is_expected.to contain_file(startup_conf).with_content(%r{INFLUXD_OPTS=#{influxd_opts_expected}})
           end
-
         end
       end
-
     end
   end
-
 end
