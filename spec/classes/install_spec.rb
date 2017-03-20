@@ -40,16 +40,19 @@ include influxdb
 
           EOS
         end
-
-        let(:contained_class) { get_repo_contain_class(facts) }
+        case facts[:osfamily]
+        when 'Archlinux'
+          next
+        when 'Debian'
+        let(:contained_class) { 'influxdb::repo::apt' }
+        when 'RedHat'
+          let(:contained_class) { 'influxdb::repo::yum' }
+        end
 
         it { is_expected.to contain_class(contained_class).that_comes_before('Class[influxdb::repo]') }
         it { is_expected.to contain_class('influxdb::repo').that_comes_before('Class[influxdb::install]') }
         it { is_expected.to contain_class('influxdb::install').that_comes_before('Class[influxdb::config]') }
-
       end
-
     end
   end
-
 end
