@@ -10,6 +10,8 @@ class influxdb::params {
   $startup_conf_template = 'influxdb/influxdb_default.erb'
 
   $config_file           = '/etc/influxdb/influxdb.conf'
+  $install_method        = 'repo'
+  $package_source        = undef
 
   $influxdb_stderr_log   = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log   = '/var/log/influxdb/influxd.log'
