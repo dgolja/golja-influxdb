@@ -88,7 +88,7 @@ class influxdb::params {
     'https-certificate'    => '/etc/ssl/influxdb.pem',
     'https-private-key'    => '',
     'shared-sercret'       => '',
-    'max-row-limit'        => 10000,
+    'max-row-limit'        => 0,
     'max-connection-limit' => 0,
     'unix-socket-enabled'  => false,
     'bind-socket'          => '/var/run/influxdb.sock',
