@@ -18,19 +18,20 @@ else
 end
 
 group :development, :test do
-  gem 'rake',                       require: false
-  gem 'rspec',                      require: false
-  gem 'rspec-puppet',               require: false
-  gem 'puppetlabs_spec_helper',     require: false
-  gem 'puppet-lint',                require: false
-  gem 'simplecov',                  require: false
-  gem 'puppet_facts',               require: false
-  gem 'json_pure', '~> 1.8',        require: false
-  gem 'json',                       require: false
-  gem 'metadata-json-lint',         require: false
-  gem 'rspec-puppet-facts',         require: false
-  gem 'rubocop', '~> 0.47.0',       require: false if RUBY_VERSION >= '2.3.0'
-  gem 'rubocop-rspec', '~> 1.10.0', require: false if RUBY_VERSION >= '2.3.0'
+  gem 'rake',                        require: false
+  gem 'rspec',                       require: false
+  gem 'rspec-puppet',                require: false
+  gem 'puppetlabs_spec_helper',      require: false
+  gem 'puppet-lint',                 require: false
+  gem 'simplecov',                   require: false
+  gem 'puppet_facts',                require: false
+  gem 'json_pure', '~> 1.8',         require: false
+  gem 'json',                        require: false
+  gem 'rspec-puppet-facts',          require: false
+  gem 'metadata-json-lint', '1.2.2', require: false if RUBY_VERSION.to_f == 2.1
+  gem 'metadata-json-lint', '1.1.0', require: false if RUBY_VERSION.to_f <= 1.9
+  gem 'rubocop', '~> 0.47.0',        require: false if RUBY_VERSION >= '2.3.0'
+  gem 'rubocop-rspec', '~> 1.10.0',  require: false if RUBY_VERSION >= '2.3.0'
 end
 
 group :system_tests do
