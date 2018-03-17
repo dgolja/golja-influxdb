@@ -7,22 +7,14 @@ class influxdb::repo::apt(
   #downcase operatingsystem
   $_operatingsystem = downcase($::operatingsystem)
 
-  $key = {
-    'id'     => '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
-    'source' => 'https://repos.influxdata.com/influxdb.key',
-  }
-
-  $include = {
-    'src' => false,
-  }
-
-  apt::source { 'repos.influxdata.com':
+  apt::source { 'influxdb':
     ensure   => $ensure,
-    location => "https://repos.influxdata.com/${_operatingsystem}",
-    release  => $::lsbdistcodename,
+    location => 'https://repos.influxdata.com/${_operatingsystem}',
     repos    => 'stable',
-    key      => $key,
-    include  => $include,
+    key      => {
+      'id'      => '05CE15085FC09D18E99EFB22684A14CF2582E0C5',
+      'server'  => 'repos.influxdata.com',
+      'source'  => 'https://repos.influxdata.com/influxdb.key',
+    },
   }
-
 }
