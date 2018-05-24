@@ -39,9 +39,9 @@ class influxdb(
 ) inherits influxdb::params {
 
   anchor { 'influxdb::start': }
-  -> class { 'influxdb::install': } 
-  -> class { 'influxdb::config': }  
-  -> class { 'influxdb::service': } 
+  -> class { 'influxdb::install': }
+  -> class { 'influxdb::config': }
+  -> class { 'influxdb::service': }
   -> anchor { 'influxdb::end': }
 
 }
