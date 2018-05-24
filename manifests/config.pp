@@ -43,7 +43,7 @@ class influxdb::config(
     group   => $conf_group,
     mode    => $conf_mode,
     content => template($conf_template),
-    notify  => $notify,    
+    notify  => $notify,
     require => Package['influxdb'],
   }
 
@@ -55,7 +55,7 @@ class influxdb::config(
       group   => $conf_group,
       mode    => $conf_mode,
       content => template($startup_conf_template),
-      notify  => $notify,    
+      notify  => $notify,
       require => Package['influxdb'],
     }
 
