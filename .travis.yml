@@ -6,8 +6,6 @@ script: "bundle exec rake test SPEC_OPTS='--format documentation'"
 matrix:
   fast_finish: true
   include:
-  - rvm: 1.9.3
-    env: PUPPET_GEM_VERSION="~> 3.0"
   - rvm: 2.0.0
     env: PUPPET_GEM_VERSION="~> 3.0"
   - rvm: 2.1.6
