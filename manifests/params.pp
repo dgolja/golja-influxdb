@@ -39,6 +39,12 @@ class influxdb::params {
     'max-series-per-database'            => 1000000,
     'max-values-per-tag'                 => 100000,
   }
+  
+  $logging_config = {
+    'format'        => 'auto',
+    'level'         => 'warn',
+    'suppress-logo' => false,
+  }
 
   $coordinator_config = {
     'write-timeout'          => '10s',
