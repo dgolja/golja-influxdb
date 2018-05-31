@@ -16,6 +16,7 @@ class influxdb::config(
   $global_config             = $influxdb::global_config,
   $meta_config               = $influxdb::meta_config,
   $data_config               = $influxdb::data_config,
+  $logging_config            = $influxdb::logging_config,
   $coordinator_config        = $influxdb::coordinator_config,
   $retention_config          = $influxdb::retention_config,
   $shard_precreation_config  = $influxdb::shard_precreation_config,
