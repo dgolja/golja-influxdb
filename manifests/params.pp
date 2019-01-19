@@ -39,7 +39,7 @@ class influxdb::params {
     'max-series-per-database'            => 1000000,
     'max-values-per-tag'                 => 100000,
   }
-  
+
   $logging_config = {
     'format'        => 'auto',
     'level'         => 'warn',
