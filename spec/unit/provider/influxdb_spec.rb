@@ -77,5 +77,19 @@ describe Puppet::Provider::InfluxDB do
     it 'should fail' do
       expect { described_class.perform_request('what', 'path') }.to raise_error(Puppet::Error)
     end
+
+    it 'should retry and fail' do
+      Kernel.expects(:sleep).returns(true).times(3)
+      Net::HTTP.expects(:start).with('localhost', 8086, { :use_ssl => false }).raises(StandardError).times(4)
+      expect { described_class.perform_request('GET', 'path') }.to raise_error(Puppet::Error)
+    end
+
+    it 'should retry and success' do
+      Kernel.expects(:sleep).returns(true).times(3)
+      Net::HTTP.expects(:start).returns(true)
+      Net::HTTP.expects(:start).with('localhost', 8086, { :use_ssl => false }).raises(StandardError).times(3)
+      response = described_class.perform_request('GET', 'path')
+      expect(response).to eq(true)
+    end
   end  
 end

@@ -118,9 +118,20 @@ class Puppet::Provider::InfluxDB < Puppet::Provider
         request[key] = val
       end
     end
-    response = Net::HTTP.start(url.host, url.port,
-                               :use_ssl => url.scheme == 'https') do |http|
-      http.request(request)
+    retry_count = 1
+    begin
+      response = Net::HTTP.start(url.host, url.port,
+                                 :use_ssl => url.scheme == 'https') do |http|
+        http.request(request)
+      end
+    rescue => e
+      if retry_count <= 3
+        Puppet.debug("InfluxDB API call failed attempt #{retry_count}: #{e.message}.. retrying in #{retry_count} seconds")
+        retry_count += 1
+        Kernel.sleep retry_count
+        retry
+      end
+      raise Puppet::Error, "InfluxDB API call failed after #{retry_count} retries: #{e.message}"
     end
     response
   end
