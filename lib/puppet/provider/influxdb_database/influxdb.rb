@@ -59,23 +59,55 @@ Puppet::Type.type(:influxdb_database).provide(:influxdb, :parent => Puppet::Prov
     @instances.any? {|prov| prov.name == resource[:name]}
   end
 
+  # @method databases
+  #   Get all InfluxDB databases and introduce a retry
+  #   because when the service is being deployed for the
+  #   first time and is initializing the SHOW DATABASES
+  #   query will respond without the "values" key in the
+  #   response.
+  #
+  #   If we instead wait for it to initialize and create
+  #   the "_internal" database we'll get the list properly.
+  #
+  #   This effectively allows for InfluxDB to initialize.
+  def self.databases
+    q = 'SHOW DATABASES'
+    retry_count = 1
+    begin
+      response = self.query(q)
+      if response.code.to_i != 200
+        raise Puppet::Error, "Failed to get InfluxDB databases (HTTP response: #{response.code})"
+      end
+      data = JSON.parse(response.body)
+      results = data['results'][0]
+      series = results['series']
+      if !series[0].include?('values')
+        raise Puppet::Error, 'InfluxDB database response did not contain values, service not started or initialized yet'
+      end
+      values = series[0]['values']
+    rescue => e
+      if retry_count <= 30
+        Puppet.debug("InfluxDB database: #{e.message}, retrying in #{retry_count} seconds")
+        retry_count += 1
+        Kernel.sleep 2
+        retry
+      end
+      raise
+    end
+    ret = values.collect do |value|
+      value[0]
+    end
+    ret
+  end
+
   # @method instances
   #   Get all InfluxDB databases and create resources
   def self.instances
-    q = 'SHOW DATABASES'
-    response = self.query(q)
-    if response.code.to_i != 200
-      raise Puppet::Error, "Failed to get InfluxDB databases (HTTP response: #{response.code})"
+    dbs = self.databases
+    ret = dbs.collect do |db_name|
+      new(:name => db_name)
     end
-    data = JSON.parse(response.body)
-    results = data['results'][0]
-    series = results['series']
-    values = series[0]['values']
-    databases = values.collect do |value|
-      database_name = value[0]
-      new(:name => database_name)
-    end
-    databases
+    ret
   end
 
   # @method prefetch
