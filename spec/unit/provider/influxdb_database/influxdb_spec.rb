@@ -107,7 +107,7 @@ describe Puppet::Type.type(:influxdb_database).provider(:influxdb) do
 
   describe '#prefetch' do
     it 'should associate provider' do
-      described_class.expects(:query).with('SHOW DATABASES').returns(HttpResponseMock.new)
+      described_class.expects(:databases).returns(['db1', 'db2'])
       resources = {'testdb' => {'ensure' => 'present'}}
       Puppet::Type::Influxdb_database::ProviderInfluxdb.prefetch(resources)
       expect(resource.provider).to eq(provider)
