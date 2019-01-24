@@ -84,6 +84,47 @@ class Puppet::Provider::InfluxDB < Puppet::Provider
     perform_request('POST', path, query, data, headers)
   end
 
+  # @method databases
+  #   Get all InfluxDB databases and introduce a retry
+  #   because when the service is being deployed for the
+  #   first time and is initializing the SHOW DATABASES
+  #   query will respond without the "values" key in the
+  #   response.
+  #
+  #   If we instead wait for it to initialize and create
+  #   the "_internal" database we'll get the list properly.
+  #
+  #   This effectively allows for InfluxDB to initialize.
+  def self.databases
+    q = 'SHOW DATABASES'
+    retry_count = 1
+    begin
+      response = query(q)
+      if response.code.to_i != 200
+        raise Puppet::Error, "Failed to get InfluxDB databases (HTTP response: #{response.code})"
+      end
+      data = JSON.parse(response.body)
+      results = data['results'][0]
+      series = results['series']
+      if !series[0].include?('values')
+        raise Puppet::Error, 'InfluxDB database response did not contain values, service not started or initialized yet'
+      end
+      values = series[0]['values']
+    rescue => e
+      if retry_count <= 30
+        Puppet.debug("InfluxDB database: #{e.message}, retrying in #{retry_count} seconds")
+        retry_count += 1
+        Kernel.sleep 2
+        retry
+      end
+      raise
+    end
+    ret = values.collect do |value|
+      value[0]
+    end
+    ret
+  end
+
   # @method perform_request
   #   Perform a HTTP request.
   # @param type

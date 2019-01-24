@@ -57,6 +57,54 @@ describe Puppet::Provider::InfluxDB do
     end
   end
 
+  class HttpResponseMock
+    def code
+      '200'
+    end
+
+    def body
+      '{"results":[{"statement_id":0,"series":[{"name":"databases","columns":["name"],"values":[["_internal"],["db1"],["db2"]]}]}]}'
+    end
+  end
+
+  class HttpResponseMockWithoutValues
+    def code
+      '200'
+    end
+
+    def body
+      '{"results":[{"statement_id":0,"series":[{"name":"databases","columns":["name"]}]}]}'
+    end
+  end
+
+  describe '#databases' do
+    it 'should return the instances when response contains values' do
+      described_class.expects(:query).with('SHOW DATABASES').returns(HttpResponseMock.new)
+      instances = Puppet::Type::Influxdb_database::ProviderInfluxdb.instances
+      expect(instances.count).to eq(3)
+      expect(instances[0].name).to eq('_internal')
+      expect(instances[1].name).to eq('db1')
+      expect(instances[2].name).to eq('db2')
+    end
+
+    it 'should retry and fail' do
+      Kernel.expects(:sleep).returns(true).times(30)
+      described_class.expects(:query).with('SHOW DATABASES').returns(HttpResponseMockWithoutValues.new).times(31)
+      expect { Puppet::Type::Influxdb_database::ProviderInfluxdb.instances }.to raise_error(Puppet::Error)
+    end
+
+    it 'should retry and success' do
+      Kernel.expects(:sleep).returns(true).times(12)
+      described_class.expects(:query).with('SHOW DATABASES').returns(HttpResponseMock.new)
+      described_class.expects(:query).with('SHOW DATABASES').returns(HttpResponseMockWithoutValues.new).times(12)
+      instances = Puppet::Type::Influxdb_database::ProviderInfluxdb.instances
+      expect(instances.count).to eq(3)
+      expect(instances[0].name).to eq('_internal')
+      expect(instances[1].name).to eq('db1')
+      expect(instances[2].name).to eq('db2')
+    end
+  end
+
   describe '#perform_request' do
     before :each do
       Puppet::Provider::InfluxDB.expects(:base_url).returns('http://localhost:8086')
