@@ -34,6 +34,12 @@ describe Puppet::Type.type(:influxdb_database).provider(:influxdb) do
     described_class.new(resource)
   end
 
+  describe '#base_url' do
+    it 'should return base url' do
+      expect(provider.class.base_url).to eq('http://localhost:8086')
+    end
+  end
+
   describe '#create' do
     it 'should be successful' do
       response = Net::HTTPResponse.new('1.0', '200', 'test')
