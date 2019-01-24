@@ -24,6 +24,7 @@ Puppet::Type.newtype(:influxdb_database) do
 
   newparam(:name, :namevar => true) do
     desc "The name of the database."
+    newvalues(/^[\S]+$/)
   end
 
   autorequire(:service) do

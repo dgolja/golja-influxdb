@@ -28,6 +28,15 @@ describe Puppet::Type.type(:influxdb_database) do
     expect(@influxdb_db_resource[:name]).to eq('testdb')
   end
 
+  it 'should allow numbers in name' do
+    @influxdb_db_resource[:name] = 'mydb1'
+    expect(@influxdb_db_resource[:name]).to eq('mydb1')
+  end
+
+  it 'should not allow invalid names' do
+    expect { @influxdb_db_resource[:name] = 'my invalid name' }.to raise_error(Puppet::ResourceError)
+  end
+
   it 'should have ensure present' do
     @influxdb_db_resource[:ensure] = 'present'
     expect(@influxdb_db_resource[:ensure]).to eq(:present)
