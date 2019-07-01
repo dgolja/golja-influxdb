@@ -9,12 +9,64 @@ class influxdb::params {
   $conf_template         = 'influxdb/influxdb.conf.erb'
   $startup_conf_template = 'influxdb/influxdb_default.erb'
 
-  $config_file           = '/etc/influxdb/influxdb.conf'
-
   $influxdb_stderr_log   = '/var/log/influxdb/influxd.log'
   $influxdb_stdout_log   = '/var/log/influxdb/influxd.log'
   $influxd_opts          = undef
   $manage_install        = true
+
+  case $::osfamily {
+    'Debian': {
+      $config_file       = '/etc/influxdb/influxdb.conf'
+      $config_group      = 'root'
+      $startup_conf      = '/etc/default/influxdb'
+      $manage_repos      = false
+      $service_name      = 'influxdb'
+      $influxdb_meta_dir = '/var/lib/influxdb/meta'
+      $influxdb_data_dir = '/var/lib/influxdb/data'
+      $influxdb_wal_dir  = '/var/lib/influxdb/wal'
+      $influxdb_typesdb  = '/usr/share/collectd/types.db'
+    }
+    'RedHat': {
+      $config_file       = '/etc/influxdb/influxdb.conf'
+      $config_group      = 'root'
+      $startup_conf      = $::operatingsystemmajrelease ? {
+        /7/     => '/etc/default/influxdb',
+        default => '/etc/sysconfig/influxdb'
+      }
+      $manage_repos      = false
+      $service_name      = 'influxdb'
+      $influxdb_meta_dir = '/var/lib/influxdb/meta'
+      $influxdb_data_dir = '/var/lib/influxdb/data'
+      $influxdb_wal_dir  = '/var/lib/influxdb/wal'
+      $influxdb_typesdb  = '/usr/share/collectd/types.db'
+    }
+    'Archlinux': {
+      $config_file       = '/etc/influxdb/influxdb.conf'
+      $config_group      = 'root'
+      $startup_conf      = '/etc/default/influxdb'
+      $manage_repos      = false
+      $service_name      = 'influxdb'
+      $influxdb_meta_dir = '/var/lib/influxdb/meta'
+      $influxdb_data_dir = '/var/lib/influxdb/data'
+      $influxdb_wal_dir  = '/var/lib/influxdb/wal'
+      $influxdb_typesdb  = '/usr/share/collectd/types.db'
+    }
+    'FreeBSD': {
+      $config_file       = '/usr/local/etc/influxd.conf'
+      $config_group      = 'wheel'
+      $startup_conf      = false
+      $manage_repos      = false
+      $service_name      = 'influxd'
+      $influxdb_meta_dir = '/var/db/influxdb/meta'
+      $influxdb_data_dir = '/var/db/influxdb/data'
+      $influxdb_wal_dir  = '/var/db/influxdb/wal'
+      $influxdb_typesdb  = '/usr/local/share/collectd'
+    }
+    default: {
+      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
+      module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
+    }
+  }
 
   $global_config = {
     'reporting-disabled' => true,
@@ -22,14 +74,14 @@ class influxdb::params {
   }
 
   $meta_config = {
-    'dir'                  => '/var/lib/influxdb/meta',
+    'dir'                  => $influxdb_meta_dir,
     'retention-autocreate' => true,
     'logging-enabled'      => true,
   }
 
   $data_config = {
-    'dir'                                => '/var/lib/influxdb/data',
-    'wal-dir'                            => '/var/lib/influxdb/wal',
+    'dir'                                => $influxdb_data_dir,
+    'wal-dir'                            => $influxdb_wal_dir,
     'trace-logging-enabled'              => false,
     'query-log-enabled'                  => true,
     'cache-max-memory-size'              => 1048576000,
@@ -133,7 +185,7 @@ class influxdb::params {
       'bind-address'     => ':25826',
       'database'         => 'collectd',
       'retention-policy' => '',
-      'typesdb'          => '/usr/share/collectd/types.db',
+      'typesdb'          => $influxdb_typesdb,
       'batch-size'       => 5000,
       'batch-pending'    => 10,
       'batch-timeout'    => '10s',
@@ -178,26 +230,4 @@ class influxdb::params {
 
   # deprecated as of 1.x?
   $hinted_handoff_config = {}
-
-  case $::osfamily {
-    'Debian': {
-      $startup_conf = '/etc/default/influxdb'
-      $manage_repos = false
-    }
-    'RedHat': {
-      $startup_conf = $::operatingsystemmajrelease ? {
-        /7/     => '/etc/default/influxdb',
-        default => '/etc/sysconfig/influxdb'
-      }
-      $manage_repos = false
-    }
-    'Archlinux': {
-      $startup_conf = '/etc/default/influxdb'
-      $manage_repos = false
-    }
-    default: {
-      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
-      module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
-    }
-  }
 }
