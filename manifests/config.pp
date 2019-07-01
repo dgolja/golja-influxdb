@@ -2,7 +2,7 @@
 class influxdb::config(
   $conf                      = $influxdb::config_file,
   $conf_owner                = 'root',
-  $conf_group                = 'root',
+  $conf_group                = $influxdb::config_group,
   $conf_mode                 = '0644',
   $conf_template             = $influxdb::conf_template,
 
@@ -33,7 +33,7 @@ class influxdb::config(
 ) {
 
   $notify = $influxdb::manage_service ? {
-    true => Service['influxdb'],
+    true => Service[$influxdb::service_name],
     false => undef,
     default => undef,
   }
