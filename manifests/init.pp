@@ -37,6 +37,7 @@ class influxdb(
   $influxd_opts              = $influxdb::params::influxd_opts,
   $manage_install            = $influxdb::params::manage_install,
   $manage_repos              = $influxdb::params::manage_repos,
+  $package_name              = $influxdb::params::package_name,
 ) inherits influxdb::params {
 
   anchor { 'influxdb::start': }
