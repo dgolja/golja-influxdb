@@ -6,6 +6,12 @@ class influxdb::params {
   $service_ensure        = 'running'
   $manage_service        = true
 
+  if ($version == 'installed') or (versioncmp($version,'2.0') >= 0) {
+    $package_name = 'influxdb2'
+  } else {
+    $package_name = 'influxdb'
+  }
+
   $conf_template         = 'influxdb/influxdb.conf.erb'
   $startup_conf_template = 'influxdb/influxdb_default.erb'
 
@@ -39,7 +45,7 @@ class influxdb::params {
     'max-series-per-database'            => 1000000,
     'max-values-per-tag'                 => 100000,
   }
-  
+
   $logging_config = {
     'format'        => 'auto',
     'level'         => 'warn',

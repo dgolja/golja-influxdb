@@ -4,6 +4,7 @@ class influxdb::install(
   $version        = $influxdb::version,
   $manage_repos   = $influxdb::manage_repos,
   $manage_install = $influxdb::manage_install,
+  $package_name   = $influxdb::package_name,
 ){
 
   if $manage_repos {
@@ -17,9 +18,9 @@ class influxdb::install(
       default  => $version,
     }
 
-    package { 'influxdb':
+    package { $package_name:
       ensure => $_ensure,
-      tag    => 'influxdb',
+      tag    => $package_name,
     }
 
   }

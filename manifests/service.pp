@@ -12,7 +12,7 @@ class influxdb::service(
       enable     => $service_enabled,
       hasrestart => true,
       hasstatus  => true,
-      require    => Package['influxdb'],
+      require    => Package[$influxdb::package_name],
     }
 
   }

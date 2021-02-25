@@ -5,6 +5,12 @@ class influxdb::repo::yum(
   $gpgcheck = 1,
 ) {
 
+  if $influxdb::package_name == 'influxdb2' {
+    $gpgkey ='https://repos.influxdata.com/influxdb.key'
+  } else {
+    $gpgkey ='https://repos.influxdata.com/influxdb.key'
+  }
+
   $_operatingsystem = $::operatingsystem ? {
     'CentOS' => downcase($::operatingsystem),
     default  => 'rhel',
@@ -16,7 +22,7 @@ class influxdb::repo::yum(
     baseurl  => "https://repos.influxdata.com/${$_operatingsystem}/\$releasever/\$basearch/stable",
     enabled  => $enabled,
     gpgcheck => $gpgcheck,
-    gpgkey   => 'https://repos.influxdata.com/influxdb.key',
+    gpgkey   => $gpgkey,
   }
 
 }
