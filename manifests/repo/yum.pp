@@ -6,7 +6,7 @@ class influxdb::repo::yum(
 ) {
 
   if $influxdb::package_name == 'influxdb2' {
-    $gpgkey ='https://repos.influxdata.com/influxdb.key'
+    $gpgkey ='https://repos.influxdata.com/influxdb2.key'
   } else {
     $gpgkey ='https://repos.influxdata.com/influxdb.key'
   }
