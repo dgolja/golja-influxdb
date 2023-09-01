@@ -179,13 +179,13 @@ class influxdb::params {
   # deprecated as of 1.x?
   $hinted_handoff_config = {}
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       $startup_conf = '/etc/default/influxdb'
       $manage_repos = false
     }
     'RedHat': {
-      $startup_conf = $::operatingsystemmajrelease ? {
+      $startup_conf = $facts['os']['release']['major'] ? {
         /7/     => '/etc/default/influxdb',
         default => '/etc/sysconfig/influxdb'
       }
@@ -196,7 +196,7 @@ class influxdb::params {
       $manage_repos = false
     }
     default: {
-      fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem},\
+      fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']},\
       module ${module_name} currently only supports managing repos for osfamily RedHat, Debian and Archlinux")
     }
   }
